@@ -416,6 +416,125 @@
     .mood-grid{ grid-template-columns:repeat(2, 1fr); }
   }
 
+  /* ---------- QUIZ ---------- */
+  .quiz-section{
+    max-width:640px;
+    margin:0 auto;
+    padding:100px 24px 20px;
+    text-align:center;
+  }
+  .quiz-box{
+    margin-top:26px;
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    border-radius:16px;
+    padding:36px 30px;
+    text-align:left;
+    box-shadow:6px 6px 0 rgba(42,39,36,0.05);
+  }
+  .quiz-intro{ text-align:center; }
+  .quiz-intro p{
+    font-size:15px;
+    color:var(--ink-soft);
+    margin-bottom:24px;
+    line-height:1.7;
+  }
+  .quiz-start-btn, .quiz-retry-btn{
+    background:var(--berry);
+    color:#fff;
+    border:none;
+    font-family:'Gaegu', cursive;
+    font-size:16px;
+    padding:12px 28px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:opacity 0.2s ease;
+  }
+  .quiz-start-btn:hover, .quiz-retry-btn:hover{ opacity:0.85; }
+
+  .quiz-progress{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .quiz-progress-bar{
+    flex:1;
+    height:6px;
+    background:rgba(95,111,82,0.12);
+    border-radius:100px;
+    overflow:hidden;
+  }
+  .quiz-progress-fill{
+    height:100%;
+    background:var(--berry);
+    width:0%;
+    transition:width 0.3s ease;
+  }
+  .quiz-progress span{
+    font-family:'Gaegu', cursive;
+    font-size:13px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  #quizQuestionText{
+    font-size:19px;
+    margin-bottom:22px;
+    line-height:1.5;
+  }
+  .quiz-options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .quiz-options button{
+    text-align:left;
+    background:#fff;
+    border:1px solid var(--rule);
+    padding:14px 18px;
+    border-radius:10px;
+    font-size:14.5px;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color 0.2s ease, background 0.2s ease;
+  }
+  .quiz-options button:hover{
+    border-color:var(--berry);
+    background:rgba(156,74,92,0.05);
+  }
+
+  .quiz-result{ text-align:center; }
+  .quiz-result-emoji{ font-size:44px; display:block; margin-bottom:6px; }
+  .quiz-result h3{ font-size:26px; margin-bottom:14px; }
+  .quiz-result-desc{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    line-height:1.8;
+    margin-bottom:18px;
+  }
+  .quiz-result-keywords{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:20px;
+  }
+  .quiz-result-keywords span{
+    border:1px solid var(--rule-strong);
+    padding:6px 14px;
+    border-radius:100px;
+    font-size:12.5px;
+    color:var(--moss-deep);
+    background:rgba(95,111,82,0.06);
+  }
+  .quiz-result-songs{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:18px;
+  }
+
   /* ---------- CALENDAR ---------- */
   .calendar-section{
     max-width:820px;
@@ -835,6 +954,42 @@
 
   .diary-archive{margin-top:56px; display:flex; flex-direction:column; gap:8px;}
 
+  .admin-bar{
+    margin-top:44px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    justify-content:flex-end;
+  }
+  .admin-toggle-btn{
+    background:none;
+    border:1px dashed var(--rule-strong);
+    color:var(--ink-soft);
+    font-family:'Gaegu', cursive;
+    font-size:13px;
+    padding:6px 14px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:border-color 0.2s ease, color 0.2s ease;
+  }
+  .admin-toggle-btn:hover{ border-color:var(--berry); color:var(--berry); }
+  .admin-toggle-btn.on{
+    border:1px solid var(--berry);
+    color:var(--berry);
+    background:rgba(156,74,92,0.08);
+  }
+  .admin-status{
+    font-family:'Gaegu', cursive;
+    font-size:12.5px;
+    color:var(--berry);
+    opacity:0.85;
+  }
+  .delete-btn.admin-delete{
+    border-color:var(--berry);
+    color:var(--berry);
+  }
+
+
   .archive-date-group{margin-bottom:14px;}
   .archive-date-heading{
     display:flex;
@@ -935,6 +1090,7 @@
   <a href="#about">소개</a>
   <a href="#discography">디스코그래피</a>
   <a href="#mood">감정으로 찾기</a>
+  <a href="#quiz">테스트</a>
   <a href="#calendar">캘린더</a>
   <a href="#diary">기록북</a>
 </nav>
@@ -1254,6 +1410,41 @@
   </div>
 </section>
 
+<section id="quiz" class="quiz-section">
+  <div class="section-head">
+    <span class="eyebrow handwrite">🎧 10개의 질문으로 알아보는</span>
+    <h2>당신은 어떤 한로로일까요?</h2>
+    <p class="today-sub">당신의 마음과 가장 닮은 한로로의 노래를 찾아드립니다.</p>
+  </div>
+
+  <div class="quiz-box" id="quizBox">
+
+    <div class="quiz-intro" id="quizIntro">
+      <p>10개의 짧은 질문에 답하면, 지금 당신과 가장 닮은 한로로의 노래 유형을 알려드려요.</p>
+      <button class="quiz-start-btn" id="quizStartBtn">테스트 시작하기 ▶</button>
+    </div>
+
+    <div class="quiz-question" id="quizQuestion" style="display:none;">
+      <div class="quiz-progress">
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
+        <span id="quizProgressLabel">1 / 10</span>
+      </div>
+      <h3 id="quizQuestionText"></h3>
+      <div class="quiz-options" id="quizOptions"></div>
+    </div>
+
+    <div class="quiz-result" id="quizResult" style="display:none;">
+      <span class="quiz-result-emoji" id="quizResultEmoji"></span>
+      <h3 id="quizResultName"></h3>
+      <p class="quiz-result-desc" id="quizResultDesc"></p>
+      <div class="quiz-result-keywords" id="quizResultKeywords"></div>
+      <div class="quiz-result-songs" id="quizResultSongs"></div>
+      <button class="quiz-retry-btn" id="quizRetryBtn">다시 테스트하기</button>
+    </div>
+
+  </div>
+</section>
+
 <section id="calendar" class="calendar-section">
   <div class="section-head">
     <span class="eyebrow handwrite">놓치면 아쉬운</span>
@@ -1369,6 +1560,11 @@
     </div>
   </div>
 
+  <div class="admin-bar">
+    <button type="button" id="adminToggleBtn" class="admin-toggle-btn">🔧 관리자 로그인</button>
+    <span class="admin-status" id="adminStatus"></span>
+  </div>
+
   <div class="diary-archive" id="diaryArchive"></div>
 </section>
 
@@ -1388,6 +1584,97 @@
     });
   }, { threshold: 0.2 });
   stops.forEach(stop => observer.observe(stop));
+</script>
+
+<script type="module">
+  // =========================================================
+  // 한 줄의 계절(기록북) — Firebase(Firestore + Auth) 기반
+  // 모든 방문자가 같은 기록을 실시간으로 함께 보는 방식이에요.
+  // 설정 방법은 함께 드리는 README_firebase.md를 꼭 확인해 주세요.
+  // =========================================================
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, deleteDoc, doc,
+    onSnapshot, query, orderBy, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+  import {
+    getAuth, signInAnonymously, onAuthStateChanged,
+    signInWithEmailAndPassword, signOut
+  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+  // ── 1. Firebase 프로젝트 설정 ─────────────────────────────
+  // 이 값들은 "비밀키"가 아니에요. Firebase 클라이언트 설정은 원래 공개되는 값이고,
+  // 실제 보안은 Firestore 보안 규칙(README_firebase.md 참고)이 담당해요.
+  // Firebase 콘솔 → 프로젝트 설정 → 내 앱 → SDK 설정에서 그대로 복사해 붙여넣으세요.
+  const firebaseConfig = {
+    apiKey: "여기에_API_KEY",
+    authDomain: "여기에_PROJECT_ID.firebaseapp.com",
+    projectId: "여기에_PROJECT_ID",
+    storageBucket: "여기에_PROJECT_ID.appspot.com",
+    messagingSenderId: "여기에_SENDER_ID",
+    appId: "여기에_APP_ID"
+  };
+
+  // ── 2. 관리자 계정 정보 ───────────────────────────────────
+  // 비밀번호는 여기 어디에도 없어요! Firebase Authentication에 이메일/비밀번호로 된
+  // 관리자 계정을 하나 만들고, 그 이메일만 여기 적어두면 돼요. 로그인할 때 입력하는
+  // 비밀번호는 Firebase 서버가 직접 확인해요(브라우저 코드에는 절대 남지 않아요).
+  const ADMIN_EMAIL = "admin@hanroro-house.app"; // README 안내대로 만든 관리자 계정 이메일로 교체
+  const ADMIN_UID = "여기에_관리자_UID_붙여넣기"; // Firebase 콘솔 Authentication > Users에서 복사
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let myUid = null;
+  let isAdminUser = false;
+  let currentEntries = [];
+
+  const adminToggleBtn = document.getElementById('adminToggleBtn');
+  const adminStatus = document.getElementById('adminStatus');
+
+  function updateAdminUI() {
+    if (isAdminUser) {
+      adminToggleBtn.textContent = '🔓 관리자 로그아웃';
+      adminToggleBtn.classList.add('on');
+      adminStatus.textContent = '관리자로 로그인되어 있어요 — 모든 기록을 지울 수 있어요';
+    } else {
+      adminToggleBtn.textContent = '🔧 관리자 로그인';
+      adminToggleBtn.classList.remove('on');
+      adminStatus.textContent = '';
+    }
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) return;
+    myUid = user.uid;
+    isAdminUser = (user.uid === ADMIN_UID);
+    updateAdminUI();
+    renderArchive();
+  });
+
+  // 방문자마다 "내가 쓴 글"을 구분할 수 있도록, 아무 입력 없이도 조용히 익명 로그인을 해둬요.
+  signInAnonymously(auth).catch((err) => {
+    console.error('익명 로그인 실패:', err);
+    adminStatus.textContent = 'Firebase 연결에 실패했어요. firebaseConfig 설정을 확인해 주세요.';
+  });
+
+  adminToggleBtn.addEventListener('click', async () => {
+    if (isAdminUser) {
+      await signOut(auth);
+      isAdminUser = false;
+      updateAdminUI();
+      signInAnonymously(auth); // 로그아웃 후 다시 익명 사용자로 전환
+      return;
+    }
+    const pw = prompt('관리자 비밀번호를 입력하세요');
+    if (pw === null) return;
+    try {
+      await signInWithEmailAndPassword(auth, ADMIN_EMAIL, pw);
+    } catch (err) {
+      alert('로그인에 실패했어요. 비밀번호를 확인해 주세요.');
+    }
+  });
 
   // ---------- 한 줄의 계절 (diary) ----------
   // 날짜는 페이지를 불러올 때마다 오늘 날짜로 매번 새로 계산되므로, 매일 자동으로 갱신돼요.
@@ -1397,6 +1684,7 @@
   const m = String(today.getMonth() + 1).padStart(2, '0');
   const d = String(today.getDate()).padStart(2, '0');
   todayEl.textContent = `${y}. ${m}. ${d}`;
+
 
   let selectedWeather = null;
   let selectedStars = 0;
@@ -1476,10 +1764,9 @@
 
   authorInput.addEventListener('input', () => {
     authorInput.style.borderBottomColor = '';
-    // 닉네임은 "누가 썼는지" 확인용이므로 별도로도 기억해둔다
+    // 닉네임은 화면에 표시되는 이름일 뿐, 삭제 권한은 Firebase 계정(uid)으로 판단해요.
     localStorage.setItem(AUTHOR_KEY, authorInput.value.trim());
     saveDraft();
-    renderArchive(); // 닉네임이 바뀌면 삭제 가능 여부도 즉시 갱신
   });
   momentInput.addEventListener('input', saveDraft);
   songInput.addEventListener('change', saveDraft);
@@ -1568,41 +1855,38 @@
     }
   })();
 
-  function loadEntries() {
-    try {
-      return JSON.parse(localStorage.getItem('hanroro-diary-entries') || '[]');
-    } catch (e) {
-      return [];
-    }
-  }
-  function saveEntries(entries) {
-    localStorage.setItem('hanroro-diary-entries', JSON.stringify(entries));
-  }
+  // ---- 기록 목록: Firestore 실시간 구독 (모든 방문자가 같은 목록을 함께 봐요) ----
+  const entriesCol = collection(db, 'diaryEntries');
+  const entriesQuery = query(entriesCol, orderBy('createdAt', 'desc'));
+
+  onSnapshot(entriesQuery, (snapshot) => {
+    currentEntries = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderArchive();
+  }, (err) => {
+    console.error('기록을 불러오지 못했습니다:', err);
+    document.getElementById('diaryArchive').innerHTML =
+      '<div class="archive-empty">기록을 불러오지 못했어요. firebaseConfig와 Firestore 보안 규칙 설정을 확인해 주세요.</div>';
+  });
 
   function renderArchive() {
-    const entries = loadEntries();
     const archiveEl = document.getElementById('diaryArchive');
     archiveEl.innerHTML = '';
 
-    if (entries.length === 0) {
+    if (currentEntries.length === 0) {
       archiveEl.innerHTML = '<div class="archive-empty">아직 기록이 없어요. 오늘의 한 줄을 남겨보세요.</div>';
       return;
     }
 
-    const currentAuthor = authorInput.value.trim();
-
     // 최신 날짜가 위로 오도록, 날짜별로 묶어서 보여준다
     const groups = [];
     const groupIndexByDate = {};
-    entries.forEach((entry, realIdx) => {
+    currentEntries.forEach((entry) => {
       if (!(entry.date in groupIndexByDate)) {
         groupIndexByDate[entry.date] = groups.length;
         groups.push({ date: entry.date, items: [] });
       }
-      groups[groupIndexByDate[entry.date]].items.push({ entry, realIdx });
+      groups[groupIndexByDate[entry.date]].items.push(entry);
     });
-    groups.reverse();
-    groups.forEach(g => g.items.reverse());
 
     groups.forEach(group => {
       const groupEl = document.createElement('div');
@@ -1615,19 +1899,20 @@
         </div>
       `;
 
-      group.items.forEach(({ entry, realIdx }) => {
-        const canDelete = currentAuthor !== '' && entry.author === currentAuthor;
+      group.items.forEach((entry) => {
+        const isMine = myUid && entry.authorUid === myUid;
+        const canDelete = isAdminUser || isMine;
         const card = document.createElement('div');
         card.className = 'entry-card';
         card.innerHTML = `
           ${canDelete
-            ? `<button class="delete-btn" data-idx="${realIdx}">✕ 삭제</button>`
+            ? `<button class="delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}" data-id="${entry.id}" title="${isAdminUser && !isMine ? '관리자 권한으로 삭제' : '내 기록 삭제'}">✕ 삭제</button>`
             : `<span class="delete-locked" title="작성자 본인만 삭제할 수 있어요">🔒</span>`}
           <div class="entry-top">
             <span class="entry-author">${entry.author ? entry.author : '익명'}</span>
             <span class="entry-meta">
               <span>${entry.weatherIcon || ''} ${entry.weather || ''}</span>
-              <span>${'★'.repeat(entry.stars)}${'☆'.repeat(5 - entry.stars)}</span>
+              <span>${'★'.repeat(entry.stars || 0)}${'☆'.repeat(5 - (entry.stars || 0))}</span>
               <span class="entry-emotion">${entry.emotion || ''}</span>
             </span>
           </div>
@@ -1642,61 +1927,78 @@
     });
 
     archiveEl.querySelectorAll('.delete-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const entries = loadEntries();
-        entries.splice(parseInt(btn.dataset.idx, 10), 1);
-        saveEntries(entries);
-        renderArchive();
+      btn.addEventListener('click', async () => {
+        if (btn.classList.contains('admin-delete')) {
+          if (!confirm('관리자 권한으로 이 기록을 삭제할까요?')) return;
+        }
+        try {
+          await deleteDoc(doc(db, 'diaryEntries', btn.dataset.id));
+          // 삭제되면 onSnapshot이 자동으로 목록을 다시 그려줘요.
+        } catch (err) {
+          alert('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.');
+          console.error(err);
+        }
       });
     });
   }
 
-  document.getElementById('saveEntry').addEventListener('click', () => {
+  document.getElementById('saveEntry').addEventListener('click', async () => {
     const author = authorInput.value.trim();
     if (!author) {
       authorInput.focus();
       authorInput.style.borderBottomColor = 'var(--berry)';
       return;
     }
+    if (!myUid) {
+      alert('연결 중이에요. 잠시 후 다시 눌러주세요.');
+      return;
+    }
 
     const moment = momentInput.value.trim();
     const song = songInput.value;
+    const saveBtn = document.getElementById('saveEntry');
+    saveBtn.disabled = true;
 
-    const entries = loadEntries();
-    entries.push({
-      date: todayEl.textContent,
-      author,
-      moment,
-      song,
-      weather: selectedWeather,
-      weatherIcon: selectedWeather ? weatherIcons[selectedWeather] : '',
-      stars: selectedStars,
-      emotion: selectedEmotion,
-      photo: selectedPhotoDataUrl
-    });
-    saveEntries(entries);
-    clearDraft();
+    try {
+      await addDoc(entriesCol, {
+        date: todayEl.textContent,
+        author,
+        authorUid: myUid,
+        moment,
+        song,
+        weather: selectedWeather,
+        weatherIcon: selectedWeather ? weatherIcons[selectedWeather] : '',
+        stars: selectedStars,
+        emotion: selectedEmotion,
+        photo: selectedPhotoDataUrl,
+        createdAt: serverTimestamp()
+      });
 
-    // 폼 초기화 (닉네임은 남겨둔다 — 같은 사람이 계속 기록할 수 있도록)
-    momentInput.value = '';
-    songInput.value = '';
-    document.querySelectorAll('#weatherOptions button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('#emotionPicker button').forEach(b => b.classList.remove('active'));
-    stars.forEach(s => s.classList.remove('filled'));
-    selectedWeather = null;
-    selectedStars = 0;
-    selectedEmotion = null;
-    selectedPhotoDataUrl = null;
-    photoInput.value = '';
-    photoPreviewWrap.style.display = 'none';
+      clearDraft();
 
-    renderArchive();
+      // 폼 초기화 (닉네임은 남겨둔다 — 같은 사람이 계속 기록할 수 있도록)
+      momentInput.value = '';
+      songInput.value = '';
+      document.querySelectorAll('#weatherOptions button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#emotionPicker button').forEach(b => b.classList.remove('active'));
+      stars.forEach(s => s.classList.remove('filled'));
+      selectedWeather = null;
+      selectedStars = 0;
+      selectedEmotion = null;
+      selectedPhotoDataUrl = null;
+      photoInput.value = '';
+      photoPreviewWrap.style.display = 'none';
+    } catch (err) {
+      alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
+      console.error(err);
+    } finally {
+      saveBtn.disabled = false;
+    }
   });
-
-  renderArchive();
 </script>
 
 <script>
+
   // ================= 오늘, 한로로는 =================
   // Python 자동화(유튜브 API + 인스타/틱톡 스크래핑)가 만들어주는 today.json을
   // 그대로 읽어서 화면에 뿌려요. HTML/JS는 today.json 구조만 알면 됩니다.
@@ -1795,6 +2097,185 @@
       });
     });
   }
+
+  // ================= 당신은 어떤 한로로일까요 (테스트) =================
+  // 타입 인덱스: 0 입춘 1 거울 2 너와나 3 사랑하게될거야 4 정류장 5 생존법 6 먹이사슬 7 오후 8 자몽살구클럽 9 하루살이
+  const QUIZ_TYPES = [
+    {
+      emoji: '🌸', name: '입춘형', keywords: ['희망', '새출발', '봄', '성장'],
+      desc: '새로운 시작을 두려워하지만 결국 앞으로 나아가는 사람이에요. 희망을 잃지 않으며, 작은 변화 속에서도 의미를 발견하는 성향을 가지고 있어요.',
+      songs: [{ title: '입춘', link: 'https://www.youtube.com/watch?v=pNi9PjmbUrI' }]
+    },
+    {
+      emoji: '🌙', name: '거울형', keywords: ['성찰', '위로'],
+      desc: '감정을 깊이 들여다보고 스스로를 돌아볼 줄 아는 사람이에요. 다른 사람의 마음에도 공감하는 능력이 뛰어나요.',
+      songs: [
+        { title: '거울', link: 'https://www.youtube.com/watch?v=_TnsZ71zaxU' },
+        { title: '정류장', link: 'https://www.youtube.com/watch?v=4SrrieLwsOI' }
+      ]
+    },
+    {
+      emoji: '🌊', name: '너와 나형', keywords: ['관계', '사랑'],
+      desc: '사람과 사람 사이의 관계를 가장 소중하게 생각하는 사람이에요. 함께하는 시간을 무엇보다 가치 있게 여겨요.',
+      songs: [{ title: '너와 나', link: 'https://www.youtube.com/watch?v=Tos8R9Tcem8' }]
+    },
+    {
+      emoji: '💛', name: '사랑하게 될 거야형', keywords: ['설렘', '믿음'],
+      desc: '사랑을 믿고, 따뜻한 마음을 가진 사람이에요. 결국 좋은 일이 올 거라는 믿음을 놓지 않아요.',
+      songs: [{ title: '사랑하게 될 거야', link: 'https://www.youtube.com/watch?v=h0KIWaUEIgQ' }]
+    },
+    {
+      emoji: '🌃', name: '정류장형', keywords: ['기다림', '그리움'],
+      desc: '기다림도 하나의 추억이라고 믿는 사람이에요. 지나온 시간을 천천히 곱씹을 줄 알아요.',
+      songs: [{ title: '정류장', link: 'https://www.youtube.com/watch?v=4SrrieLwsOI' }]
+    },
+    {
+      emoji: '🌧', name: '생존법형', keywords: ['현실', '버팀'],
+      desc: '쉽게 무너지지 않는 사람이에요. 현실 속에서도 묵묵히 버텨내는 힘을 가지고 있어요.',
+      songs: [{ title: '생존법', link: 'https://www.youtube.com/watch?v=puw1hdSnSX0' }]
+    },
+    {
+      emoji: '🔥', name: '먹이사슬형', keywords: ['사회', '저항'],
+      desc: '세상을 깊게 바라보고 질문하는 사람이에요. 불합리함 앞에서 쉽게 고개를 숙이지 않아요.',
+      songs: [{ title: '먹이사슬', link: 'https://www.melon.com/search/total/index.htm?q=%EB%A8%B9%EC%9D%B4%EC%82%AC%EC%8A%AC+%ED%95%9C%EB%A1%9C%EB%A1%9C' }]
+    },
+    {
+      emoji: '🌌', name: '오후형', keywords: ['여유', '휴식'],
+      desc: '조용한 시간을 사랑하는 사람이에요. 아무것도 하지 않는 시간에서도 충분히 채워질 줄 알아요.',
+      songs: [{ title: '입춘', link: 'https://www.youtube.com/watch?v=pNi9PjmbUrI' }]
+    },
+    {
+      emoji: '🌿', name: '자몽살구클럽형', keywords: ['청춘', '추억'],
+      desc: '청춘의 추억을 오래 간직하는 사람이에요. 지나간 계절도 소중하게 마음에 담아둬요.',
+      songs: [{ title: '시간을 달리네', link: 'https://www.youtube.com/watch?v=tKERw3_ked0' }]
+    },
+    {
+      emoji: '✨', name: '하루살이형', keywords: ['성장', '불안'],
+      desc: '불안함 속에서도 계속 성장하는 사람이에요. 흔들리면서도 결국 한 걸음씩 나아가요.',
+      songs: [{ title: '하루살이', link: 'https://www.youtube.com/watch?v=fdwB6U4u-vk' }]
+    }
+  ];
+
+  const QUIZ_QUESTIONS = [
+    { q: '휴일이 생긴다면?', options: [
+      { label: '혼자 조용히 쉬고 싶다', type: 7 },
+      { label: '사람들과 만나고 싶다', type: 2 }
+    ]},
+    { q: '힘든 일이 생겼을 때', options: [
+      { label: '혼자 생각하며 정리한다', type: 1 },
+      { label: '누군가에게 이야기한다', type: 2 }
+    ]},
+    { q: '당신이 가장 좋아하는 계절은?', options: [
+      { label: '봄', type: 0 },
+      { label: '여름', type: 8 },
+      { label: '가을', type: 4 },
+      { label: '겨울', type: 5 }
+    ]},
+    { q: '노래를 들을 때 가장 중요한 것은?', options: [
+      { label: '가사', type: 1 },
+      { label: '멜로디', type: 3 }
+    ]},
+    { q: '사랑은', options: [
+      { label: '천천히 스며드는 것', type: 2 },
+      { label: '한순간에 빠지는 것', type: 3 }
+    ]},
+    { q: '친구들은 당신을 어떤 사람이라고 말하나요?', options: [
+      { label: '조용한 사람', type: 7 },
+      { label: '활발한 사람', type: 2 }
+    ]},
+    { q: '지금 가장 필요한 것은?', options: [
+      { label: '위로', type: 1 },
+      { label: '용기', type: 6 },
+      { label: '휴식', type: 7 },
+      { label: '새로운 시작', type: 0 }
+    ]},
+    { q: '비 오는 날에는', options: [
+      { label: '집에서 음악 듣기', type: 7 },
+      { label: '밖을 걷기', type: 9 }
+    ]},
+    { q: '당신은', options: [
+      { label: '현실적인 편', type: 5 },
+      { label: '이상적인 편', type: 3 }
+    ]},
+    { q: '지금의 나를 가장 잘 표현하는 문장은?', options: [
+      { label: '다시 시작하고 싶다', type: 0 },
+      { label: '누군가와 함께하고 싶다', type: 2 },
+      { label: '잠시 쉬어가고 싶다', type: 7 },
+      { label: '앞으로 나아가고 싶다', type: 9 }
+    ]}
+  ];
+
+  const quizIntro = document.getElementById('quizIntro');
+  const quizQuestionEl = document.getElementById('quizQuestion');
+  const quizResultEl = document.getElementById('quizResult');
+  const quizStartBtn = document.getElementById('quizStartBtn');
+  const quizProgressFill = document.getElementById('quizProgressFill');
+  const quizProgressLabel = document.getElementById('quizProgressLabel');
+  const quizQuestionText = document.getElementById('quizQuestionText');
+  const quizOptionsEl = document.getElementById('quizOptions');
+  const quizRetryBtn = document.getElementById('quizRetryBtn');
+
+  let quizStep = 0;
+  let quizScores = new Array(10).fill(0);
+
+  function startQuiz() {
+    quizStep = 0;
+    quizScores = new Array(10).fill(0);
+    quizIntro.style.display = 'none';
+    quizResultEl.style.display = 'none';
+    quizQuestionEl.style.display = 'block';
+    renderQuizQuestion();
+  }
+
+  function renderQuizQuestion() {
+    const q = QUIZ_QUESTIONS[quizStep];
+    quizProgressFill.style.width = `${(quizStep / QUIZ_QUESTIONS.length) * 100}%`;
+    quizProgressLabel.textContent = `${quizStep + 1} / ${QUIZ_QUESTIONS.length}`;
+    quizQuestionText.textContent = `Q${quizStep + 1}. ${q.q}`;
+    quizOptionsEl.innerHTML = q.options.map((opt, idx) => `
+      <button data-idx="${idx}">${opt.label}</button>
+    `).join('');
+
+    quizOptionsEl.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const opt = q.options[parseInt(btn.dataset.idx, 10)];
+        quizScores[opt.type]++;
+        quizStep++;
+        if (quizStep < QUIZ_QUESTIONS.length) {
+          renderQuizQuestion();
+        } else {
+          finishQuiz();
+        }
+      });
+    });
+  }
+
+  function finishQuiz() {
+    let bestIdx = 0;
+    for (let i = 1; i < quizScores.length; i++) {
+      if (quizScores[i] > quizScores[bestIdx]) bestIdx = i;
+    }
+    const type = QUIZ_TYPES[bestIdx];
+
+    quizQuestionEl.style.display = 'none';
+    quizResultEl.style.display = 'block';
+
+    document.getElementById('quizResultEmoji').textContent = type.emoji;
+    document.getElementById('quizResultName').textContent = `당신은 ${type.name}입니다`;
+    document.getElementById('quizResultDesc').textContent = type.desc;
+    document.getElementById('quizResultKeywords').innerHTML =
+      type.keywords.map(k => `<span>#${k}</span>`).join('');
+    document.getElementById('quizResultSongs').innerHTML =
+      type.songs.map(s => `<a class="mv-link" href="${s.link}" target="_blank" rel="noopener">▶ ${s.title}</a>`).join('');
+
+    quizResultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  quizStartBtn.addEventListener('click', startQuiz);
+  quizRetryBtn.addEventListener('click', () => {
+    quizResultEl.style.display = 'none';
+    quizIntro.style.display = 'block';
+  });
 
   // ================= 한로로 캘린더 =================
   // date: 'YYYY-MM-DD', 기간 일정은 dateEnd도 함께 적어주세요. venue/ticket/map은 확인되는 대로 채워주세요.
