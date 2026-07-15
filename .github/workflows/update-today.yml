@@ -16,6 +16,7 @@ jobs:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: true   # 푸시 권한 유지
 
       - name: 파이썬 설치
@@ -31,12 +32,17 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python update_today.py
 
-      - name: 변경사항 커밋 & 푸시 (data-updates 브랜치)
+      - name: 변경사항 커밋 & 푸시
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin
+
           git add today.json
-          git commit -m "Update today.json" || echo "No changes to commit"
+          git commit -m "Update today.json" || exit 0
+
+          git pull --rebase origin data-updates || true
           git push origin HEAD:data-updates
 
 
