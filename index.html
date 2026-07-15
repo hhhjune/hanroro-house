@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한로로 | 로켓단</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EDE8DC;
+    --paper-fold: #E1DAC8;
+    --paper-deep: #D8CFB8;
+    --ink: #2A2724;
+    --ink-soft: #58524A;
+    --moss: #5F6F52;
+    --moss-deep: #47543C;
+    --berry: #9C4A5C;
+    --rule: #C7BFA9;
+    --rule-strong: #ABA189;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:300;
+    line-height:1.8;
+    overflow-x:hidden;
+  }
+
+  /* subtle paper grain */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(0,0,0,0.015) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(0,0,0,0.02) 0, transparent 45%);
+    z-index:0;
+  }
+
+  h1,h2,h3{
+    font-family:'Gowun Batang', serif;
+    font-weight:700;
+    color:var(--ink);
+    margin:0;
+  }
+
+  .handwrite{
+    font-family:'Gaegu', cursive;
+  }
+
+  section{position:relative; z-index:1;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:40px 20px;
+    position:relative;
+  }
+  .hero .dateline{
+    font-family:'Gaegu', cursive;
+    font-size:20px;
+    color:var(--berry);
+    letter-spacing:1px;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(56px, 12vw, 128px);
+    letter-spacing:6px;
+    line-height:1;
+  }
+  .hero .tagline{
+    margin-top:22px;
+    font-family:'Gowun Batang', serif;
+    font-size:clamp(16px, 2.4vw, 22px);
+    color:var(--ink-soft);
+    font-weight:400;
+    letter-spacing:1px;
+  }
+  .hero .underline-flower{
+    margin-top:34px;
+    width:64px;
+    height:auto;
+  }
+  .hero-quote{
+    margin-top:26px;
+    font-size:clamp(15px, 2vw, 19px);
+    color:var(--berry);
+    opacity:0.85;
+  }
+  .scroll-cue{
+    position:absolute;
+    bottom:36px;
+    font-family:'Gaegu', cursive;
+    font-size:14px;
+    color:var(--ink-soft);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    opacity:0.7;
+  }
+  .scroll-cue .line{
+    width:1px;
+    height:34px;
+    background:linear-gradient(var(--ink-soft), transparent);
+    animation:pulse-line 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse-line{
+    0%,100%{opacity:0.3;}
+    50%{opacity:1;}
+  }
+
+  .section-head{
+    text-align:center;
+    padding:0 20px;
+    margin-bottom:64px;
+  }
+  .section-head .eyebrow{
+    font-family:'Gaegu', cursive;
+    color:var(--berry);
+    font-size:16px;
+    display:block;
+    margin-bottom:8px;
+  }
+  .section-head h2{
+    font-size:clamp(32px, 5vw, 46px);
+    letter-spacing:2px;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about{
+    max-width:1080px;
+    margin:0 auto;
+    padding:120px 24px;
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:64px;
+    align-items:start;
+  }
+
+  .index-card{
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    padding:32px 30px;
+    position:relative;
+    box-shadow:6px 6px 0 rgba(42,39,36,0.05);
+  }
+  .index-card::before{
+    content:"";
+    position:absolute;
+    left:0; right:0; top:64px;
+    height:1px;
+    background:repeating-linear-gradient(to right, var(--rule) 0 8px, transparent 8px 14px);
+  }
+  .index-card h3{
+    font-size:14px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--moss-deep);
+    margin-bottom:26px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:700;
+  }
+  .index-card dl{
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .index-card .row{
+    display:grid;
+    grid-template-columns:74px 1fr;
+    gap:12px;
+    font-size:15px;
+    border-bottom:1px dotted var(--rule);
+    padding-bottom:14px;
+  }
+  .index-card .row:last-child{border-bottom:none;}
+  .index-card dt{
+    color:var(--ink-soft);
+    font-size:13px;
+    letter-spacing:1px;
+    padding-top:2px;
+  }
+  .index-card dd{
+    margin:0;
+    font-weight:500;
+  }
+
+  .bio h2{
+    font-size:30px;
+    margin-bottom:26px;
+  }
+  .bio p{
+    margin:0 0 22px 0;
+    font-size:16px;
+    color:var(--ink-soft);
+  }
+  .bio strong{color:var(--ink); font-weight:500;}
+
+  .pull-quote{
+    margin:38px 0;
+    padding:6px 0 6px 26px;
+    border-left:3px solid var(--berry);
+    font-family:'Gowun Batang', serif;
+    font-size:20px;
+    line-height:1.7;
+    color:var(--ink);
+  }
+  .pull-quote span{
+    display:block;
+    margin-top:10px;
+    font-family:'Gaegu', cursive;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+
+  .tag-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:30px;
+  }
+  .tag{
+    border:1px solid var(--rule-strong);
+    padding:7px 16px;
+    border-radius:100px;
+    font-size:13px;
+    color:var(--moss-deep);
+    background:rgba(95,111,82,0.06);
+  }
+
+  /* ---------- TODAY ---------- */
+  .today-section{
+    max-width:1080px;
+    margin:0 auto;
+    padding:120px 24px 20px;
+  }
+  .today-sub{
+    margin-top:10px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .today-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:22px;
+  }
+  .today-card{
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    padding:24px 20px;
+    box-shadow:5px 5px 0 rgba(42,39,36,0.05);
+  }
+  .today-card h3{
+    font-size:15px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:700;
+    margin-bottom:16px;
+  }
+  .today-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    min-height:40px;
+  }
+  .today-list li{
+    border-bottom:1px dotted var(--rule);
+    padding:9px 0;
+  }
+  .today-list li:last-child{ border-bottom:none; }
+  .today-list a{
+    color:var(--ink);
+    text-decoration:none;
+    font-size:13.5px;
+    line-height:1.5;
+    display:block;
+  }
+  .today-list a:hover{ color:var(--berry); }
+  .today-list .today-date{
+    display:block;
+    font-family:'Gaegu', cursive;
+    color:var(--berry);
+    font-size:12px;
+    margin-bottom:2px;
+  }
+  .today-list li.hidden{ display:none; }
+  .today-more{
+    margin-top:14px;
+    width:100%;
+    background:none;
+    border:1px dashed var(--rule-strong);
+    color:var(--ink-soft);
+    font-family:'Gaegu', cursive;
+    font-size:13px;
+    padding:7px 0;
+    border-radius:6px;
+    cursor:pointer;
+    transition:border-color 0.2s ease, color 0.2s ease;
+  }
+  .today-more:hover{ border-color:var(--berry); color:var(--berry); }
+  .today-profile-link{
+    display:block;
+    text-align:center;
+    margin-top:12px;
+    font-family:'Gaegu', cursive;
+    font-size:13px;
+    color:var(--moss-deep);
+    text-decoration:none;
+  }
+  .today-profile-link:hover{ color:var(--berry); }
+  .today-loading{
+    font-size:13px;
+    color:var(--ink-soft);
+    opacity:0.7;
+    padding:9px 0 !important;
+  }
+  .today-updated-at{
+    text-align:center;
+    margin-top:24px;
+    font-family:'Gaegu', cursive;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    opacity:0.75;
+  }
+  .today-error{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    opacity:0.7;
+    padding:9px 0 !important;
+  }
+  .today-note{
+    max-width:820px;
+    margin:30px auto 0;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    opacity:0.8;
+    line-height:1.7;
+    text-align:center;
+  }
+  @media (max-width:900px){
+    .today-grid{ grid-template-columns:repeat(2, 1fr); }
+  }
+  @media (max-width:520px){
+    .today-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- MOOD ---------- */
+  .mood-section{
+    max-width:900px;
+    margin:0 auto;
+    padding:100px 24px 40px;
+    text-align:center;
+  }
+  .mood-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:14px;
+    margin-top:20px;
+  }
+  .mood-btn{
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    padding:22px 10px;
+    border-radius:14px;
+    cursor:pointer;
+    font-family:'Gaegu', cursive;
+    font-size:15px;
+    color:var(--ink);
+    line-height:1.6;
+    transition:transform 0.15s ease, border-color 0.15s ease;
+  }
+  .mood-btn .emoji{
+    display:block;
+    font-size:30px;
+    margin-bottom:8px;
+  }
+  .mood-btn:hover{ transform:translateY(-3px); border-color:var(--berry); }
+  .mood-btn.active{ border-color:var(--berry); background:rgba(156,74,92,0.08); }
+  .mood-result{
+    display:none;
+    margin-top:36px;
+    padding:28px 30px;
+    border-left:3px solid var(--berry);
+    background:var(--paper-fold);
+    text-align:left;
+  }
+  .mood-result.show{ display:block; }
+  .mood-result-label{
+    color:var(--berry);
+    font-size:14px;
+  }
+  .mood-result h3{
+    font-size:26px;
+    margin:8px 0 10px;
+  }
+  .mood-result p{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    margin:0 0 14px 0;
+  }
+  @media (max-width:640px){
+    .mood-grid{ grid-template-columns:repeat(2, 1fr); }
+  }
+
+  /* ---------- CALENDAR ---------- */
+  .calendar-section{
+    max-width:820px;
+    margin:0 auto;
+    padding:100px 24px 40px;
+  }
+  .calendar-month{
+    font-family:'Gowun Batang', serif;
+    font-size:20px;
+    color:var(--moss-deep);
+    margin:28px 0 14px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--rule);
+  }
+  .calendar-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .cal-item{
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    border-radius:10px;
+    padding:16px 20px;
+    margin-bottom:12px;
+  }
+  .cal-item-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  .cal-date{
+    font-family:'Gaegu', cursive;
+    color:var(--berry);
+    font-size:15px;
+    min-width:78px;
+  }
+  .cal-title{
+    flex:1;
+    font-weight:500;
+    font-size:15.5px;
+  }
+  .cal-detail-btn{
+    background:none;
+    border:1px solid var(--rule-strong);
+    color:var(--ink-soft);
+    font-family:'Gaegu', cursive;
+    font-size:13px;
+    padding:5px 14px;
+    border-radius:100px;
+    cursor:pointer;
+  }
+  .cal-detail-btn:hover{ border-color:var(--berry); color:var(--berry); }
+  .cal-detail{
+    display:none;
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dotted var(--rule);
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .cal-detail.show{ display:block; }
+  .cal-detail p{ margin:0 0 10px 0; }
+  .cal-detail .mv-links{ display:flex; gap:8px; flex-wrap:wrap; }
+
+  /* ---------- DISCOGRAPHY ---------- */
+  .discography{
+    max-width:900px;
+    margin:0 auto;
+    padding:100px 24px 160px;
+  }
+
+  .road{
+    position:relative;
+    padding-left:0;
+  }
+  .road::before{
+    /* the center-line of the road, dashed like road markings */
+    content:"";
+    position:absolute;
+    left:50%;
+    top:0;
+    bottom:0;
+    width:2px;
+    transform:translateX(-50%);
+    background:repeating-linear-gradient(
+      to bottom,
+      var(--berry) 0 14px,
+      transparent 14px 28px
+    );
+  }
+
+  .stop{
+    position:relative;
+    width:calc(50% - 48px);
+    margin-bottom:96px;
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .stop.visible{opacity:1; transform:translateY(0);}
+  .stop:last-child{margin-bottom:0;}
+  .stop:nth-child(odd){
+    margin-right:auto;
+    text-align:right;
+  }
+  .stop:nth-child(even){
+    margin-left:auto;
+    text-align:left;
+  }
+
+  .stop .marker{
+    position:absolute;
+    top:6px;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--paper);
+    border:2px solid var(--moss);
+  }
+  .stop:nth-child(odd) .marker{ right:-56px; }
+  .stop:nth-child(even) .marker{ left:-56px; }
+
+  .stop .date{
+    font-family:'Gaegu', cursive;
+    color:var(--berry);
+    font-size:16px;
+    margin-bottom:6px;
+  }
+  .stop .kind{
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .stop h3{
+    font-size:26px;
+    margin-bottom:10px;
+  }
+  .stop .desc{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    margin-bottom:14px;
+  }
+  .stop .track{
+    display:inline-block;
+    font-size:13px;
+    color:var(--moss-deep);
+    background:rgba(95,111,82,0.08);
+    padding:5px 12px;
+    border-radius:6px;
+  }
+
+  .stop .tracklist{
+    list-style:none;
+    margin:0 0 14px 0;
+    padding:0;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+  .stop .tracklist li{
+    margin-bottom:5px;
+    line-height:1.55;
+  }
+  .stop .tracklist li strong{
+    color:var(--ink);
+    font-weight:500;
+  }
+  .stop:nth-child(odd) .tracklist{ margin-left:auto; }
+
+  .stop .mv-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:4px;
+  }
+  .stop:nth-child(odd) .mv-links{ justify-content:flex-end; }
+  .stop .mv-link{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-family:'Gaegu', cursive;
+    font-size:13.5px;
+    color:var(--berry);
+    text-decoration:none;
+    border:1px solid var(--berry);
+    padding:4px 12px;
+    border-radius:100px;
+    transition:background 0.2s ease, color 0.2s ease;
+  }
+  .stop .mv-link:hover{
+    background:var(--berry);
+    color:#fff;
+  }
+
+  @media (max-width:760px){
+    .about{grid-template-columns:1fr; padding:80px 20px;}
+    .road::before{left:20px;}
+    .stop{width:calc(100% - 60px); margin-left:60px !important; margin-right:0 !important; text-align:left !important;}
+    .stop .marker{left:-44px !important; right:auto !important;}
+    .stop .tracklist{margin-left:0 !important;}
+    .stop .mv-links{justify-content:flex-start !important;}
+    .hero h1{letter-spacing:3px;}
+  }
+
+  /* ---------- NAV ---------- */
+  nav.site-nav{
+    position:fixed;
+    top:26px;
+    right:32px;
+    z-index:20;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    gap:14px 20px;
+    max-width:60vw;
+    font-family:'Gaegu', cursive;
+    font-size:16px;
+  }
+  nav.site-nav a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    padding-bottom:2px;
+    border-bottom:1px dashed transparent;
+    transition:color 0.2s ease, border-color 0.2s ease;
+  }
+  nav.site-nav a:hover{
+    color:var(--berry);
+    border-color:var(--berry);
+  }
+  @media (max-width:760px){
+    nav.site-nav{
+      top:auto;
+      bottom:0;
+      left:0; right:0;
+      max-width:100%;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px 16px;
+      background:var(--paper-fold);
+      border-top:1px solid var(--rule);
+      padding:10px 10px;
+      font-size:13px;
+    }
+  }
+
+  /* ---------- DIARY ---------- */
+  .diary{
+    max-width:720px;
+    margin:0 auto;
+    padding:100px 24px 160px;
+  }
+  .diary-sub{
+    margin-top:14px;
+    color:var(--ink-soft);
+    font-size:15px;
+  }
+
+  .diary-page{
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    padding:44px 40px 40px 56px;
+    position:relative;
+    box-shadow:6px 6px 0 rgba(42,39,36,0.05);
+  }
+  .diary-page::before{
+    content:"";
+    position:absolute;
+    left:22px; top:24px; bottom:24px;
+    width:2px;
+    background:repeating-linear-gradient(to bottom, var(--rule-strong) 0 6px, transparent 6px 18px);
+  }
+  .diary-date{
+    font-family:'Gaegu', cursive;
+    color:var(--berry);
+    font-size:19px;
+    margin-bottom:30px;
+  }
+
+  .field-group{margin-bottom:32px;}
+  .field-group label{
+    display:block;
+    font-size:14px;
+    color:var(--moss-deep);
+    margin-bottom:12px;
+    font-weight:500;
+  }
+  .field-group label .hint{
+    color:var(--ink-soft);
+    font-weight:300;
+    font-size:12.5px;
+  }
+  .field-group input[type=text], .field-group select{
+    width:100%;
+    border:none;
+    border-bottom:1px dashed var(--rule-strong);
+    background:transparent;
+    padding:8px 4px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:15px;
+    color:var(--ink);
+    appearance:none;
+  }
+  .field-group input[type=text]:focus, .field-group select:focus{
+    outline:none;
+    border-bottom-color:var(--berry);
+  }
+  .field-group input[type=text]::placeholder{color:#A9A092;}
+
+  .weather-options{display:flex; gap:10px; flex-wrap:wrap;}
+  .weather-options button{
+    border:1px solid var(--rule-strong);
+    background:transparent;
+    padding:9px 16px;
+    border-radius:100px;
+    font-size:14px;
+    cursor:pointer;
+    font-family:'Noto Sans KR', sans-serif;
+    color:var(--ink-soft);
+    transition:all 0.2s ease;
+  }
+  .weather-options button.active{
+    background:var(--moss);
+    border-color:var(--moss);
+    color:#fff;
+  }
+
+  .star-rating{display:flex; gap:6px; font-size:28px; cursor:pointer; line-height:1;}
+  .star-rating span{color:var(--rule-strong); transition:color 0.15s ease;}
+  .star-rating span.filled{color:var(--berry);}
+
+  .emotion-picker{display:flex; gap:12px; flex-wrap:wrap;}
+  .emotion-picker button{
+    border:1px solid var(--rule-strong);
+    background:transparent;
+    font-size:22px;
+    width:52px; height:52px;
+    border-radius:50%;
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .emotion-picker button.active{
+    border-color:var(--berry);
+    background:rgba(156,74,92,0.1);
+    transform:scale(1.08);
+  }
+
+  .photo-input{
+    position:absolute;
+    width:1px; height:1px;
+    overflow:hidden;
+    opacity:0;
+  }
+  .photo-upload-btn{
+    display:inline-block;
+    border:1px dashed var(--rule-strong);
+    padding:10px 18px;
+    border-radius:100px;
+    font-size:14px;
+    color:var(--moss-deep);
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .photo-upload-btn:hover{
+    border-color:var(--moss);
+    background:rgba(95,111,82,0.06);
+  }
+  .photo-preview-wrap{
+    margin-top:16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .photo-preview-wrap img{
+    max-width:160px;
+    max-height:160px;
+    border:1px solid var(--rule);
+    border-radius:4px;
+    object-fit:cover;
+  }
+  .remove-photo-btn{
+    border:none;
+    background:none;
+    color:var(--ink-soft);
+    font-size:13px;
+    cursor:pointer;
+  }
+  .remove-photo-btn:hover{color:var(--berry);}
+
+  .save-btn{
+    background:var(--berry);
+    color:#fff;
+    border:none;
+    padding:14px 32px;
+    font-family:'Gowun Batang', serif;
+    font-size:16px;
+    border-radius:6px;
+    cursor:pointer;
+    box-shadow:4px 4px 0 rgba(42,39,36,0.14);
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .save-btn:hover{transform:translate(-2px,-2px);}
+  .save-btn:active{transform:translate(0,0); box-shadow:2px 2px 0 rgba(42,39,36,0.14);}
+
+  .autosave-indicator{
+    font-family:'Gaegu', cursive;
+    font-size:14px;
+    color:var(--moss-deep);
+    opacity:0;
+    transition:opacity 0.4s ease;
+  }
+  .autosave-indicator.show{opacity:0.85;}
+
+  .diary-archive{margin-top:56px; display:flex; flex-direction:column; gap:8px;}
+
+  .archive-date-group{margin-bottom:14px;}
+  .archive-date-heading{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .archive-date-heading .line{
+    flex:1;
+    height:1px;
+    background:repeating-linear-gradient(to right, var(--rule-strong) 0 6px, transparent 6px 12px);
+  }
+  .archive-date-heading span{
+    font-family:'Gaegu', cursive;
+    color:var(--berry);
+    font-size:18px;
+    white-space:nowrap;
+  }
+  .archive-date-heading .count{
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  .entry-card{
+    background:var(--paper);
+    border:1px solid var(--rule);
+    padding:20px 24px;
+    position:relative;
+    box-shadow:3px 3px 0 rgba(42,39,36,0.04);
+    margin-bottom:16px;
+  }
+  .entry-card .entry-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .entry-card .entry-author{
+    font-size:13px;
+    color:var(--moss-deep);
+    font-weight:500;
+  }
+  .entry-card .entry-meta{display:flex; gap:12px; align-items:center; font-size:14px; color:var(--ink-soft);}
+  .entry-card .entry-emotion{font-size:20px;}
+  .entry-card .entry-moment{font-size:15px; margin-bottom:6px;}
+  .entry-card .entry-song{font-size:13px; color:var(--moss-deep);}
+  .entry-card .entry-photo{
+    margin-top:12px;
+    max-width:220px;
+    max-height:220px;
+    border:1px solid var(--rule);
+    border-radius:4px;
+    display:block;
+    object-fit:cover;
+  }
+  .entry-card .delete-btn{
+    position:absolute; top:14px; right:14px;
+    border:none; background:none; color:var(--ink-soft); cursor:pointer; font-size:13px;
+  }
+  .entry-card .delete-btn:hover{color:var(--berry);}
+  .entry-card .delete-locked{
+    position:absolute; top:14px; right:14px;
+    font-size:12px; color:#B8AF9C;
+    cursor:default;
+  }
+
+  .archive-empty{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:14px;
+    padding:30px 0;
+    font-family:'Gaegu', cursive;
+  }
+
+  @media (max-width:760px){
+    .diary-page{padding:36px 24px 32px 44px;}
+    .diary-page::before{left:14px;}
+  }
+
+  footer{
+    text-align:center;
+    padding:60px 20px 80px;
+    font-size:13px;
+    color:var(--ink-soft);
+    border-top:1px dotted var(--rule);
+    margin-top:40px;
+  }
+  footer .handwrite{color:var(--berry); font-size:16px; display:block; margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="#today">오늘</a>
+  <a href="#about">소개</a>
+  <a href="#discography">디스코그래피</a>
+  <a href="#mood">감정으로 찾기</a>
+  <a href="#calendar">캘린더</a>
+  <a href="#diary">기록북</a>
+</nav>
+
+<header class="hero">
+  <p class="dateline">2022. 03. 14 —</p>
+  <h1>한로로</h1>
+  <p class="tagline">나만의 길을 찾아가는 목소리</p>
+  <svg class="underline-flower" viewBox="0 0 64 24" fill="none">
+    <path d="M2 18 Q 20 2, 32 12 Q 44 22, 62 6" stroke="#9C4A5C" stroke-width="1.6" stroke-linecap="round"/>
+  </svg>
+  <p class="hero-quote handwrite">"오늘도 누군가는 한로로의 노래로 하루를 버텼습니다."</p>
+  <div class="scroll-cue">
+    <span>scroll</span>
+    <span class="line"></span>
+  </div>
+</header>
+
+<section id="today" class="today-section">
+  <div class="section-head">
+    <span class="eyebrow handwrite">자동으로 업데이트되는</span>
+    <h2>오늘, 한로로는</h2>
+    <p class="today-sub">인스타그램 · 유튜브 · 틱톡 소식을 한 곳에 모았어요.</p>
+  </div>
+
+  <div class="today-grid">
+    <div class="today-card">
+      <h3>📷 오늘 인스타</h3>
+      <ul class="today-list" id="todayInsta"><li class="today-loading">불러오는 중…</li></ul>
+      <button class="today-more" data-target="todayInsta">더보기</button>
+      <a class="today-profile-link" href="https://www.instagram.com/hanr0r0/" target="_blank" rel="noopener">@hanr0r0 프로필 바로가기 ↗</a>
+    </div>
+    <div class="today-card">
+      <h3>▶ 오늘 유튜브</h3>
+      <ul class="today-list" id="todayYoutube"><li class="today-loading">불러오는 중…</li></ul>
+      <button class="today-more" data-target="todayYoutube">더보기</button>
+      <a class="today-profile-link" href="https://www.youtube.com/channel/UCrDa_5OU-rhvXqWlPx5hgKQ" target="_blank" rel="noopener">채널 바로가기 ↗</a>
+    </div>
+    <div class="today-card">
+      <h3>🎵 오늘 틱톡</h3>
+      <ul class="today-list" id="todayTiktok"><li class="today-loading">불러오는 중…</li></ul>
+      <button class="today-more" data-target="todayTiktok">더보기</button>
+      <a class="today-profile-link" href="https://www.tiktok.com/@hanroro_official" target="_blank" rel="noopener">@hanroro_official 프로필 바로가기 ↗</a>
+    </div>
+  </div>
+
+  <p class="today-updated-at" id="todayUpdatedAt"></p>
+  <p class="today-note">※ 이 목록은 today.json 파일을 그대로 읽어서 보여줘요. today.json은 저장소의 update_today.py가 유튜브 공식 API + 인스타/틱톡 자동 수집 결과로 주기적으로 새로 만들어줍니다(GitHub Actions로 스케줄 실행). 자세한 설정 방법은 함께 드린 README를 참고해 주세요.</p>
+</section>
+
+
+<section id="about" class="about">
+  <div class="index-card">
+    <h3>Profile</h3>
+    <dl>
+      <div class="row"><dt>본명</dt><dd>한지수</dd></div>
+      <div class="row"><dt>생년월일</dt><dd>2000. 11. 11</dd></div>
+      <div class="row"><dt>데뷔</dt><dd>2022. 03. 14<br>싱글 〈입춘〉</dd></div>
+      <div class="row"><dt>소속사</dt><dd>어센틱</dd></div>
+      <div class="row"><dt>학력</dt><dd>건국대학교<br>국어국문학과</dd></div>
+      <div class="row"><dt>장르</dt><dd>모던록 · 인디팝</dd></div>
+      <div class="row"><dt>팬덤명</dt><dd>로켓단</dd></div>
+    </dl>
+  </div>
+
+  <div class="bio">
+    <span class="eyebrow handwrite" style="color:var(--berry); font-size:16px;">Artist Story</span>
+    <h2>길 위에서, 로로</h2>
+    <p>
+      2019년 건국대학교 국어국문학과에 입학한 <strong>한지수</strong>는 대학 2학년, 코로나19로 발이 묶인 고향 창원에서 우연히 음악에 마음을 빼앗겼다.
+      가진 것이라곤 고등학생 때 부모님이 사주신 우쿨렐레 한 대와 노트북에 깐 무료 작곡 프로그램뿐이었지만,
+      두 달간 만든 데모곡을 들고 무작정 음악회사의 문을 두드렸다.
+    </p>
+    <p>
+      '하이틴 감성'을 따라가려던 초기의 시도는 실패로 돌아갔지만, 오히려 그 실패는 그녀가 자신만의 문학적인 언어로
+      돌아오는 계기가 되었다. 국문학을 전공한 그녀의 가사는 시에 멜로디를 붙인 듯 섬세하고, 봄이 오기 직전의 불안과
+      기대를 동시에 품은 절기 <strong>'입춘'</strong>으로 2022년 3월 14일 데뷔했다.
+    </p>
+
+    <div class="pull-quote">
+      "한로그... 한로ㄹ, 한로로?"
+      <span>수학 시간에 붙었던 별명 '한로그'를, 둥글둥글하게 다듬어 만든 이름 — 길 로(路)를 담아 '나만의 길을 찾아가자'는 뜻이 되었다.</span>
+    </div>
+
+    <p>
+      이후 그녀는 인디 신과 메인스트림을 자유롭게 넘나들며 태연, 투모로우바이투게더 등과의 협업으로 송라이터로서의
+      역량도 증명해왔다. 라이브와 음원의 경계가 없는 탄탄한 가창력, 그리고 무엇보다 또렷한 문장으로 청춘의 불안과
+      용기를 동시에 그려내는 것이 한로로 음악의 중심에 있다.
+    </p>
+
+    <div class="tag-row">
+      <span class="tag">문학적 가사</span>
+      <span class="tag">모던 록</span>
+      <span class="tag">싱어송라이터</span>
+      <span class="tag">2023 한국대중음악상 신인 노미네이트</span>
+    </div>
+  </div>
+</section>
+
+<section id="discography" class="discography">
+  <div class="section-head">
+    <span class="eyebrow handwrite">그녀가 걸어온 길</span>
+    <h2>Discography</h2>
+  </div>
+
+  <div class="road">
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2022. 03. 14</div>
+      <div class="kind">Digital Single · 1st</div>
+      <h3>입춘</h3>
+      <p class="desc">불확실한 봄맞이를 결심한 이에게 전하는 데뷔곡. 담담한 보컬과 기타 리프의 첫인상만으로 제20회 한국대중음악상 '올해의 신인'과 '최우수 모던록 노래' 두 부문 후보에 올랐고, 한국 Apple Music '2022년 최고의 음악 100선'에도 선정되었다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=pNi9PjmbUrI" target="_blank" rel="noopener">▶ 입춘 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2022. 06. 18</div>
+      <div class="kind">Digital Single · 2nd</div>
+      <h3>거울</h3>
+      <p class="desc">내일 죽는 것보다 내일 사는 것을 더 두려워하는 청춘의 이야기. 거울 뒷면의 자유를 갈망하다 결국 거울 속 '나'를 시기하게 되는 마음을 그렸다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=_TnsZ71zaxU" target="_blank" rel="noopener">▶ 거울 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2022. 09. 14</div>
+      <div class="kind">Digital Single · 3rd</div>
+      <h3>비틀비틀 짝짜꿍</h3>
+      <p class="desc">지쳐버린 하루, 사랑하는 친구와 나눈 즉흥적인 저녁 자리에서 서로의 닮은 하루를 발견하는 곡. 넘어져도 괜찮다는 위로를 건넨다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=eERmo7trq4k" target="_blank" rel="noopener">▶ 비틀비틀 짝짜꿍 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2023. 01. 04</div>
+      <div class="kind">Digital Single · 4th</div>
+      <h3>정류장</h3>
+      <p class="desc">오지 않는 버스를 기다리며 지나온 절망과 소망, 사랑과 미움을 하나 둘 회상하는 곡. 2023년의 문을 여는 첫 싱글이었다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=4SrrieLwsOI" target="_blank" rel="noopener">▶ 정류장 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2023. 04. 21</div>
+      <div class="kind">Digital Single · 5th</div>
+      <h3>자처</h3>
+      <p class="desc">'너'라는 자리에 나를 옭아매는 무엇이든 대입할 수 있는 곡. 갈림길에서의 선택, 소홀해진 관계, 스스로의 감옥까지 청춘의 굴레를 노래한다. 이후 첫 EP 〈이상비행〉에도 재수록되었다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=JyoltvsJ9Fw" target="_blank" rel="noopener">▶ 자처 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2023. 08. 29</div>
+      <div class="kind">EP · 1st</div>
+      <h3>이상비행</h3>
+      <p class="desc">데뷔 후 첫 EP. '이상(異常)한 이상(理想)을 꿈꾸는 청춘'이라는 자기 고백에서 출발해, 문학적 은유와 모던 록 사운드로 성장통을 그렸다. 수록곡 '사랑하게 될 거야'는 발매 2년 뒤인 2025년 여름부터 역주행해 멜론 TOP100 최고 2위, 애플뮤직 Top 100 1위에 오르며 뒤늦은 전성기를 맞았다.</p>
+      <ul class="tracklist">
+        <li><strong>1. 이상비행</strong> — 나만의 탈출구이자 당신과 함께할 유일한 기회를 향한 다짐</li>
+        <li><strong>2. 해초</strong> — 늘 패배해온 섬에서 벗어나 처음으로 바다를 꿈꾸는 이야기</li>
+        <li><strong>3. 화해</strong> — 못난 마음을 인정하며 세상에 화해를 신청하는 어른이 되어가는 과정</li>
+        <li><strong>4. 금붕어</strong> — 좁은 어항을 벗어나 도착한 넓은 바다, 그 위로 다시 치솟는 갈망</li>
+        <li><strong>5. 자처</strong> — 선공개 싱글의 재수록</li>
+        <li><strong>6. 사랑하게 될 거야 (Title)</strong> — 오랜 시간이 지나 역주행하며 한로로의 대표곡이 된 타이틀곡</li>
+      </ul>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=h0KIWaUEIgQ" target="_blank" rel="noopener">▶ 사랑하게 될 거야 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2023. 12. 26</div>
+      <div class="kind">Digital Single · 6th</div>
+      <h3>하루살이</h3>
+      <p class="desc">2023년을 마무리하는 이별 노래. 이상비행의 단단한 록 사운드와 달리 넓게 퍼지는 소리로 분위기를 형성해, 여린 보이스가 슬픈 주제를 고조시킨다. 데뷔 후 처음으로 저녁 6시에 공개된 곡이다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=fdwB6U4u-vk" target="_blank" rel="noopener">▶ 하루살이 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2024. 04. 30 – 05. 16</div>
+      <div class="kind">Pre-release Singles</div>
+      <h3>먹이사슬 · 생존법</h3>
+      <p class="desc">두 번째 EP 〈집〉의 선공개 싱글 두 곡. '먹이사슬'은 살기 위해 서로를 물어뜯는 짐승들의 관습적 체계를, '생존법'은 삶과 죽음 그 어디에도 치우치지 않는 무중력 상태로 하루하루를 버텨내는 이야기를 담았다. '먹이사슬'을 기점으로 유통사 표기가 '마운드미디어'로 바뀌었다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.melon.com/search/total/index.htm?q=%EB%A8%B9%EC%9D%B4%EC%82%AC%EC%8A%AC+%ED%95%9C%EB%A1%9C%EB%A1%9C" target="_blank" rel="noopener">▶ 먹이사슬 음원 (멜론)</a>
+        <a class="mv-link" href="https://www.youtube.com/watch?v=puw1hdSnSX0" target="_blank" rel="noopener">▶ 생존법 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2024. 05. 28</div>
+      <div class="kind">EP · 2nd</div>
+      <h3>집</h3>
+      <p class="desc">청춘의 고민과 감정을 '집'이라는 공간의 은유로 풀어낸 두 번째 EP. 자음·모음이 분리된 타이틀 'ㅈㅣㅂ'은 집이 무너져가는 모습을 형상화한 것이다. 수록곡 전곡에 뮤직비디오가 존재하며, 타이틀곡 'ㅈㅣㅂ'은 제22회 한국대중음악상 최우수 모던록 노래 부문에 노미네이트되었다.</p>
+      <ul class="tracklist">
+        <li><strong>1. 귀가</strong> — 비행을 마치고 돌아온 집, 그러나 혼자가 아님에도 혼자인 나</li>
+        <li><strong>2. ㅈㅣㅂ (Title)</strong> — 까만 연기와 불길에 휩싸인 채 무너져가는 집의 풍경</li>
+        <li><strong>3. 먹이사슬</strong> — 선공개곡의 정식 수록</li>
+        <li><strong>4. 놀이터</strong> — 되돌아갈 수 없는 환상임을 알면서도 뛰어놀고 싶은 어린 시절의 추억</li>
+        <li><strong>5. 재 (Title)</strong> — 모든 것이 타버린 자리에서도 곁을 지켜준 존재에 대한 기억</li>
+        <li><strong>6. 생존법</strong> — 선공개곡의 정식 수록</li>
+        <li><strong>7. 보수공사</strong> — 무너진 자리를 다시 고쳐 세우는 마무리 트랙</li>
+      </ul>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=U4-cz9NHQv4" target="_blank" rel="noopener">▶ ㅈㅣㅂ MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2024. 10. 29</div>
+      <div class="kind">Digital Single · 7th</div>
+      <h3>나침반</h3>
+      <p class="desc">세상이 알려준 길이 옳지 않음을 알아챈 이들에게, 나침반은 손 위가 아니라 마음속에 있다고 믿는 이들에게 건네는 곡. 내일을 향한 바람이 욕심은 아닌지 조심스레 묻는다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=4JwkYsfKRKM" target="_blank" rel="noopener">▶ 나침반 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2025. 07. 06</div>
+      <div class="kind">Pre-release Single</div>
+      <h3>도망</h3>
+      <p class="desc">세 번째 EP 〈자몽살구클럽〉의 선공개 싱글. 죽음과 삶 사이를 오가는 다급한 발걸음을 질주하는 드럼 비트와 기타 리프로 그렸다. 공개 3일 만에 한로로 공식 유튜브 채널 최고 조회수를 경신했다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=nhntH2wn3m0" target="_blank" rel="noopener">▶ 도망 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2025. 08. 04</div>
+      <div class="kind">EP · 3rd</div>
+      <h3>자몽살구클럽</h3>
+      <p class="desc">한로로가 직접 쓴 동명의 소설을 배경으로 한 세 번째 EP. 자살 유예 동아리 '자몽살구클럽'에서 만난 소하, 태수, 유민, 보현의 이야기를 순서대로 따라가는 앨범으로, 죽음 속에서 발견한 삶의 빛을 노래한다. 타이틀곡 '시간을 달리네'로 제23회 한국대중음악상 '올해의 음악인'을 수상했다.</p>
+      <ul class="tracklist">
+        <li><strong>1. 내일에서 온 티켓</strong> — 자몽살구클럽으로 초대하는, 함께 내일을 살아가자는 다정한 선언</li>
+        <li><strong>2. 용의자</strong> — 스스로를 옭아맨 채 수동적인 태도를 보이던 시절의 노래</li>
+        <li><strong>3. 갈림길</strong> — 삶과 죽음의 경계에서 흔들리는 선택의 순간</li>
+        <li><strong>4. 0+0</strong> — 아무것도 없는 사람들끼리 만나도 함께라면 영원을 꿈꿀 수 있다는 이야기</li>
+        <li><strong>5. __에게</strong> — 떠난 이에게 미처 전하지 못한 뒤늦은 고백이자 편지</li>
+        <li><strong>6. 시간을 달리네 (Title)</strong> — 멈춰버린 시간 속에 남겨진 너를 향해 오늘도 다가가려는 마음</li>
+        <li><strong>7. 도망</strong> — 선공개곡의 정식 수록, 앨범의 클라이맥스</li>
+      </ul>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=tKERw3_ked0" target="_blank" rel="noopener">▶ 시간을 달리네 MV</a>
+        <a class="mv-link" href="https://www.youtube.com/watch?v=_Ngk-DCHfD0" target="_blank" rel="noopener">▶ 0+0 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2026. 04. 02</div>
+      <div class="kind">Digital Single · 8th</div>
+      <h3>애증 (LOVE&amp;HATE)</h3>
+      <p class="desc">사랑과 미움이 반복되는 세상 속에서 스스로와 싸우며 '나'를 알아가는 과정을 그린 싱글. 처음으로 두 곡이 수록된 싱글로, 전곡 작사·작곡을 직접 맡았다.</p>
+      <ul class="tracklist">
+        <li><strong>1. 게임 오버 ? (Title)</strong> — 단 한 번뿐인 삶을 미움과의 싸움에 낭비하지 않겠다는 다짐</li>
+        <li><strong>2. 1111</strong> — 태어난 이후 받아온 모든 사랑과 증오의 반복. 제목을 날짜로 읽으면 한로로의 생일(11월 11일)과 겹친다</li>
+      </ul>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=qrzKsS-4lZo" target="_blank" rel="noopener">▶ 게임 오버 ? MV</a>
+        <a class="mv-link" href="https://www.youtube.com/watch?v=Gofn_ULNd5Q" target="_blank" rel="noopener">▶ 1111 MV</a>
+      </div>
+    </div>
+
+    <div class="stop">
+      <div class="marker"></div>
+      <div class="date">2026. 07. 09</div>
+      <div class="kind">Digital Single · 9th</div>
+      <h3>너와 나</h3>
+      <p class="desc">산리오의 폼폼푸린과 함께한 첫 스페셜 컬래버레이션 싱글. 제18회 서울재즈페스티벌 무대에서 미발매곡으로 먼저 공개되었으며, 〈자몽살구클럽〉의 연장선에서 불확실한 오늘을 홀로 살아가던 '나'가 '너'를 만나 내일에 대한 희망을 품게 되는 과정을 담았다.</p>
+      <div class="mv-links">
+        <a class="mv-link" href="https://www.youtube.com/watch?v=Tos8R9Tcem8" target="_blank" rel="noopener">▶ 너와 나 MV</a>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="text-align:center; margin-top:56px; font-family:'Gaegu', cursive; font-size:14px; color:var(--ink-soft);">
+    공식 유튜브 채널 · <a href="https://www.youtube.com/channel/UCrDa_5OU-rhvXqWlPx5hgKQ" target="_blank" rel="noopener" style="color:var(--berry);">한로로 HANRORO</a><br>
+    ※ 위 음반·곡 소개는 나무위키 '한로로/음반' 및 관련 문서를 참고해 정리했습니다.
+  </p>
+</section>
+
+<section id="mood" class="mood-section">
+  <div class="section-head">
+    <span class="eyebrow handwrite">오늘 당신의 마음은 어떤가요</span>
+    <h2>감정으로 노래 찾기</h2>
+    <p class="today-sub">지금 기분에 어울리는 한로로의 노래를 찾아드려요.</p>
+  </div>
+
+  <div class="mood-grid" id="moodGrid"></div>
+
+  <div class="mood-result" id="moodResult">
+    <span class="mood-result-label handwrite">이럴 땐, 이 노래</span>
+    <h3 id="moodSongTitle">—</h3>
+    <p id="moodSongReason"></p>
+    <a id="moodSongLink" class="mv-link" href="#" target="_blank" rel="noopener">▶ 들어보기</a>
+  </div>
+</section>
+
+<section id="calendar" class="calendar-section">
+  <div class="section-head">
+    <span class="eyebrow handwrite">놓치면 아쉬운</span>
+    <h2>한로로 캘린더</h2>
+    <p class="today-sub">공연·행사 일정과 예매 정보를 한눈에 확인하세요.</p>
+  </div>
+
+  <div id="calendarMonths"></div>
+
+  <p class="today-note">※ CALENDAR_DATA 목록에 일정을 추가/수정하면 자동으로 월별로 묶여 표시돼요. 정확한 날짜·장소·예매 오픈 여부는 공식 SNS와 예매처 공지를 통해 다시 한 번 확인해 주세요.</p>
+</section>
+
+<section id="diary" class="diary">
+  <div class="section-head">
+    <span class="eyebrow handwrite">매일 남기는 감성 한 줄</span>
+    <h2>한 줄의 계절</h2>
+    <p class="diary-sub">오늘 하루도 당신만의 계절이 지나갔을 거예요.<br>한로로의 노래처럼, 오늘을 한 줄로 남겨보세요.</p>
+  </div>
+
+  <div class="diary-page">
+    <div class="diary-date" id="diaryToday"></div>
+
+    <div class="field-group">
+      <label>내 닉네임 <span class="hint">(내 기록을 삭제할 때 본인 확인용으로 쓰여요)</span></label>
+      <input type="text" id="authorInput" placeholder="닉네임을 입력하세요">
+    </div>
+
+    <div class="field-group">
+      <label>오늘 가장 기억에 남는 순간</label>
+      <input type="text" id="momentInput" placeholder="짧게, 편하게 적어보세요...">
+    </div>
+
+    <div class="field-group">
+      <label>오늘 가장 듣고 싶은 한로로의 노래</label>
+      <select id="songInput">
+        <option value="">노래를 골라보세요</option>
+        <optgroup label="정규 발매곡">
+          <option>입춘</option>
+          <option>도망</option>
+          <option>정류장</option>
+          <option>자처</option>
+          <option>거울</option>
+          <option>비틀비틀 짝짜꿍</option>
+          <option>하루살이</option>
+          <option>나침반</option>
+          <option>ㅈㅣㅂ</option>
+          <option>먹이사슬</option>
+          <option>생존법</option>
+          <option>자몽살구클럽</option>
+          <option>게임 오버 ?</option>
+          <option>1111</option>
+          <option>너와 나</option>
+        </optgroup>
+        <optgroup label="콜라보레이션 · OST">
+          <option>So Nice (GMF Theme Song)</option>
+          <option>Do What You Like</option>
+          <option>Like my groove</option>
+          <option>당신의 밤은 나의 밤과 같습니까</option>
+          <option>Romantico</option>
+          <option>룻</option>
+          <option>뛰어!</option>
+          <option>안녕</option>
+          <option>아슬하게</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label>오늘의 하늘</label>
+      <div class="weather-options" id="weatherOptions">
+        <button type="button" data-weather="맑음">☀️ 맑음</button>
+        <button type="button" data-weather="흐림">☁️ 흐림</button>
+        <button type="button" data-weather="비">🌧 비</button>
+        <button type="button" data-weather="눈">❄️ 눈</button>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>오늘의 온도 (마음의 온도)</label>
+      <div class="star-rating" id="starRating">
+        <span data-value="1">★</span>
+        <span data-value="2">★</span>
+        <span data-value="3">★</span>
+        <span data-value="4">★</span>
+        <span data-value="5">★</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>오늘의 감정</label>
+      <div class="emotion-picker" id="emotionPicker">
+        <button type="button" data-emotion="😊" title="기쁨">😊</button>
+        <button type="button" data-emotion="😐" title="무덤덤">😐</button>
+        <button type="button" data-emotion="😭" title="울고 싶음">😭</button>
+        <button type="button" data-emotion="😡" title="화남">😡</button>
+        <button type="button" data-emotion="😶" title="공허함">😶</button>
+      </div>
+    </div>
+
+    <div class="field-group" style="margin-bottom:0;">
+      <label>오늘의 한 장 <span class="hint">(선택)</span></label>
+      <input type="file" id="photoInput" accept="image/*" class="photo-input">
+      <label for="photoInput" class="photo-upload-btn">📷 사진 추가하기</label>
+      <div class="photo-preview-wrap" id="photoPreviewWrap" style="display:none;">
+        <img id="photoPreview" alt="첨부한 사진 미리보기">
+        <button type="button" id="removePhoto" class="remove-photo-btn">✕ 사진 지우기</button>
+      </div>
+    </div>
+
+    <div style="margin-top:36px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+      <button class="save-btn" id="saveEntry">오늘의 한 줄 남기기</button>
+      <span class="autosave-indicator" id="autosaveIndicator">입력하는 대로 임시 저장되고 있어요 ✓</span>
+    </div>
+  </div>
+
+  <div class="diary-archive" id="diaryArchive"></div>
+</section>
+
+<footer>
+  <span class="handwrite">— 로켓단 팬사이트 (제작 중) —</span>
+  이 페이지는 아직 초안이에요. 아티스트 소개 · 디스코그래피 정보는 계속 다듬어질 예정입니다.
+</footer>
+
+<script>
+  // scroll reveal for discography stops
+  const stops = document.querySelectorAll('.stop');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+  stops.forEach(stop => observer.observe(stop));
+
+  // ---------- 한 줄의 계절 (diary) ----------
+  // 날짜는 페이지를 불러올 때마다 오늘 날짜로 매번 새로 계산되므로, 매일 자동으로 갱신돼요.
+  const todayEl = document.getElementById('diaryToday');
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, '0');
+  const d = String(today.getDate()).padStart(2, '0');
+  todayEl.textContent = `${y}. ${m}. ${d}`;
+
+  let selectedWeather = null;
+  let selectedStars = 0;
+  let selectedEmotion = null;
+
+  const weatherIcons = { '맑음': '☀️', '흐림': '☁️', '비': '🌧', '눈': '❄️' };
+  const DRAFT_KEY = 'hanroro-diary-draft';
+  const AUTHOR_KEY = 'hanroro-diary-author';
+  const authorInput = document.getElementById('authorInput');
+  const momentInput = document.getElementById('momentInput');
+  const songInput = document.getElementById('songInput');
+  const autosaveIndicator = document.getElementById('autosaveIndicator');
+  let selectedPhotoDataUrl = null;
+
+  let autosaveTimer = null;
+  function flashAutosave() {
+    autosaveIndicator.classList.add('show');
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(() => autosaveIndicator.classList.remove('show'), 1200);
+  }
+
+  // 현재 작성 중인 내용을 즉시(입력할 때마다) 임시 저장
+  function saveDraft() {
+    const draft = {
+      author: authorInput.value,
+      moment: momentInput.value,
+      song: songInput.value,
+      weather: selectedWeather,
+      stars: selectedStars,
+      emotion: selectedEmotion,
+      photo: selectedPhotoDataUrl
+    };
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    flashAutosave();
+  }
+
+  function loadDraft() {
+    try {
+      return JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function clearDraft() {
+    localStorage.removeItem(DRAFT_KEY);
+  }
+
+  document.querySelectorAll('#weatherOptions button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#weatherOptions button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedWeather = btn.dataset.weather;
+      saveDraft();
+    });
+  });
+
+  const stars = document.querySelectorAll('#starRating span');
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      selectedStars = parseInt(star.dataset.value, 10);
+      stars.forEach(s => {
+        s.classList.toggle('filled', parseInt(s.dataset.value, 10) <= selectedStars);
+      });
+      saveDraft();
+    });
+  });
+
+  document.querySelectorAll('#emotionPicker button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#emotionPicker button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedEmotion = btn.dataset.emotion;
+      saveDraft();
+    });
+  });
+
+  authorInput.addEventListener('input', () => {
+    authorInput.style.borderBottomColor = '';
+    // 닉네임은 "누가 썼는지" 확인용이므로 별도로도 기억해둔다
+    localStorage.setItem(AUTHOR_KEY, authorInput.value.trim());
+    saveDraft();
+    renderArchive(); // 닉네임이 바뀌면 삭제 가능 여부도 즉시 갱신
+  });
+  momentInput.addEventListener('input', saveDraft);
+  songInput.addEventListener('change', saveDraft);
+
+  // ---- 사진 업로드 (선택한 이미지를 리사이즈해서 용량을 줄인 뒤 저장) ----
+  const photoInput = document.getElementById('photoInput');
+  const photoPreviewWrap = document.getElementById('photoPreviewWrap');
+  const photoPreview = document.getElementById('photoPreview');
+  const removePhotoBtn = document.getElementById('removePhoto');
+
+  function resizeImage(file, maxSize, callback) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > height && width > maxSize) {
+          height = Math.round(height * (maxSize / width));
+          width = maxSize;
+        } else if (height > maxSize) {
+          width = Math.round(width * (maxSize / height));
+          height = maxSize;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        callback(canvas.toDataURL('image/jpeg', 0.75));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  photoInput.addEventListener('change', () => {
+    const file = photoInput.files[0];
+    if (!file) return;
+    resizeImage(file, 800, (dataUrl) => {
+      selectedPhotoDataUrl = dataUrl;
+      photoPreview.src = dataUrl;
+      photoPreviewWrap.style.display = 'flex';
+      saveDraft();
+    });
+  });
+
+  removePhotoBtn.addEventListener('click', () => {
+    selectedPhotoDataUrl = null;
+    photoInput.value = '';
+    photoPreviewWrap.style.display = 'none';
+    saveDraft();
+  });
+
+  // 페이지를 새로고침해도 작성 중이던 내용을 그대로 복원
+  (function restoreDraft() {
+    authorInput.value = localStorage.getItem(AUTHOR_KEY) || '';
+
+    const draft = loadDraft();
+    if (!draft) return;
+
+    if (draft.author) authorInput.value = draft.author;
+    momentInput.value = draft.moment || '';
+    songInput.value = draft.song || '';
+
+    if (draft.weather) {
+      selectedWeather = draft.weather;
+      document.querySelectorAll('#weatherOptions button').forEach(b => {
+        b.classList.toggle('active', b.dataset.weather === draft.weather);
+      });
+    }
+    if (draft.stars) {
+      selectedStars = draft.stars;
+      stars.forEach(s => {
+        s.classList.toggle('filled', parseInt(s.dataset.value, 10) <= draft.stars);
+      });
+    }
+    if (draft.emotion) {
+      selectedEmotion = draft.emotion;
+      document.querySelectorAll('#emotionPicker button').forEach(b => {
+        b.classList.toggle('active', b.dataset.emotion === draft.emotion);
+      });
+    }
+    if (draft.photo) {
+      selectedPhotoDataUrl = draft.photo;
+      photoPreview.src = draft.photo;
+      photoPreviewWrap.style.display = 'flex';
+    }
+  })();
+
+  function loadEntries() {
+    try {
+      return JSON.parse(localStorage.getItem('hanroro-diary-entries') || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+  function saveEntries(entries) {
+    localStorage.setItem('hanroro-diary-entries', JSON.stringify(entries));
+  }
+
+  function renderArchive() {
+    const entries = loadEntries();
+    const archiveEl = document.getElementById('diaryArchive');
+    archiveEl.innerHTML = '';
+
+    if (entries.length === 0) {
+      archiveEl.innerHTML = '<div class="archive-empty">아직 기록이 없어요. 오늘의 한 줄을 남겨보세요.</div>';
+      return;
+    }
+
+    const currentAuthor = authorInput.value.trim();
+
+    // 최신 날짜가 위로 오도록, 날짜별로 묶어서 보여준다
+    const groups = [];
+    const groupIndexByDate = {};
+    entries.forEach((entry, realIdx) => {
+      if (!(entry.date in groupIndexByDate)) {
+        groupIndexByDate[entry.date] = groups.length;
+        groups.push({ date: entry.date, items: [] });
+      }
+      groups[groupIndexByDate[entry.date]].items.push({ entry, realIdx });
+    });
+    groups.reverse();
+    groups.forEach(g => g.items.reverse());
+
+    groups.forEach(group => {
+      const groupEl = document.createElement('div');
+      groupEl.className = 'archive-date-group';
+      groupEl.innerHTML = `
+        <div class="archive-date-heading">
+          <span>${group.date}</span>
+          <span class="line"></span>
+          <span class="count">${group.items.length}개의 기록</span>
+        </div>
+      `;
+
+      group.items.forEach(({ entry, realIdx }) => {
+        const canDelete = currentAuthor !== '' && entry.author === currentAuthor;
+        const card = document.createElement('div');
+        card.className = 'entry-card';
+        card.innerHTML = `
+          ${canDelete
+            ? `<button class="delete-btn" data-idx="${realIdx}">✕ 삭제</button>`
+            : `<span class="delete-locked" title="작성자 본인만 삭제할 수 있어요">🔒</span>`}
+          <div class="entry-top">
+            <span class="entry-author">${entry.author ? entry.author : '익명'}</span>
+            <span class="entry-meta">
+              <span>${entry.weatherIcon || ''} ${entry.weather || ''}</span>
+              <span>${'★'.repeat(entry.stars)}${'☆'.repeat(5 - entry.stars)}</span>
+              <span class="entry-emotion">${entry.emotion || ''}</span>
+            </span>
+          </div>
+          <div class="entry-moment">${entry.moment ? entry.moment : '(기록 없음)'}</div>
+          ${entry.song ? `<div class="entry-song">🎵 ${entry.song}</div>` : ''}
+          ${entry.photo ? `<img class="entry-photo" src="${entry.photo}" alt="${entry.author || '익명'}님이 남긴 사진">` : ''}
+        `;
+        groupEl.appendChild(card);
+      });
+
+      archiveEl.appendChild(groupEl);
+    });
+
+    archiveEl.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const entries = loadEntries();
+        entries.splice(parseInt(btn.dataset.idx, 10), 1);
+        saveEntries(entries);
+        renderArchive();
+      });
+    });
+  }
+
+  document.getElementById('saveEntry').addEventListener('click', () => {
+    const author = authorInput.value.trim();
+    if (!author) {
+      authorInput.focus();
+      authorInput.style.borderBottomColor = 'var(--berry)';
+      return;
+    }
+
+    const moment = momentInput.value.trim();
+    const song = songInput.value;
+
+    const entries = loadEntries();
+    entries.push({
+      date: todayEl.textContent,
+      author,
+      moment,
+      song,
+      weather: selectedWeather,
+      weatherIcon: selectedWeather ? weatherIcons[selectedWeather] : '',
+      stars: selectedStars,
+      emotion: selectedEmotion,
+      photo: selectedPhotoDataUrl
+    });
+    saveEntries(entries);
+    clearDraft();
+
+    // 폼 초기화 (닉네임은 남겨둔다 — 같은 사람이 계속 기록할 수 있도록)
+    momentInput.value = '';
+    songInput.value = '';
+    document.querySelectorAll('#weatherOptions button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#emotionPicker button').forEach(b => b.classList.remove('active'));
+    stars.forEach(s => s.classList.remove('filled'));
+    selectedWeather = null;
+    selectedStars = 0;
+    selectedEmotion = null;
+    selectedPhotoDataUrl = null;
+    photoInput.value = '';
+    photoPreviewWrap.style.display = 'none';
+
+    renderArchive();
+  });
+
+  renderArchive();
+</script>
+
+<script>
+  // ================= 오늘, 한로로는 =================
+  // Python 자동화(유튜브 API + 인스타/틱톡 스크래핑)가 만들어주는 today.json을
+  // 그대로 읽어서 화면에 뿌려요. HTML/JS는 today.json 구조만 알면 됩니다.
+  //   { "updated_at": "...", "instagram": [...], "youtube": [...], "tiktok": [...] }
+  //   각 배열의 항목: { "date": "2026.07.13", "title": "...", "link": "https://..." }
+
+  function renderTodaySection(id, items){
+    const listEl = document.getElementById(id);
+    if(!listEl) return;
+    if(!items || items.length === 0){
+      listEl.innerHTML = '<li class="today-error">최신 소식을 불러오지 못했어요.</li>';
+      return;
+    }
+    listEl.innerHTML = items.map((item, idx) => `
+      <li class="${idx >= 3 ? 'hidden' : ''}">
+        <a href="${item.link}" target="_blank" rel="noopener">
+          <span class="today-date">${item.date}</span>${item.title}
+        </a>
+      </li>
+    `).join('');
+  }
+
+  document.querySelectorAll('.today-more').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const list = document.getElementById(btn.dataset.target);
+      const isExpanded = btn.textContent.trim() === '접기';
+      list.querySelectorAll('li').forEach((li, idx) => {
+        if(idx >= 3) li.classList.toggle('hidden', isExpanded);
+      });
+      btn.textContent = isExpanded ? '더보기' : '접기';
+    });
+  });
+
+  async function loadTodayData(){
+    const ids = ['todayInsta', 'todayYoutube', 'todayTiktok'];
+    try{
+      // 캐시를 타지 않도록 매번 다른 쿼리스트링을 붙여요.
+      const res = await fetch(`./today.json?t=${Date.now()}`);
+      if(!res.ok) throw new Error('today.json fetch failed');
+      const data = await res.json();
+
+      renderTodaySection('todayInsta', data.instagram);
+      renderTodaySection('todayYoutube', data.youtube);
+      renderTodaySection('todayTiktok', data.tiktok);
+
+      const updatedEl = document.getElementById('todayUpdatedAt');
+      if(updatedEl && data.updated_at){
+        const d = new Date(data.updated_at);
+        updatedEl.textContent = `마지막 업데이트 · ${d.toLocaleString('ko-KR')}`;
+      }
+    }catch(err){
+      // today.json이 아직 없거나(최초 배포 전) 읽기에 실패한 경우
+      ids.forEach(id => renderTodaySection(id, []));
+      const updatedEl = document.getElementById('todayUpdatedAt');
+      if(updatedEl) updatedEl.textContent = 'today.json을 아직 찾을 수 없어요. update_today.py 실행 결과가 배포됐는지 확인해 주세요.';
+    }
+  }
+
+  loadTodayData();
+
+  // ================= 감정으로 노래 찾기 =================
+  const MOOD_DATA = [
+    { emoji: '😭', label: '오늘 너무 힘들어요', song: '하루살이', reason: '이별처럼 무거운 하루의 끝에서, 여린 목소리로 슬픔을 조용히 다독여주는 곡이에요.', link: 'https://www.youtube.com/watch?v=fdwB6U4u-vk' },
+    { emoji: '😊', label: '오늘 행복해요', song: '입춘', reason: '불확실하지만 설레는 봄맞이처럼, 새로운 시작을 응원하는 한로로의 데뷔곡이에요.', link: 'https://www.youtube.com/watch?v=pNi9PjmbUrI' },
+    { emoji: '😶', label: '공허해요', song: '생존법', reason: '삶과 죽음 어디에도 치우치지 않는 무중력 상태, 그 담담한 공허함을 그대로 닮은 곡이에요.', link: 'https://www.youtube.com/watch?v=puw1hdSnSX0' },
+    { emoji: '😡', label: '화가 나요', song: '도망', reason: '질주하는 드럼과 기타 리프에 답답한 마음을 실어 함께 내달릴 수 있는 곡이에요.', link: 'https://www.youtube.com/watch?v=nhntH2wn3m0' },
+    { emoji: '😴', label: '지쳤어요', song: '정류장', reason: '오지 않는 버스를 기다리듯, 잠시 멈춰서 지나온 하루를 돌아보게 하는 곡이에요.', link: 'https://www.youtube.com/watch?v=4SrrieLwsOI' },
+    { emoji: '🥹', label: '그리워요', song: '__에게', reason: '떠난 이에게 미처 전하지 못한 말을 담은, 편지 같은 곡이에요.', link: 'https://music.bugs.co.kr/album/20744778' },
+    { emoji: '😳', label: '설레요', song: '너와 나', reason: '불확실한 오늘을 살던 \'나\'가 \'너\'를 만나 품게 되는 두근거림을 그린 곡이에요.', link: 'https://www.youtube.com/watch?v=Tos8R9Tcem8' },
+    { emoji: '😨', label: '불안해요', song: 'ㅈㅣㅂ', reason: '무너져가는 마음을 피하지 않고 정면으로 마주하는, 단단한 록 사운드의 곡이에요.', link: 'https://www.youtube.com/watch?v=U4-cz9NHQv4' }
+  ];
+
+  const moodGrid = document.getElementById('moodGrid');
+  if(moodGrid){
+    moodGrid.innerHTML = MOOD_DATA.map((m, idx) => `
+      <button class="mood-btn" data-idx="${idx}">
+        <span class="emoji">${m.emoji}</span>${m.label}
+      </button>
+    `).join('');
+
+    const moodResult = document.getElementById('moodResult');
+    const moodSongTitle = document.getElementById('moodSongTitle');
+    const moodSongReason = document.getElementById('moodSongReason');
+    const moodSongLink = document.getElementById('moodSongLink');
+
+    moodGrid.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        moodGrid.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const m = MOOD_DATA[parseInt(btn.dataset.idx, 10)];
+        moodSongTitle.textContent = m.song;
+        moodSongReason.textContent = m.reason;
+        moodSongLink.href = m.link;
+        moodResult.classList.add('show');
+        moodResult.scrollIntoView({ behavior:'smooth', block:'center' });
+      });
+    });
+  }
+
+  // ================= 한로로 캘린더 =================
+  // date: 'YYYY-MM-DD', 기간 일정은 dateEnd도 함께 적어주세요. venue/ticket/map은 확인되는 대로 채워주세요.
+  const CALENDAR_DATA = [
+    {
+      date: '2026-07-19',
+      title: '사운드베리페스타 출연',
+      venue: '일산 킨텍스'
+    },
+    {
+      date: '2026-08-06',
+      dateEnd: '2026-08-07',
+      title: '시리즈엘 출연',
+      venue: '롯데 콘서트홀'
+    }
+  ];
+
+  function renderCalendar(){
+    const container = document.getElementById('calendarMonths');
+    if(!container) return;
+
+    const byMonth = {};
+    CALENDAR_DATA
+      .slice()
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+      .forEach(ev => {
+        const d = new Date(ev.date);
+        const key = `${d.getFullYear()}년 ${d.getMonth() + 1}월`;
+        const dayLabel = ev.dateEnd
+          ? `${d.getDate()}~${new Date(ev.dateEnd).getDate()}일`
+          : `${d.getDate()}일`;
+        if(!byMonth[key]) byMonth[key] = [];
+        byMonth[key].push({ ...ev, dayLabel });
+      });
+
+    container.innerHTML = Object.keys(byMonth).map(monthKey => `
+      <div class="calendar-month">📅 ${monthKey}</div>
+      <ul class="calendar-list">
+        ${byMonth[monthKey].map(ev => `
+          <li class="cal-item">
+            <div class="cal-item-head">
+              <span class="cal-date">${ev.dayLabel}</span>
+              <span class="cal-title">${ev.title}</span>
+              <button class="cal-detail-btn">상세보기</button>
+            </div>
+            <div class="cal-detail">
+              <p>장소 · ${ev.venue}</p>
+              <div class="mv-links">
+                <a class="mv-link" href="https://www.google.com/maps/search/${encodeURIComponent(ev.venue)}" target="_blank" rel="noopener">지도 보기</a>
+              </div>
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    `).join('');
+
+    container.querySelectorAll('.cal-detail-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const detail = btn.closest('.cal-item').querySelector('.cal-detail');
+        detail.classList.toggle('show');
+        btn.textContent = detail.classList.contains('show') ? '접기' : '상세보기';
+      });
+    });
+  }
+
+  renderCalendar();
+</script>
+
+</body>
+</html>
