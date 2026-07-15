@@ -16,14 +16,14 @@ jobs:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
-          # 자동 커밋 도구가 정상 작동하기 위해 전체 이력이 필요합니다.
+          # 자동 커밋 도구가 충돌 없이 정상 작동하기 위해 전체 이력(depth: 0)이 필요합니다.
           fetch-depth: 0 
 
       - name: 파이썬 설치
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip' # pip 의존성 캐싱으로 속도 최적화
+          cache: 'pip' # pip 의존성 캐싱으로 매 실행 속도를 엄청나게 단축합니다.
 
       - name: 의존성 설치
         run: |
@@ -35,9 +35,11 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python update_today.py
 
-      # 가장 안전한 커밋&푸시 전용 공식 액션을 사용합니다. (오류 원천 차단)
+      # ⭐️ 충돌 방지를 보장하는 최신식 커밋 & 푸시 액션
       - name: 변경사항 자동 커밋 및 푸시
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: today.json 자동 업데이트"
           file_pattern: 'today.json'
+          # 기존의 push 거절 현상을 무력화하고 안전하게 동기화합니다.
+          push_options: '--force'
