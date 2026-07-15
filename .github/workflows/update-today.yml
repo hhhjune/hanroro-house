@@ -16,7 +16,7 @@ jobs:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
-          # 자동 커밋 도구가 충돌 없이 정상 작동하기 위해 전체 이력(depth: 0)이 필요합니다.
+          # 자동 커밋 도구가 충돌 없이 정상 작동하기 위해 전체 이력(depth: 0)을 가져옵니다.
           fetch-depth: 0 
 
       - name: 파이썬 설치
@@ -35,11 +35,11 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python update_today.py
 
-      # ⭐️ 충돌 방지를 보장하는 최신식 커밋 & 푸시 액션
+      # ⭐️ 깃 충돌 거절(rejected) 오류를 원천 무력화하고 강제로 덮어쓰는 푸시 방식
       - name: 변경사항 자동 커밋 및 푸시
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: today.json 자동 업데이트"
           file_pattern: 'today.json'
-          # 기존의 push 거절 현상을 무력화하고 안전하게 동기화합니다.
+          # 기존의 push 거절 현상을 완벽하게 피하기 위해 강제 push 옵션을 추가합니다.
           push_options: '--force'
