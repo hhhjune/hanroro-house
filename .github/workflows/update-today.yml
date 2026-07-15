@@ -2,9 +2,9 @@ name: Update today.json
 
 on:
   schedule:
-    # 매시 정각마다 실행 (UTC 기준. 필요에 맞게 간격 조절하세요)
+    # 매시 정각마다 실행 (UTC 기준)
     - cron: '0 * * * *'
-  workflow_dispatch: {}   # Actions 탭에서 수동으로도 실행 가능
+  workflow_dispatch: {}   # Actions 탭에서 수동 실행 가능
 
 permissions:
   contents: write
@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true   # 푸시 권한 유지
 
       - name: 파이썬 설치
         uses: actions/setup-python@v5
@@ -32,7 +34,7 @@ jobs:
       - name: 변경사항 커밋 & 푸시
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add today.json
-          git diff --quiet --cached || git commit -m "chore: today.json 자동 업데이트"
+          git commit -m "Update today.json"
           git push
