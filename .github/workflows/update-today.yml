@@ -14,16 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 저장소 체크아웃
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
-          # rebase나 push 충돌 방지를 위해 전체 커밋 이력을 가져옵니다.
+          # Rebase 및 Push 충돌 방지를 위해 전체 커밋 이력을 가져옵니다.
           fetch-depth: 0 
 
       - name: 파이썬 설치
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip' # pip 의존성 캐싱을 적용해 실행 속도를 단축합니다.
+          cache: 'pip' # pip 의존성 캐싱을 적용해 속도를 단축합니다.
 
       - name: 의존성 설치
         run: |
@@ -48,7 +48,7 @@ jobs:
           else
             git commit -m "chore: today.json 자동 업데이트"
             
-            # 푸시 실패 방지를 위한 fetch 및 rebase 전략 적용
+            # 원격 변경 사항 당겨오기 (충돌 방지 핵심)
             echo "원격 저장소의 최신 상태를 반영합니다..."
             git fetch origin main
             git rebase origin/main
