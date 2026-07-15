@@ -1602,18 +1602,24 @@
     signInWithEmailAndPassword, signOut
   } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
+  // 💥 [추가된 코드] Analytics(방문자 분석) 라이브러리를 불러옵니다.
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js";
+
   // ── 1. Firebase 프로젝트 설정 ─────────────────────────────
-  // 이 값들은 "비밀키"가 아니에요. Firebase 클라이언트 설정은 원래 공개되는 값이고,
-  // 실제 보안은 Firestore 보안 규칙(README_firebase.md 참고)이 담당해요.
-  // Firebase 콘솔 → 프로젝트 설정 → 내 앱 → SDK 설정에서 그대로 복사해 붙여넣으세요.
+  // 질문자님의 실제 Firebase 키 값으로 완벽하게 교체되었습니다!
   const firebaseConfig = {
-    apiKey: "여기에_API_KEY",
-    authDomain: "여기에_PROJECT_ID.firebaseapp.com",
-    projectId: "여기에_PROJECT_ID",
-    storageBucket: "여기에_PROJECT_ID.appspot.com",
-    messagingSenderId: "여기에_SENDER_ID",
-    appId: "여기에_APP_ID"
+    apiKey: "AIzaSyAgH-BUyHzP7-_r0XIJrEs-w7Pc8DbwsYo",
+    authDomain: "haroro-house.firebaseapp.com",
+    projectId: "haroro-house",
+    storageBucket: "haroro-house.firebasestorage.app",
+    messagingSenderId: "219114005762",
+    appId: "1:219114005762:web:a42c896f208de979fc4e1b",
+    measurementId: "G-VNPPCCN9GT"
   };
+
+  // ── 2. Firebase 초기화 ────────────────────────────────────
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app); // 💥 [추가된 코드] Analytics 활성화!
 
   // ── 2. 관리자 계정 정보 ───────────────────────────────────
   // 비밀번호는 여기 어디에도 없어요! Firebase Authentication에 이메일/비밀번호로 된
