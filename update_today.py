@@ -11,7 +11,7 @@ import json
 import datetime
 import socket
 
-# 기본 네트워크 타임아웃을 15초로 제한하여 GitHub Actions가 무한 대기하는 현상을 방지합니다.
+# 기본 네트워크 타임아웃을 15초로 설정 (GitHub Actions 무한 대기 방지)
 socket.setdefaulttimeout(15.0)
 
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "today.json")
@@ -67,7 +67,7 @@ def fetch_youtube_latest():
 
         return results
     except Exception as e:
-        print(f"[youtube] 수집 중 예외 발생 (Quota 초과 또는 API 키 오류): {e}")
+        print(f"[youtube] 수집 중 예외 발생 (Quota 초과 또는 API 오류 가능성): {e}")
         return []
 
 
