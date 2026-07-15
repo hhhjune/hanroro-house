@@ -36,13 +36,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git fetch origin
-
           git add today.json
-          git commit -m "Update today.json" || exit 0
-
-          git pull --rebase origin data-updates || true
-          git push origin HEAD:data-updates
+          git diff --quiet --cached || git commit -m "chore: today.json 자동 업데이트"
+          git push origin HEAD:main
 
 
