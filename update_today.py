@@ -11,12 +11,12 @@ import json
 import datetime
 import socket
 
-# 기본 네트워크 타임아웃을 15초로 설정 (GitHub Actions 무한 대기 방지)
+# 기본 네트워크 타임아웃을 15초로 제한하여 GitHub Actions가 무한 대기하는 현상을 방지합니다.
 socket.setdefaulttimeout(15.0)
 
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "today.json")
 
-YOUTUBE_CHANNEL_ID = "UCrDa_5OU-rhvXqWlPx5hgKQ"   # 한로로 HANRORO 공식 채널
+YOUTUBE_CHANNEL_ID = "UCrDa_5OU-rhvXqWlPx5hgKQ"   # 한로로 공식 채널 ID
 INSTAGRAM_USERNAME = "hanr0r0"
 TIKTOK_USERNAME = "hanroro_official"
 
@@ -33,10 +33,9 @@ def fetch_youtube_latest():
         return []
 
     try:
-        from googleapiclient.discovery import build  # pip install google-api-python-client
+        from googleapiclient.discovery import build
         youtube = build("youtube", "v3", developerKey=api_key)
 
-        # 1) 채널의 업로드 재생목록 ID를 가져오기
         channel_res = youtube.channels().list(
             part="contentDetails",
             id=YOUTUBE_CHANNEL_ID
@@ -49,7 +48,6 @@ def fetch_youtube_latest():
 
         uploads_playlist_id = items[0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
-        # 2) 업로드 재생목록에서 최신 영상 가져오기
         playlist_res = youtube.playlistItems().list(
             part="snippet",
             playlistId=uploads_playlist_id,
@@ -69,14 +67,14 @@ def fetch_youtube_latest():
 
         return results
     except Exception as e:
-        print(f"[youtube] 수집 중 예외 발생 (Quota 초과 또는 API 오류 가능성): {e}")
+        print(f"[youtube] 수집 중 예외 발생 (Quota 초과 또는 API 키 오류): {e}")
         return []
 
 
 def fetch_instagram_latest():
-    """instaloader로 공개 계정의 최신 게시물을 가져와요 (로그인 없이, 비공식)."""
+    """instaloader로 공개 계정의 최신 게시물을 가져옵니다."""
     try:
-        import instaloader  # pip install instaloader
+        import instaloader
     except ImportError:
         print("[instagram] instaloader가 설치되어 있지 않아 건너뜁니다.")
         return []
@@ -91,7 +89,6 @@ def fetch_instagram_latest():
             save_metadata=False,
             compress_json=False,
         )
-        # instaloader 자체 세션 타임아웃 지정 (기본 소켓 타임아웃 적용됨)
         profile = instaloader.Profile.from_username(loader.context, INSTAGRAM_USERNAME)
 
         results = []
@@ -114,9 +111,9 @@ def fetch_instagram_latest():
 
 
 def fetch_tiktok_latest():
-    """yt-dlp로 틱톡 사용자 페이지의 최신 영상 목록을 가져와요 (비공식)."""
+    """yt-dlp로 틱톡 사용자 페이지의 최신 영상 목록을 가져옵니다."""
     try:
-        import yt_dlp  # pip install yt-dlp
+        import yt_dlp
     except ImportError:
         print("[tiktok] yt-dlp가 설치되어 있지 않아 건너뜁니다.")
         return []
@@ -124,9 +121,9 @@ def fetch_tiktok_latest():
     url = f"https://www.tiktok.com/@{TIKTOK_USERNAME}"
     ydl_opts = {
         "quiet": True,
-        "extract_flat": True,   # 개별 영상을 전부 다운로드하지 않고 목록만
+        "extract_flat": True,
         "playlistend": MAX_ITEMS_PER_SOURCE,
-        "socket_timeout": 15,   # yt-dlp 자체 타임아웃 설정
+        "socket_timeout": 15,
     }
 
     try:
@@ -138,7 +135,7 @@ def fetch_tiktok_latest():
         for entry in entries[:MAX_ITEMS_PER_SOURCE]:
             title = entry.get("title") or "(제목 없음)"
             video_id = entry.get("id")
-            upload_date = entry.get("upload_date")  # 'YYYYMMDD' 또는 없음
+            upload_date = entry.get("upload_date")
             date_str = (
                 f"{upload_date[:4]}.{upload_date[4:6]}.{upload_date[6:8]}"
                 if upload_date else ""
