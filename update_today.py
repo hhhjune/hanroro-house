@@ -11,10 +11,13 @@ import json
 import datetime
 import socket
 import urllib.request
+import urllib.parse
 import xml.etree.ElementTree as ET
+import re
+import html
 
-# 기본 네트워크 타임아웃을 10초로 설정
-socket.setdefaulttimeout(10.0)
+# 기본 네트워크 타임아웃을 15초로 설정 (무한 대기 방지)
+socket.setdefaulttimeout(15.0)
 
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "today.json")
 
@@ -38,7 +41,6 @@ def fetch_youtube_latest():
         from googleapiclient.discovery import build
         youtube = build("youtube", "v3", developerKey=api_key)
 
-        # 1) 채널의 업로드 재생목록 ID를 가져오기
         channel_res = youtube.channels().list(
             part="contentDetails",
             id=YOUTUBE_CHANNEL_ID
@@ -51,7 +53,6 @@ def fetch_youtube_latest():
 
         uploads_playlist_id = items[0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
-        # 2) 업로드 재생목록에서 최신 영상 가져오기
         playlist_res = youtube.playlistItems().list(
             part="snippet",
             playlistId=uploads_playlist_id,
@@ -75,8 +76,73 @@ def fetch_youtube_latest():
         return []
 
 
+def parse_picuki_time(time_str):
+    """Picuki의 상대 시간('3 days ago' 등)을 YYYY.MM.DD 포맷으로 변환합니다."""
+    now = datetime.datetime.now()
+    time_str = time_str.lower().strip()
+    try:
+        if 'sec' in time_str or 'min' in time_str or 'hour' in time_str:
+            return now.strftime("%Y.%m.%d")
+        elif 'day' in time_str:
+            num = int(re.search(r'\d+', time_str).group())
+            target = now - datetime.timedelta(days=num)
+            return target.strftime("%Y.%m.%d")
+        elif 'week' in time_str:
+            num = int(re.search(r'\d+', time_str).group())
+            target = now - datetime.timedelta(days=num * 7)
+            return target.strftime("%Y.%m.%d")
+        elif 'month' in time_str:
+            num = int(re.search(r'\d+', time_str).group())
+            target = now - datetime.timedelta(days=num * 30)
+            return target.strftime("%Y.%m.%d")
+        else:
+            return now.strftime("%Y.%m.%d")
+    except:
+        return now.strftime("%Y.%m.%d")
+
+
+def fetch_html_with_proxy(url):
+    """깃허브 서버 차단을 뚫기 위해 공용 우회 프록시 서버들을 거쳐 HTML을 가져옵니다."""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7"
+    }
+    
+    # 1안: 직접 접속 시도
+    try:
+        print(f"[instagram] 직접 접속 시도 중: {url}")
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=10) as response:
+            return response.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        print(f"[instagram] 직접 접속 실패: {e}. 프록시 우회를 시작합니다.")
+
+    # 2안: AllOrigins 프록시 우회 (가장 강력함)
+    proxy_url1 = f"https://api.allorigins.win/raw?url={urllib.parse.quote(url)}"
+    try:
+        print(f"[instagram] 프록시 1선(AllOrigins) 우회 시도 중...")
+        req = urllib.request.Request(proxy_url1, headers=headers)
+        with urllib.request.urlopen(req, timeout=12) as response:
+            return response.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        print(f"[instagram] 프록시 1선 실패: {e}")
+
+    # 3안: Corsproxy.io 프록시 우회 (백업용)
+    proxy_url2 = f"https://corsproxy.io/?{urllib.parse.quote(url)}"
+    try:
+        print(f"[instagram] 프록시 2선(Corsproxy) 우회 시도 중...")
+        req = urllib.request.Request(proxy_url2, headers=headers)
+        with urllib.request.urlopen(req, timeout=12) as response:
+            return response.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        print(f"[instagram] 프록시 2선 실패: {e}")
+
+    return ""
+
+
 def _fetch_instagram_fallback():
-    """우회 서버가 모두 작동하지 않을 때 마지막 수단으로 instaloader를 시도합니다."""
+    """웹 수집기가 모두 실패했을 때 실행되는 최종 백업 수단입니다."""
     print("[instagram] 최종 백업 방식(instaloader) 실행 중...")
     try:
         import instaloader
@@ -110,82 +176,102 @@ def _fetch_instagram_fallback():
 
 
 def fetch_instagram_latest():
-    """안정적인 여러 개의 Public RSSHub 미러 서버를 순차적으로 테스트하며 인스타 피드를 가져옵니다."""
+    """인스타그램 게시글을 가져옵니다 (Picuki 우회 -> Imginn 우회 -> Instaloader 순서로 3중 작동)."""
+    print("[instagram] 데이터 수집 시작...")
     
-    # 전 세계에 흩어진 신뢰도 높은 공개 RSSHub 우회 서버 목록입니다.
-    # 인스타그램 서버 차단을 뚫기 위해 이 주소들을 순서대로 찔러봅니다.
-    rss_gateways = [
-        f"https://rsshub.app/instagram/user/{INSTAGRAM_USERNAME}",
-        f"https://rsshub.rssbuddy.com/instagram/user/{INSTAGRAM_USERNAME}",
-        f"https://rsshub.moeyy.cn/instagram/user/{INSTAGRAM_USERNAME}",
-        f"https://rss.outv.im/instagram/user/{INSTAGRAM_USERNAME}"
-    ]
+    # --- 1단계: 가장 안정적인 인스타 뷰어 'Picuki' 파싱 ---
+    picuki_url = f"https://www.picuki.com/profile/{INSTAGRAM_USERNAME}"
+    html_content = fetch_html_with_proxy(picuki_url)
     
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
-    }
+    if html_content and "box-photo" in html_content:
+        print("[instagram] Picuki HTML 획득 성공. 파싱을 진행합니다.")
+        posts = html_content.split('class="box-photo"')
+        if len(posts) < 2:
+            posts = html_content.split('class="photo"')
+            
+        results = []
+        for post in posts[1:]:
+            if len(results) >= MAX_ITEMS_PER_SOURCE:
+                break
+            
+            # 포스트 링크 추출
+            link_match = re.search(r'href="(https://www\.picuki\.com/media/\d+)"', post)
+            if not link_match:
+                continue
+            link = link_match.group(1)
+            
+            # 포스트 본문(alt) 추출
+            caption_match = re.search(r'alt="([^"]*)"', post)
+            caption_raw = caption_match.group(1) if caption_match else ""
+            caption = html.unescape(caption_raw).strip()
+            
+            caption = caption.splitlines()[0] if caption else "(사진/동영상)"
+            if len(caption) > 40:
+                caption = caption[:40] + "…"
+                
+            # 시간 추출 및 포맷 변환
+            time_match = re.search(r'class="time">([^<]+)<', post)
+            time_str = time_match.group(1) if time_match else "today"
+            date_str = parse_picuki_time(time_str)
+            
+            results.append({
+                "date": date_str,
+                "title": f"@{INSTAGRAM_USERNAME} — {caption}",
+                "link": link
+            })
+            
+        if results:
+            print(f"[instagram] Picuki에서 {len(results)}건의 게시글을 성공적으로 가져왔습니다!")
+            return results
+    else:
+        print("[instagram] Picuki 파싱 실패 혹은 차단됨. 2단계 백업으로 전환합니다.")
+
+    # --- 2단계: 서브 인스타 뷰어 'Imginn' 파싱 ---
+    imginn_url = f"https://imginn.com/{INSTAGRAM_USERNAME}/"
+    html_content = fetch_html_with_proxy(imginn_url)
     
-    for url in rss_gateways:
-        try:
-            print(f"[instagram] 우회 서버 시도 중: {url}")
-            req = urllib.request.Request(url, headers=headers)
+    if html_content and 'class="item"' in html_content:
+        print("[instagram] Imginn HTML 획득 성공. 파싱을 진행합니다.")
+        posts = html_content.split('class="item"')
+        results = []
+        for post in posts[1:]:
+            if len(results) >= MAX_ITEMS_PER_SOURCE:
+                break
+                
+            link_match = re.search(r'href="(/p/[^"]+)"', post)
+            if not link_match:
+                continue
+            link = "https://imginn.com" + link_match.group(1)
             
-            # 각 서버당 타임아웃 8초 설정
-            with urllib.request.urlopen(req, timeout=8) as response:
-                xml_data = response.read()
-                
-            root = ET.fromstring(xml_data)
-            results = []
+            caption_match = re.search(r'alt="([^"]*)"', post)
+            caption_raw = caption_match.group(1) if caption_match else ""
+            caption = html.unescape(caption_raw).strip()
             
-            # RSS 피드의 개별 게시물 가공
-            for item in root.findall(".//item"):
-                if len(results) >= MAX_ITEMS_PER_SOURCE:
-                    break
-                    
-                title_el = item.find("title")
-                title_text = title_el.text if title_el is not None else ""
+            caption = caption.splitlines()[0] if caption else "(사진/동영상)"
+            if len(caption) > 40:
+                caption = caption[:40] + "…"
                 
-                link_el = item.find("link")
-                link = link_el.text if link_el is not None else f"https://www.instagram.com/{INSTAGRAM_USERNAME}/"
-                
-                pub_date_el = item.find("pubDate")
-                pub_date_raw = pub_date_el.text if pub_date_el is not None else ""
-                
-                # 날짜 변환 (YYYY.MM.DD)
-                date_str = ""
-                if pub_date_raw:
-                    try:
-                        # Wed, 15 Jul 2026 ... 포맷 처리
-                        parsed_date = datetime.datetime.strptime(pub_date_raw[:25].strip(), "%a, %d %b %Y %H:%M:%S")
-                        date_str = parsed_date.strftime("%Y.%m.%d")
-                    except Exception:
-                        date_str = datetime.datetime.now().strftime("%Y.%m.%d")
-                
-                # 태그 내용 정제 및 한 줄 자르기
-                caption = title_text.strip().splitlines()[0] if title_text else "(사진/동영상)"
-                if len(caption) > 40:
-                    caption = caption[:40] + "…"
-                    
-                results.append({
-                    "date": date_str,
-                    "title": f"@{INSTAGRAM_USERNAME} — {caption}",
-                    "link": link
-                })
-                
-            if results:
-                print(f"[instagram] 수집 성공! ({len(results)}건 가져옴, 출처: {url})")
-                return results
-                
-        except Exception as e:
-            print(f"[instagram] 해당 우회 서버 실패: {e}. 다음 서버로 넘어갑니다.")
-            continue
+            date_match = re.search(r'class="date">([^<]+)</span>', post)
+            date_str = date_match.group(1).replace("-", ".").strip() if date_match else datetime.datetime.now().strftime("%Y.%m.%d")
             
-    # 모든 우회 서버가 실패했을 경우 최종 수단 작동
+            results.append({
+                "date": date_str,
+                "title": f"@{INSTAGRAM_USERNAME} — {caption}",
+                "link": link
+            })
+            
+        if results:
+            print(f"[instagram] Imginn에서 {len(results)}건의 게시글을 성공적으로 가져왔습니다!")
+            return results
+    else:
+        print("[instagram] Imginn 파싱 실패 혹은 차단됨. 최종 백업으로 전환합니다.")
+
+    # --- 3단계: 최후의 수단 Instaloader 작동 ---
     return _fetch_instagram_fallback()
 
 
 def fetch_tiktok_latest():
-    """yt-dlp로 틱톡 사용자 페이지의 최신 영상 목록을 가져옵니다 (비공식)."""
+    """yt-dlp로 틱톡 사용자 페이지의 최신 영상 목록을 가져옵니다."""
     try:
         import yt_dlp
     except ImportError:
