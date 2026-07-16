@@ -743,44 +743,88 @@
     .hero h1{letter-spacing:3px;}
   }
 
-  /* ---------- NAV ---------- */
-  nav.site-nav{
+  /* ---------- NAV (오른쪽 슬라이드 메뉴) ---------- */
+  .nav-toggle-btn{
     position:fixed;
     top:26px;
     right:32px;
-    z-index:20;
+    z-index:30;
+    width:44px;
+    height:44px;
+    border:1px solid var(--rule-strong);
+    border-radius:50%;
+    background:var(--paper);
+    color:var(--ink);
+    font-size:18px;
+    cursor:pointer;
     display:flex;
-    flex-wrap:wrap;
-    justify-content:flex-end;
-    gap:14px 20px;
-    max-width:60vw;
-    font-family:'Gaegu', cursive;
-    font-size:16px;
+    align-items:center;
+    justify-content:center;
+    box-shadow:3px 3px 0 rgba(42,39,36,0.06);
+    transition:border-color 0.2s ease, color 0.2s ease;
   }
+  .nav-toggle-btn:hover{ border-color:var(--berry); color:var(--berry); }
+
+  .nav-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(42,39,36,0.35);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s ease;
+    z-index:28;
+  }
+  .nav-overlay.open{ opacity:1; pointer-events:auto; }
+
+  nav.site-nav{
+    position:fixed;
+    top:0;
+    right:0;
+    height:100%;
+    width:min(280px, 78vw);
+    z-index:29;
+    background:var(--paper-fold);
+    border-left:1px solid var(--rule);
+    box-shadow:-6px 0 20px rgba(42,39,36,0.12);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:88px 32px 32px;
+    font-family:'Gaegu', cursive;
+    font-size:18px;
+    transform:translateX(100%);
+    transition:transform 0.35s ease;
+  }
+  nav.site-nav.open{ transform:translateX(0); }
+
+  .nav-close-btn{
+    position:absolute;
+    top:26px;
+    right:28px;
+    background:none;
+    border:none;
+    font-size:20px;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .nav-close-btn:hover{ color:var(--berry); }
+
   nav.site-nav a{
     color:var(--ink-soft);
     text-decoration:none;
-    padding-bottom:2px;
-    border-bottom:1px dashed transparent;
-    transition:color 0.2s ease, border-color 0.2s ease;
+    padding:12px 4px;
+    border-bottom:1px dashed var(--rule);
+    transition:color 0.2s ease, padding-left 0.2s ease;
   }
   nav.site-nav a:hover{
     color:var(--berry);
-    border-color:var(--berry);
+    padding-left:6px;
   }
   @media (max-width:760px){
     nav.site-nav{
-      top:auto;
-      bottom:0;
-      left:0; right:0;
-      max-width:100%;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:10px 16px;
-      background:var(--paper-fold);
-      border-top:1px solid var(--rule);
-      padding:10px 10px;
-      font-size:13px;
+      width:min(240px, 82vw);
+      padding:80px 24px 24px;
+      font-size:16px;
     }
   }
 
@@ -1085,7 +1129,10 @@
 </head>
 <body>
 
-<nav class="site-nav">
+<button type="button" id="navToggleBtn" class="nav-toggle-btn" aria-label="메뉴 열기">☰</button>
+<div class="nav-overlay" id="navOverlay"></div>
+<nav class="site-nav" id="siteNav">
+  <button type="button" id="navCloseBtn" class="nav-close-btn" aria-label="메뉴 닫기">✕</button>
   <a href="#today">오늘</a>
   <a href="#about">소개</a>
   <a href="#discography">디스코그래피</a>
@@ -1573,6 +1620,26 @@
 </footer>
 
 <script>
+  // 오른쪽 슬라이드 메뉴
+  const navToggleBtn = document.getElementById('navToggleBtn');
+  const navCloseBtn = document.getElementById('navCloseBtn');
+  const siteNav = document.getElementById('siteNav');
+  const navOverlay = document.getElementById('navOverlay');
+
+  function openNav(){
+    siteNav.classList.add('open');
+    navOverlay.classList.add('open');
+  }
+  function closeNav(){
+    siteNav.classList.remove('open');
+    navOverlay.classList.remove('open');
+  }
+
+  navToggleBtn.addEventListener('click', openNav);
+  navCloseBtn.addEventListener('click', closeNav);
+  navOverlay.addEventListener('click', closeNav);
+  siteNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+
   // scroll reveal for discography stops
   const stops = document.querySelectorAll('.stop');
   const observer = new IntersectionObserver((entries) => {
