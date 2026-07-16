@@ -358,64 +358,6 @@
     .today-grid{ grid-template-columns:1fr; }
   }
 
-  /* ---------- MOOD ---------- */
-  .mood-section{
-    max-width:900px;
-    margin:0 auto;
-    padding:100px 24px 40px;
-    text-align:center;
-  }
-  .mood-grid{
-    display:grid;
-    grid-template-columns:repeat(4, 1fr);
-    gap:14px;
-    margin-top:20px;
-  }
-  .mood-btn{
-    background:var(--paper-fold);
-    border:1px solid var(--rule);
-    padding:22px 10px;
-    border-radius:14px;
-    cursor:pointer;
-    font-family:'Gaegu', cursive;
-    font-size:15px;
-    color:var(--ink);
-    line-height:1.6;
-    transition:transform 0.15s ease, border-color 0.15s ease;
-  }
-  .mood-btn .emoji{
-    display:block;
-    font-size:30px;
-    margin-bottom:8px;
-  }
-  .mood-btn:hover{ transform:translateY(-3px); border-color:var(--berry); }
-  .mood-btn.active{ border-color:var(--berry); background:rgba(156,74,92,0.08); }
-  .mood-result{
-    display:none;
-    margin-top:36px;
-    padding:28px 30px;
-    border-left:3px solid var(--berry);
-    background:var(--paper-fold);
-    text-align:left;
-  }
-  .mood-result.show{ display:block; }
-  .mood-result-label{
-    color:var(--berry);
-    font-size:14px;
-  }
-  .mood-result h3{
-    font-size:26px;
-    margin:8px 0 10px;
-  }
-  .mood-result p{
-    font-size:14.5px;
-    color:var(--ink-soft);
-    margin:0 0 14px 0;
-  }
-  @media (max-width:640px){
-    .mood-grid{ grid-template-columns:repeat(2, 1fr); }
-  }
-
   /* ---------- QUIZ ---------- */
   .quiz-section{
     max-width:640px;
@@ -604,12 +546,12 @@
 
   /* ---------- DISCOGRAPHY (가로 스크롤) ---------- */
   .discography{
-    max-width:100%;
+    max-width:50%;
     margin:0 auto;
     padding:100px 0 120px;
   }
   .discography .section-head{
-    max-width:900px;
+    max-width:100%;
     margin:0 auto 8px;
     padding:0 24px;
   }
@@ -771,12 +713,17 @@
 
   @media (max-width:760px){
     .about{grid-template-columns:1fr; padding:80px 20px;}
+    .discography{max-width:100%;}
     .stop{width:78vw;}
     .road{padding:10px 20px 36px;}
     .road-arrow{width:36px; height:36px; font-size:17px;}
     .road-arrow-left{left:2px;}
     .road-arrow-right{right:2px;}
     .hero h1{letter-spacing:3px;}
+  }
+
+  @media (max-width:1100px){
+    .discography{max-width:75%;}
   }
 
   /* ---------- NAV (오른쪽 슬라이드 메뉴) ---------- */
@@ -1172,7 +1119,6 @@
   <a href="#today">오늘</a>
   <a href="#about">소개</a>
   <a href="#discography">디스코그래피</a>
-  <a href="#mood">감정으로 찾기</a>
   <a href="#quiz">테스트</a>
   <a href="#calendar">캘린더</a>
   <a href="#diary">기록북</a>
@@ -1481,23 +1427,6 @@
     공식 유튜브 채널 · <a href="https://www.youtube.com/channel/UCrDa_5OU-rhvXqWlPx5hgKQ" target="_blank" rel="noopener" style="color:var(--berry);">한로로 HANRORO</a><br>
     ※ 위 음반·곡 소개는 나무위키 '한로로/음반' 및 관련 문서를 참고해 정리했습니다.
   </p>
-</section>
-
-<section id="mood" class="mood-section">
-  <div class="section-head">
-    <span class="eyebrow handwrite">오늘 당신의 마음은 어떤가요</span>
-    <h2>감정으로 노래 찾기</h2>
-    <p class="today-sub">지금 기분에 어울리는 한로로의 노래를 찾아드려요.</p>
-  </div>
-
-  <div class="mood-grid" id="moodGrid"></div>
-
-  <div class="mood-result" id="moodResult">
-    <span class="mood-result-label handwrite">이럴 땐, 이 노래</span>
-    <h3 id="moodSongTitle">—</h3>
-    <p id="moodSongReason"></p>
-    <a id="moodSongLink" class="mv-link" href="#" target="_blank" rel="noopener">▶ 들어보기</a>
-  </div>
 </section>
 
 <section id="quiz" class="quiz-section">
@@ -2186,45 +2115,6 @@
 
   loadTodayData();
 
-  // ================= 감정으로 노래 찾기 =================
-  const MOOD_DATA = [
-    { emoji: '😭', label: '오늘 너무 힘들어요', song: '하루살이', reason: '이별처럼 무거운 하루의 끝에서, 여린 목소리로 슬픔을 조용히 다독여주는 곡이에요.', link: 'https://www.youtube.com/watch?v=fdwB6U4u-vk' },
-    { emoji: '😊', label: '오늘 행복해요', song: '입춘', reason: '불확실하지만 설레는 봄맞이처럼, 새로운 시작을 응원하는 한로로의 데뷔곡이에요.', link: 'https://www.youtube.com/watch?v=pNi9PjmbUrI' },
-    { emoji: '😶', label: '공허해요', song: '생존법', reason: '삶과 죽음 어디에도 치우치지 않는 무중력 상태, 그 담담한 공허함을 그대로 닮은 곡이에요.', link: 'https://www.youtube.com/watch?v=puw1hdSnSX0' },
-    { emoji: '😡', label: '화가 나요', song: '도망', reason: '질주하는 드럼과 기타 리프에 답답한 마음을 실어 함께 내달릴 수 있는 곡이에요.', link: 'https://www.youtube.com/watch?v=nhntH2wn3m0' },
-    { emoji: '😴', label: '지쳤어요', song: '정류장', reason: '오지 않는 버스를 기다리듯, 잠시 멈춰서 지나온 하루를 돌아보게 하는 곡이에요.', link: 'https://www.youtube.com/watch?v=4SrrieLwsOI' },
-    { emoji: '🥹', label: '그리워요', song: '__에게', reason: '떠난 이에게 미처 전하지 못한 말을 담은, 편지 같은 곡이에요.', link: 'https://music.bugs.co.kr/album/20744778' },
-    { emoji: '😳', label: '설레요', song: '너와 나', reason: '불확실한 오늘을 살던 \'나\'가 \'너\'를 만나 품게 되는 두근거림을 그린 곡이에요.', link: 'https://www.youtube.com/watch?v=Tos8R9Tcem8' },
-    { emoji: '😨', label: '불안해요', song: 'ㅈㅣㅂ', reason: '무너져가는 마음을 피하지 않고 정면으로 마주하는, 단단한 록 사운드의 곡이에요.', link: 'https://www.youtube.com/watch?v=U4-cz9NHQv4' }
-  ];
-
-  const moodGrid = document.getElementById('moodGrid');
-  if(moodGrid){
-    moodGrid.innerHTML = MOOD_DATA.map((m, idx) => `
-      <button class="mood-btn" data-idx="${idx}">
-        <span class="emoji">${m.emoji}</span>${m.label}
-      </button>
-    `).join('');
-
-    const moodResult = document.getElementById('moodResult');
-    const moodSongTitle = document.getElementById('moodSongTitle');
-    const moodSongReason = document.getElementById('moodSongReason');
-    const moodSongLink = document.getElementById('moodSongLink');
-
-    moodGrid.querySelectorAll('.mood-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        moodGrid.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const m = MOOD_DATA[parseInt(btn.dataset.idx, 10)];
-        moodSongTitle.textContent = m.song;
-        moodSongReason.textContent = m.reason;
-        moodSongLink.href = m.link;
-        moodResult.classList.add('show');
-        moodResult.scrollIntoView({ behavior:'smooth', block:'center' });
-      });
-    });
-  }
-
   // ================= 당신은 어떤 한로로일까요 (테스트) =================
   // 타입 인덱스: 0 입춘 1 거울 2 너와나 3 사랑하게될거야 4 정류장 5 생존법 6 먹이사슬 7 오후 8 자몽살구클럽 9 하루살이
   const QUIZ_TYPES = [
@@ -2410,18 +2300,21 @@
     {
       date: '2026-07-19',
       title: '사운드베리페스타 출연',
-      venue: '일산 킨텍스'
+      venue: '일산 킨텍스',
+      instagram: 'https://www.instagram.com/soundberry_festa/'
     },
     {
       date: '2026-08-06',
       dateEnd: '2026-08-07',
       title: '시리즈엘 출연',
-      venue: '롯데 콘서트홀'
+      venue: '롯데 콘서트홀',
+      instagram: 'https://www.instagram.com/seriesl_official/'
     },
     {
       date: '2026-10-04',
       title: '부산국제록페스티벌 출연',
-      venue: '삼락생태공원'
+      venue: '삼락생태공원',
+      instagram: 'https://www.instagram.com/busanrockfest/'
     },
   ];
 
@@ -2457,6 +2350,7 @@
               <p>장소 · ${ev.venue}</p>
               <div class="mv-links">
                 <a class="mv-link" href="https://www.google.com/maps/search/${encodeURIComponent(ev.venue)}" target="_blank" rel="noopener">지도 보기</a>
+                ${ev.instagram ? `<a class="mv-link" href="${ev.instagram}" target="_blank" rel="noopener">📷 공식 인스타</a>` : ''}
               </div>
             </div>
           </li>
