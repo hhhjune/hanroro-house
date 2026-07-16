@@ -602,28 +602,52 @@
   .cal-detail p{ margin:0 0 10px 0; }
   .cal-detail .mv-links{ display:flex; gap:8px; flex-wrap:wrap; }
 
-  /* ---------- DISCOGRAPHY ---------- */
+  /* ---------- DISCOGRAPHY (가로 스크롤) ---------- */
   .discography{
-    max-width:900px;
+    max-width:100%;
     margin:0 auto;
-    padding:100px 24px 160px;
+    padding:100px 0 120px;
+  }
+  .discography .section-head{
+    max-width:900px;
+    margin:0 auto 8px;
+    padding:0 24px;
+  }
+
+  .road-wrap{
+    position:relative;
   }
 
   .road{
-    position:relative;
-    padding-left:0;
+    overflow-x:auto;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+    padding:10px 56px 44px;
+    scrollbar-width:thin;
+    scrollbar-color:var(--rule-strong) transparent;
   }
-  .road::before{
-    /* the center-line of the road, dashed like road markings */
+  .road::-webkit-scrollbar{ height:8px; }
+  .road::-webkit-scrollbar-thumb{ background:var(--rule-strong); border-radius:100px; }
+  .road::-webkit-scrollbar-track{ background:transparent; }
+
+  .road-track{
+    position:relative;
+    display:inline-flex;
+    align-items:flex-start;
+    gap:52px;
+    padding-top:40px;
+  }
+  .road-track::before{
+    /* 가로로 이어지는 점선 도로 */
     content:"";
     position:absolute;
-    left:50%;
-    top:0;
-    bottom:0;
-    width:2px;
-    transform:translateX(-50%);
+    left:0;
+    right:0;
+    top:18px;
+    height:2px;
     background:repeating-linear-gradient(
-      to bottom,
+      to right,
       var(--berry) 0 14px,
       transparent 14px 28px
     );
@@ -631,34 +655,48 @@
 
   .stop{
     position:relative;
-    width:calc(50% - 48px);
-    margin-bottom:96px;
+    flex:0 0 auto;
+    width:300px;
+    scroll-snap-align:start;
+    text-align:left;
     opacity:0;
-    transform:translateY(24px);
-    transition:opacity 0.7s ease, transform 0.7s ease;
+    transform:translateY(20px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
   }
   .stop.visible{opacity:1; transform:translateY(0);}
-  .stop:last-child{margin-bottom:0;}
-  .stop:nth-child(odd){
-    margin-right:auto;
-    text-align:right;
-  }
-  .stop:nth-child(even){
-    margin-left:auto;
-    text-align:left;
-  }
 
   .stop .marker{
     position:absolute;
-    top:6px;
+    top:-28px;
+    left:50%;
+    transform:translateX(-50%);
     width:14px;
     height:14px;
     border-radius:50%;
     background:var(--paper);
     border:2px solid var(--moss);
   }
-  .stop:nth-child(odd) .marker{ right:-56px; }
-  .stop:nth-child(even) .marker{ left:-56px; }
+
+  .road-arrow{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:5;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid var(--rule-strong);
+    background:var(--paper);
+    color:var(--ink);
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+    box-shadow:3px 3px 0 rgba(42,39,36,0.06);
+    transition:border-color 0.2s ease, color 0.2s ease;
+  }
+  .road-arrow:hover{ border-color:var(--berry); color:var(--berry); }
+  .road-arrow-left{ left:8px; }
+  .road-arrow-right{ right:8px; }
 
   .stop .date{
     font-family:'Gaegu', cursive;
@@ -674,11 +712,11 @@
     margin-bottom:10px;
   }
   .stop h3{
-    font-size:26px;
+    font-size:24px;
     margin-bottom:10px;
   }
   .stop .desc{
-    font-size:14.5px;
+    font-size:14px;
     color:var(--ink-soft);
     margin-bottom:14px;
   }
@@ -695,7 +733,7 @@
     list-style:none;
     margin:0 0 14px 0;
     padding:0;
-    font-size:13.5px;
+    font-size:13px;
     color:var(--ink-soft);
   }
   .stop .tracklist li{
@@ -706,7 +744,6 @@
     color:var(--ink);
     font-weight:500;
   }
-  .stop:nth-child(odd) .tracklist{ margin-left:auto; }
 
   .stop .mv-links{
     display:flex;
@@ -714,7 +751,6 @@
     gap:8px;
     margin-top:4px;
   }
-  .stop:nth-child(odd) .mv-links{ justify-content:flex-end; }
   .stop .mv-link{
     display:inline-flex;
     align-items:center;
@@ -735,11 +771,11 @@
 
   @media (max-width:760px){
     .about{grid-template-columns:1fr; padding:80px 20px;}
-    .road::before{left:20px;}
-    .stop{width:calc(100% - 60px); margin-left:60px !important; margin-right:0 !important; text-align:left !important;}
-    .stop .marker{left:-44px !important; right:auto !important;}
-    .stop .tracklist{margin-left:0 !important;}
-    .stop .mv-links{justify-content:flex-start !important;}
+    .stop{width:78vw;}
+    .road{padding:10px 20px 36px;}
+    .road-arrow{width:36px; height:36px; font-size:17px;}
+    .road-arrow-left{left:2px;}
+    .road-arrow-right{right:2px;}
     .hero h1{letter-spacing:3px;}
   }
 
@@ -1242,18 +1278,24 @@
     <h2>Discography</h2>
   </div>
 
-  <div class="road">
+  <div class="road-wrap">
+    <button type="button" class="road-arrow road-arrow-left" id="roadPrev" aria-label="이전">‹</button>
+    <button type="button" class="road-arrow road-arrow-right" id="roadNext" aria-label="다음">›</button>
 
-    <div class="stop">
-      <div class="marker"></div>
-      <div class="date">2022. 03. 14</div>
-      <div class="kind">Digital Single · 1st</div>
-      <h3>입춘</h3>
-      <p class="desc">불확실한 봄맞이를 결심한 이에게 전하는 데뷔곡. 담담한 보컬과 기타 리프의 첫인상만으로 제20회 한국대중음악상 '올해의 신인'과 '최우수 모던록 노래' 두 부문 후보에 올랐고, 한국 Apple Music '2022년 최고의 음악 100선'에도 선정되었다.</p>
-      <div class="mv-links">
-        <a class="mv-link" href="https://www.youtube.com/watch?v=pNi9PjmbUrI" target="_blank" rel="noopener">▶ 입춘 MV</a>
-      </div>
-    </div>
+    <div class="road" id="discographyRoad">
+      <div class="road-track">
+
+        <div class="stop">
+          <div class="marker"></div>
+          <div class="date">2022. 03. 14</div>
+          <div class="kind">Digital Single · 1st</div>
+          <h3>입춘</h3>
+          <p class="desc">불확실한 봄맞이를 결심한 이에게 전하는 데뷔곡. 담담한 보컬과 기타 리프의 첫인상만으로 제20회 한국대중음악상 '올해의 신인'과 '최우수 모던록 노래' 두 부문 후보에 올랐고, 한국 Apple Music '2022년 최고의 음악 100선'에도 선정되었다.</p>
+          <div class="mv-links">
+            <a class="mv-link" href="https://www.youtube.com/watch?v=pNi9PjmbUrI" target="_blank" rel="noopener">▶ 입춘 MV</a>
+          </div>
+        </div>
+
 
     <div class="stop">
       <div class="marker"></div>
@@ -1431,6 +1473,8 @@
       </div>
     </div>
 
+      </div>
+    </div>
   </div>
 
   <p style="text-align:center; margin-top:56px; font-family:'Gaegu', cursive; font-size:14px; color:var(--ink-soft);">
@@ -1639,6 +1683,20 @@
   navCloseBtn.addEventListener('click', closeNav);
   navOverlay.addEventListener('click', closeNav);
   siteNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+
+  // 디스코그래피 가로 스크롤 화살표
+  const discographyRoad = document.getElementById('discographyRoad');
+  const roadPrevBtn = document.getElementById('roadPrev');
+  const roadNextBtn = document.getElementById('roadNext');
+  if (discographyRoad && roadPrevBtn && roadNextBtn) {
+    const scrollStep = () => Math.min(340, discographyRoad.clientWidth * 0.8);
+    roadPrevBtn.addEventListener('click', () => {
+      discographyRoad.scrollBy({ left: -scrollStep(), behavior: 'smooth' });
+    });
+    roadNextBtn.addEventListener('click', () => {
+      discographyRoad.scrollBy({ left: scrollStep(), behavior: 'smooth' });
+    });
+  }
 
   // scroll reveal for discography stops
   const stops = document.querySelectorAll('.stop');
