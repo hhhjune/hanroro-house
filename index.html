@@ -841,11 +841,18 @@
     gap:28px;
   }
   .site-logo{
-    font-size:24px;
+    font-size:19px;
     font-weight:700;
     color:var(--ink);
     text-decoration:none;
     flex-shrink:0;
+    white-space:nowrap;
+  }
+  .site-logo-en{
+    font-size:12px;
+    font-weight:400;
+    color:var(--ink-soft);
+    letter-spacing:0.5px;
   }
   .site-search-wrap{
     position:relative;
@@ -991,6 +998,48 @@
     border-bottom-color:var(--moss);
   }
 
+  .board-search-row{
+    display:flex;
+    gap:6px;
+    justify-content:flex-end;
+    margin-bottom:18px;
+  }
+  .board-search-row select{
+    border:1px solid var(--rule-strong);
+    border-radius:2px;
+    padding:6px 8px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+    background:#fff;
+    color:var(--ink);
+  }
+  .board-search-row input{
+    flex:1;
+    max-width:260px;
+    border:1px solid var(--rule-strong);
+    border-radius:2px;
+    padding:6px 10px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+  }
+  .board-search-row button{
+    border:1px solid var(--moss);
+    background:var(--moss);
+    color:#fff;
+    border-radius:2px;
+    padding:0 16px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .board-search-row button:hover{ opacity:0.85; }
+  @media (max-width:640px){
+    .board-search-row{ flex-wrap:wrap; justify-content:stretch; }
+    .board-search-row input{ max-width:none; width:100%; order:1; }
+    .board-search-row select{ order:0; }
+    .board-search-row button{ order:2; }
+  }
+
   .board-panel{ display:none; }
   .board-panel.active{ display:block; }
   .board-panel-note{
@@ -1010,6 +1059,26 @@
   .board-badge.free{ background:var(--moss); }
   .board-badge.question{ background:#B8860B; }
 
+  .board-write-toggle-btn{
+    display:block;
+    margin:20px 0 0 auto;
+    background:var(--berry);
+    color:#fff;
+    border:none;
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    padding:8px 18px;
+    border-radius:2px;
+    cursor:pointer;
+    transition:opacity 0.2s ease;
+  }
+  .board-write-toggle-btn:hover{ opacity:0.85; }
+  .board-write-toggle-btn.on{
+    background:#fff;
+    color:var(--ink-soft);
+    border:1px solid var(--rule-strong);
+  }
   .board-write{
     background:var(--paper-fold);
     border:1px solid var(--rule);
@@ -1537,6 +1606,57 @@
     margin-top:40px;
   }
   footer .handwrite{color:var(--berry); font-size:16px; display:block; margin-bottom:8px;}
+
+  /* ---------- 모바일 글자 크기 축소 ---------- */
+  @media (max-width:640px){
+    body{ font-size:14px; }
+    .site-logo{ font-size:16px; }
+    .site-logo-en{ font-size:10px; }
+    .site-search input, .site-search button{ font-size:13px; }
+    .site-gnb a{ font-size:12.5px; padding:9px 8px; }
+
+    .section-head{ margin-bottom:40px; }
+    .section-head .eyebrow{ font-size:13px; }
+    .section-head h2{ font-size:26px; letter-spacing:1px; }
+    .today-sub{ font-size:13px; }
+
+    h1{ font-size:24px; }
+    h2{ font-size:20px; }
+    h3{ font-size:17px; }
+
+    .today-card h3{ font-size:14px; }
+    .today-list a, .today-list .today-item-text{ font-size:12.5px; }
+
+    .index-card h3{ font-size:16px; }
+    .index-card dt, .index-card dd{ font-size:12.5px; }
+    .bio h2{ font-size:22px; }
+    .bio p{ font-size:13.5px; }
+
+    .stop h3{ font-size:19px; }
+    .stop .desc{ font-size:12.5px; }
+    .stop .date{ font-size:14px; }
+
+    .quiz-question h3, #quizQuestionText{ font-size:16px; }
+    .quiz-options button{ font-size:13px; }
+    .quiz-result h3{ font-size:20px; }
+    .quiz-result-desc{ font-size:13px; }
+
+    .calendar-month{ font-size:17px; }
+    .cal-title{ font-size:13.5px; }
+    .cal-detail{ font-size:12.5px; }
+
+    .board-section .section-head h2{ font-size:24px; }
+    .board-table{ font-size:12px; }
+    .board-tab{ font-size:13px; padding:8px 12px; }
+    .board-post-content{ font-size:13px; }
+    .comment-content{ font-size:12.5px; }
+
+    .diary-page .field-group label{ font-size:13px; }
+    .entry-moment{ font-size:13.5px; }
+    .entry-author{ font-size:13px; }
+
+    .kakao-share-btn, .save-image-btn, .cal-ics-btn, .board-submit-btn{ font-size:12px; }
+  }
 </style>
 <!-- 카카오톡 공유 기능용 SDK. 아래 KAKAO_JS_KEY를 발급받은 실제 키로 교체해야 동작해요. -->
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
@@ -1545,7 +1665,7 @@
 
 <header class="site-header">
   <div class="site-header-top">
-    <a href="#today" class="site-logo">한로로</a>
+    <a href="#today" class="site-logo">한로로 <span class="site-logo-en">HANRORO</span></a>
     <div class="site-search-wrap">
       <form class="site-search" id="siteSearchForm">
         <input type="text" id="siteSearchInput" placeholder="통합검색" autocomplete="off">
@@ -1933,6 +2053,15 @@
     <button type="button" class="board-tab" data-tab="question">질문게시판</button>
   </div>
 
+  <div class="board-search-row">
+    <select id="boardSearchMode">
+      <option value="title">제목</option>
+      <option value="titleContent">제목+내용</option>
+    </select>
+    <input type="text" id="boardSearchInput" placeholder="게시판 안에서 검색해보세요">
+    <button type="button" id="boardSearchBtn">검색</button>
+  </div>
+
   <!-- 전체: 자유+질문 글을 한데 모아 보여주는 화면 (글쓰기는 여기서는 할 수 없어요) -->
   <div class="board-panel active" data-panel="all">
     <p class="board-panel-note">자유게시판·질문게시판에 올라온 글이 모두 모여요. 글을 쓰려면 자유게시판이나 질문게시판 탭으로 이동해주세요.</p>
@@ -1958,7 +2087,8 @@
       <span class="admin-status"></span>
     </div>
 
-    <div class="board-write">
+    <button type="button" class="board-write-toggle-btn">✏️ 글쓰기</button>
+    <div class="board-write" style="display:none;">
       <div class="board-write-row">
         <input type="text" class="board-author-input" placeholder="닉네임">
         <input type="text" class="board-title-input" placeholder="제목">
@@ -1997,7 +2127,8 @@
       <span class="admin-status"></span>
     </div>
 
-    <div class="board-write">
+    <button type="button" class="board-write-toggle-btn">✏️ 글쓰기</button>
+    <div class="board-write" style="display:none;">
       <div class="board-write-row">
         <input type="text" class="board-author-input" placeholder="닉네임">
         <input type="text" class="board-title-input" placeholder="제목">
@@ -2232,6 +2363,7 @@
   function showBoardTab(key){
     boardTabButtons.forEach(t => t.classList.toggle('active', t.dataset.tab === key));
     boardPanels.forEach(p => p.classList.toggle('active', p.dataset.panel === key));
+    if (window.resetBoardSearchOnTabSwitch) window.resetBoardSearchOnTabSwitch();
   }
   boardTabButtons.forEach(btn => {
     btn.addEventListener('click', () => showBoardTab(btn.dataset.tab));
@@ -2701,6 +2833,15 @@
     const photoPreviewWrapEl = screen.querySelector('.board-photo-preview-wrap');
     const photoPreviewImgEl = screen.querySelector('.board-photo-preview-img');
     const photoRemoveBtn = screen.querySelector('.board-photo-remove-btn');
+    const writeToggleBtn = screen.querySelector('.board-write-toggle-btn');
+    const writeFormEl = screen.querySelector('.board-write');
+
+    writeToggleBtn.addEventListener('click', () => {
+      const isOpen = writeFormEl.style.display !== 'none';
+      writeFormEl.style.display = isOpen ? 'none' : 'block';
+      writeToggleBtn.textContent = isOpen ? '✏️ 글쓰기' : '✕ 닫기';
+      writeToggleBtn.classList.toggle('on', !isOpen);
+    });
 
     boardState[boardKey] = { posts: [], photoDataUrl: null };
 
@@ -2756,6 +2897,9 @@
         boardState[boardKey].photoDataUrl = null;
         photoInputEl.value = '';
         photoPreviewWrapEl.style.display = 'none';
+        writeFormEl.style.display = 'none';
+        writeToggleBtn.textContent = '✏️ 글쓰기';
+        writeToggleBtn.classList.remove('on');
       } catch (err) {
         alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
         console.error(err);
@@ -3046,6 +3190,75 @@
 
   setupBoard('free');
   setupBoard('question');
+
+  // ---------- 게시판 전용 통합검색 (제목 / 제목+내용) ----------
+  // 상단 로고 옆 통합검색과는 완전히 별개예요. 지금 열려있는 탭(전체/자유/질문)
+  // 안에서만 검색해요.
+  const boardSearchModeEl = document.getElementById('boardSearchMode');
+  const boardSearchInputEl = document.getElementById('boardSearchInput');
+  const boardSearchBtnEl = document.getElementById('boardSearchBtn');
+
+  function getActiveBoardPanelKey() {
+    const activePanel = document.querySelector('.board-panel.active');
+    return activePanel ? activePanel.dataset.panel : 'all';
+  }
+
+  function collectPostsForPanel(panelKey) {
+    if (panelKey === 'all') {
+      return [
+        ...(boardState.free?.posts || []).map(post => ({ post, boardKey: 'free' })),
+        ...(boardState.question?.posts || []).map(post => ({ post, boardKey: 'question' }))
+      ].sort((a, b) => {
+        const at = a.post.createdAt && a.post.createdAt.toMillis ? a.post.createdAt.toMillis() : 0;
+        const bt = b.post.createdAt && b.post.createdAt.toMillis ? b.post.createdAt.toMillis() : 0;
+        return bt - at;
+      });
+    }
+    return (boardState[panelKey]?.posts || []).map(post => ({ post, boardKey: panelKey }));
+  }
+
+  function runBoardSearch() {
+    const panelKey = getActiveBoardPanelKey();
+    const panel = document.querySelector(`.board-panel[data-panel="${panelKey}"]`);
+    if (!panel) return;
+    const listEl = panel.querySelector('.board-list');
+
+    const keyword = boardSearchInputEl.value.trim().toLowerCase();
+    const mode = boardSearchModeEl.value; // 'title' | 'titleContent'
+    const all = collectPostsForPanel(panelKey);
+
+    const filtered = !keyword ? all : all.filter(({ post }) => {
+      const title = (post.title || '').toLowerCase();
+      if (mode === 'title') return title.includes(keyword);
+      const content = (post.content || '').toLowerCase();
+      return title.includes(keyword) || content.includes(keyword);
+    });
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = '<tr><td colspan="4" class="archive-empty">검색 결과가 없어요.</td></tr>';
+      return;
+    }
+
+    const total = filtered.length;
+    listEl.innerHTML = filtered.map(({ post, boardKey }, idx) =>
+      buildBoardRowsHtml(post, boardKey, total - idx)
+    ).join('');
+    wireDeleteButtons(listEl);
+    wireCommentUI(listEl);
+    wireBoardRowToggle(listEl);
+  }
+
+  boardSearchBtnEl.addEventListener('click', runBoardSearch);
+  boardSearchInputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') runBoardSearch();
+  });
+
+  // 탭을 바꾸면 검색어를 지우고 그 탭의 전체 목록을 다시 보여줘요.
+  window.resetBoardSearchOnTabSwitch = function () {
+    boardSearchInputEl.value = '';
+    renderBoardList('free');
+    renderBoardList('question');
+  };
 
   // ---------- 통합검색 ----------
   const DISCOGRAPHY_INDEX = [
