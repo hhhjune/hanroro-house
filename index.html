@@ -3507,7 +3507,8 @@
   // date: 'YYYY-MM-DD', 기간 일정은 dateEnd도 함께 적어주세요. venue/ticket/map은 확인되는 대로 채워주세요.
   const CALENDAR_DATA = [
     {
-      date: '2026-07-19',
+      date: '2026-07-18',
+      dateEnd: '2026-07-19',
       title: '사운드베리페스타 출연',
       venue: '일산 킨텍스',
       instagram: 'https://www.instagram.com/soundberry_festa/',
@@ -3523,6 +3524,7 @@
     },
     {
       date: '2026-08-14',
+      dateEnd: '2026-08-16',
       title: '서머소닉 2026 출연',
       venue: '일본 도쿄 (조조마린 스타디움 · 마쿠하리 멧세)',
       instagram: 'https://www.instagram.com/summersonic_official/',
@@ -3542,7 +3544,7 @@
     return String(text).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
   }
 
-  function downloadIcsForEvent(ev){
+  function addToDeviceCalendar(ev){
     const startStr = ev.date.replace(/-/g, '');
     const endBase = new Date(ev.dateEnd || ev.date);
     endBase.setDate(endBase.getDate() + 1); // 종료일은 하루 뒤(배타적 종료)로 지정해야 캘린더 앱이 정확히 표시해요.
@@ -3565,15 +3567,12 @@
       'END:VCALENDAR'
     ].join('\r\n');
 
-    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${ev.title}.ics`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
+    // 파일을 강제로 "다운로드"시키지 않고, 브라우저가 이 데이터를 곧바로
+    // 기기의 캘린더 앱으로 열도록(아이폰 사파리 등에서 "캘린더에 추가" 화면이
+    // 바로 뜨도록) data URI로 직접 이동시켜요. 안드로이드 기기·브라우저에 따라
+    // 다운로드 폴더에 저장된 뒤 탭해서 열어야 하는 경우도 있을 수 있어요.
+    const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+    window.location.href = dataUri;
   }
 
   function renderCalendar(){
@@ -3641,7 +3640,7 @@
 
     container.querySelectorAll('.cal-ics-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        downloadIcsForEvent({
+        addToDeviceCalendar({
           date: btn.dataset.date,
           dateEnd: btn.dataset.dateEnd || null,
           title: btn.dataset.title,
