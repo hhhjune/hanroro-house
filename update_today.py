@@ -12,7 +12,6 @@ import datetime
 import socket
 import urllib.request
 import urllib.parse
-import xml.etree.ElementTree as ET
 import re
 import html
 
@@ -32,7 +31,7 @@ def fetch_youtube_latest():
     """YouTube Data API v3로 채널의 최신 업로드 영상을 가져옵니다."""
     api_key = os.environ.get("YOUTUBE_API_KEY")
     print(f"[youtube] YOUTUBE_API_KEY 존재 여부: {'OK' if api_key else 'NOT FOUND'}")
-    
+
     if not api_key:
         print("[youtube] YOUTUBE_API_KEY 환경변수가 없어서 건너뜁니다.")
         return []
@@ -97,7 +96,7 @@ def parse_picuki_time(time_str):
             return target.strftime("%Y.%m.%d")
         else:
             return now.strftime("%Y.%m.%d")
-    except:
+    except Exception:
         return now.strftime("%Y.%m.%d")
 
 
@@ -108,7 +107,7 @@ def fetch_html_with_proxy(url):
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7"
     }
-    
+
     # 1안: 직접 접속 시도
     try:
         print(f"[instagram] 직접 접속 시도 중: {url}")
@@ -118,10 +117,10 @@ def fetch_html_with_proxy(url):
     except Exception as e:
         print(f"[instagram] 직접 접속 실패: {e}. 프록시 우회를 시작합니다.")
 
-    # 2안: AllOrigins 프록시 우회 (가장 강력함)
+    # 2안: AllOrigins 프록시 우회
     proxy_url1 = f"https://api.allorigins.win/raw?url={urllib.parse.quote(url)}"
     try:
-        print(f"[instagram] 프록시 1선(AllOrigins) 우회 시도 중...")
+        print("[instagram] 프록시 1선(AllOrigins) 우회 시도 중...")
         req = urllib.request.Request(proxy_url1, headers=headers)
         with urllib.request.urlopen(req, timeout=12) as response:
             return response.read().decode('utf-8', errors='ignore')
@@ -131,7 +130,7 @@ def fetch_html_with_proxy(url):
     # 3안: Corsproxy.io 프록시 우회 (백업용)
     proxy_url2 = f"https://corsproxy.io/?{urllib.parse.quote(url)}"
     try:
-        print(f"[instagram] 프록시 2선(Corsproxy) 우회 시도 중...")
+        print("[instagram] 프록시 2선(Corsproxy) 우회 시도 중...")
         req = urllib.request.Request(proxy_url2, headers=headers)
         with urllib.request.urlopen(req, timeout=12) as response:
             return response.read().decode('utf-8', errors='ignore')
@@ -163,10 +162,9 @@ def _fetch_instagram_fallback():
             caption = (post.caption or "").strip().splitlines()[0] if post.caption else "(캡션 없음)"
             if len(caption) > 40:
                 caption = caption[:40] + "…"
-            date_str = post.date_utc.strftime("%Y.%m.%d")
             results.append({
-                "date": date_str,
-                "title": f"@{INSTAGRAM_USERNAME} — {caption}",
+                "date": "",
+                "title": caption,
                 "link": f"https://www.instagram.com/p/{post.shortcode}/"
             })
         return results
@@ -178,48 +176,42 @@ def _fetch_instagram_fallback():
 def fetch_instagram_latest():
     """인스타그램 게시글을 가져옵니다 (Picuki 우회 -> Imginn 우회 -> Instaloader 순서로 3중 작동)."""
     print("[instagram] 데이터 수집 시작...")
-    
+
     # --- 1단계: 가장 안정적인 인스타 뷰어 'Picuki' 파싱 ---
     picuki_url = f"https://www.picuki.com/profile/{INSTAGRAM_USERNAME}"
     html_content = fetch_html_with_proxy(picuki_url)
-    
+
     if html_content and "box-photo" in html_content:
         print("[instagram] Picuki HTML 획득 성공. 파싱을 진행합니다.")
         posts = html_content.split('class="box-photo"')
         if len(posts) < 2:
             posts = html_content.split('class="photo"')
-            
+
         results = []
         for post in posts[1:]:
             if len(results) >= MAX_ITEMS_PER_SOURCE:
                 break
-            
-            # 포스트 링크 추출
+
             link_match = re.search(r'href="(https://www\.picuki\.com/media/\d+)"', post)
             if not link_match:
                 continue
             link = link_match.group(1)
-            
-            # 포스트 본문(alt) 추출
+
             caption_match = re.search(r'alt="([^"]*)"', post)
             caption_raw = caption_match.group(1) if caption_match else ""
             caption = html.unescape(caption_raw).strip()
-            
+
             caption = caption.splitlines()[0] if caption else "(사진/동영상)"
             if len(caption) > 40:
                 caption = caption[:40] + "…"
-                
-            # 시간 추출 및 포맷 변환
-            time_match = re.search(r'class="time">([^<]+)<', post)
-            time_str = time_match.group(1) if time_match else "today"
-            date_str = parse_picuki_time(time_str)
-            
+
+            # 날짜는 계속 정확하지 않게 나와서 아예 표시하지 않기로 했어요.
             results.append({
-                "date": date_str,
-                "title": f"@{INSTAGRAM_USERNAME} — {caption}",
+                "date": "",
+                "title": caption,
                 "link": link
             })
-            
+
         if results:
             print(f"[instagram] Picuki에서 {len(results)}건의 게시글을 성공적으로 가져왔습니다!")
             return results
@@ -227,9 +219,10 @@ def fetch_instagram_latest():
         print("[instagram] Picuki 파싱 실패 혹은 차단됨. 2단계 백업으로 전환합니다.")
 
     # --- 2단계: 서브 인스타 뷰어 'Imginn' 파싱 ---
+    # 날짜는 계속 부정확하게 나와서 아예 표시하지 않기로 했어요.
     imginn_url = f"https://imginn.com/{INSTAGRAM_USERNAME}/"
     html_content = fetch_html_with_proxy(imginn_url)
-    
+
     if html_content and 'class="item"' in html_content:
         print("[instagram] Imginn HTML 획득 성공. 파싱을 진행합니다.")
         posts = html_content.split('class="item"')
@@ -237,29 +230,26 @@ def fetch_instagram_latest():
         for post in posts[1:]:
             if len(results) >= MAX_ITEMS_PER_SOURCE:
                 break
-                
+
             link_match = re.search(r'href="(/p/[^"]+)"', post)
             if not link_match:
                 continue
             link = "https://imginn.com" + link_match.group(1)
-            
+
             caption_match = re.search(r'alt="([^"]*)"', post)
             caption_raw = caption_match.group(1) if caption_match else ""
             caption = html.unescape(caption_raw).strip()
-            
+
             caption = caption.splitlines()[0] if caption else "(사진/동영상)"
             if len(caption) > 40:
                 caption = caption[:40] + "…"
-                
-            date_match = re.search(r'class="date">([^<]+)</span>', post)
-            date_str = date_match.group(1).replace("-", ".").strip() if date_match else datetime.datetime.now().strftime("%Y.%m.%d")
-            
+
             results.append({
-                "date": date_str,
-                "title": f"@{INSTAGRAM_USERNAME} — {caption}",
+                "date": "",
+                "title": caption,
                 "link": link
             })
-            
+
         if results:
             print(f"[instagram] Imginn에서 {len(results)}건의 게시글을 성공적으로 가져왔습니다!")
             return results
@@ -313,11 +303,11 @@ def fetch_tiktok_latest():
 
 def main():
     print("--- '오늘, 한로로는' 데이터 수집 시작 ---")
-    
+
     youtube_data = fetch_youtube_latest()
     instagram_data = fetch_instagram_latest()
     tiktok_data = fetch_tiktok_latest()
-    
+
     data = {
         "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "instagram": instagram_data,
