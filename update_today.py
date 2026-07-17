@@ -10,6 +10,10 @@ import os
 import json
 import datetime
 import socket
+import urllib.request
+import urllib.parse
+import re
+import html
 
 # 기본 네트워크 타임아웃을 15초로 설정 (무한 대기 방지)
 socket.setdefaulttimeout(15.0)
@@ -71,22 +75,141 @@ def fetch_youtube_latest():
         return []
 
 
+def _clean_caption(caption_raw):
+    """캡션 앞뒤 공백/줄바꿈을 정리하고 40자로 잘라줍니다."""
+    caption = html.unescape((caption_raw or "").strip())
+    caption = caption.splitlines()[0] if caption else "(사진/동영상)"
+    if len(caption) > 40:
+        caption = caption[:40] + "…"
+    return caption
+
+
+def fetch_html_with_proxy(url):
+    """깃허브 서버 차단을 뚫기 위해 공용 우회 프록시 서버들을 거쳐 HTML을 가져옵니다."""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7"
+    }
+
+    try:
+        print(f"[instagram] 직접 접속 시도 중: {url}")
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=10) as response:
+            return response.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        print(f"[instagram] 직접 접속 실패: {e}. 프록시 우회를 시작합니다.")
+
+    proxy_url1 = f"https://api.allorigins.win/raw?url={urllib.parse.quote(url)}"
+    try:
+        print("[instagram] 프록시 1선(AllOrigins) 우회 시도 중...")
+        req = urllib.request.Request(proxy_url1, headers=headers)
+        with urllib.request.urlopen(req, timeout=12) as response:
+            return response.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        print(f"[instagram] 프록시 1선 실패: {e}")
+
+    proxy_url2 = f"https://corsproxy.io/?{urllib.parse.quote(url)}"
+    try:
+        print("[instagram] 프록시 2선(Corsproxy) 우회 시도 중...")
+        req = urllib.request.Request(proxy_url2, headers=headers)
+        with urllib.request.urlopen(req, timeout=12) as response:
+            return response.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        print(f"[instagram] 프록시 2선 실패: {e}")
+
+    return ""
+
+
+def _fetch_instagram_fallback():
+    """웹 수집기가 모두 실패했을 때 실행되는 최종 백업 수단입니다."""
+    print("[instagram] 최종 백업 방식(instaloader) 실행 중...")
+    try:
+        import instaloader
+        loader = instaloader.Instaloader(
+            download_pictures=False,
+            download_videos=False,
+            download_video_thumbnails=False,
+            download_geotags=False,
+            download_comments=False,
+            save_metadata=False,
+            compress_json=False,
+        )
+        profile = instaloader.Profile.from_username(loader.context, INSTAGRAM_USERNAME)
+        results = []
+        for post in profile.get_posts():
+            if len(results) >= MAX_ITEMS_PER_SOURCE:
+                break
+            caption = _clean_caption((post.caption or "").splitlines()[0] if post.caption else "")
+            # 날짜는 부정확하게 나오는 문제가 있어서 "최근 게시물" 문구로 통일하고,
+            # 링크도 요청하신 대로 비워둡니다 (프로필 바로가기로만 접근).
+            results.append({
+                "date": "최근 게시물",
+                "title": caption,
+                "link": ""
+            })
+        return results
+    except Exception as e:
+        print(f"[instagram] instaloader 백업 방식도 실패했습니다: {e}")
+        return []
+
+
 def fetch_instagram_latest():
-    """인스타그램 최신 게시물 정보를 가져옵니다.
+    """인스타그램 최신 게시물의 캡션(내용)만 가져옵니다.
 
-    Picuki/Imginn 같은 미러 사이트를 거쳐 스크래핑을 시도해봤지만, 사이트 구조가
-    자주 바뀌고 날짜·링크가 부정확하게 나오는 문제가 반복돼서, 대신 훨씬 단순하고
-    안정적인 방식으로 바꿨어요: 정확한 제목이나 개별 링크 없이, "최근 게시물이
-    있어요"라는 안내만 보여주고, 실제 최신 게시물은 화면의 "프로필 바로가기"
-    링크로 직접 확인하도록 안내해요.
+    Picuki -> Imginn -> Instaloader 순서로 시도해요. 날짜는 계속 부정확하게
+    나오는 문제가 있어서 실제 날짜 대신 "최근 게시물"이라는 문구로 통일하고,
+    개별 링크도 두지 않아요(진짜 최신 글은 프로필 바로가기로 확인).
     """
-    return [
-        {"date": "", "title": "최근 게시물", "link": ""},
-        {"date": "", "title": "최근 게시물", "link": ""},
-        {"date": "", "title": "최근 게시물", "link": ""},
-    ]
+    print("[instagram] 데이터 수집 시작...")
 
+    # --- 1단계: Picuki 파싱 ---
+    picuki_url = f"https://www.picuki.com/profile/{INSTAGRAM_USERNAME}"
+    html_content = fetch_html_with_proxy(picuki_url)
 
+    if html_content and "box-photo" in html_content:
+        print("[instagram] Picuki HTML 획득 성공. 파싱을 진행합니다.")
+        posts = html_content.split('class="box-photo"')
+        if len(posts) < 2:
+            posts = html_content.split('class="photo"')
+
+        results = []
+        for post in posts[1:]:
+            if len(results) >= MAX_ITEMS_PER_SOURCE:
+                break
+            caption_match = re.search(r'alt="([^"]*)"', post)
+            caption = _clean_caption(caption_match.group(1) if caption_match else "")
+            results.append({"date": "최근 게시물", "title": caption, "link": ""})
+
+        if results:
+            print(f"[instagram] Picuki에서 {len(results)}건의 게시글을 성공적으로 가져왔습니다!")
+            return results
+    else:
+        print("[instagram] Picuki 파싱 실패 혹은 차단됨. 2단계 백업으로 전환합니다.")
+
+    # --- 2단계: Imginn 파싱 ---
+    imginn_url = f"https://imginn.com/{INSTAGRAM_USERNAME}/"
+    html_content = fetch_html_with_proxy(imginn_url)
+
+    if html_content and 'class="item"' in html_content:
+        print("[instagram] Imginn HTML 획득 성공. 파싱을 진행합니다.")
+        posts = html_content.split('class="item"')
+        results = []
+        for post in posts[1:]:
+            if len(results) >= MAX_ITEMS_PER_SOURCE:
+                break
+            caption_match = re.search(r'alt="([^"]*)"', post)
+            caption = _clean_caption(caption_match.group(1) if caption_match else "")
+            results.append({"date": "최근 게시물", "title": caption, "link": ""})
+
+        if results:
+            print(f"[instagram] Imginn에서 {len(results)}건의 게시글을 성공적으로 가져왔습니다!")
+            return results
+    else:
+        print("[instagram] Imginn 파싱 실패 혹은 차단됨. 최종 백업으로 전환합니다.")
+
+    # --- 3단계: 최후의 수단 Instaloader 작동 ---
+    return _fetch_instagram_fallback()
 
 
 def fetch_tiktok_latest():
