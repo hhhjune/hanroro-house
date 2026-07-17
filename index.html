@@ -563,6 +563,7 @@
     max-width:1080px;
     margin:0 auto;
     padding:100px 24px 40px;
+    overflow-x:hidden;
   }
   .calendar-block-title{
     font-family:'Gowun Batang', serif;
@@ -578,19 +579,23 @@
       "grid  side";
     gap:28px;
     margin-bottom:48px;
+    min-width:0;
   }
-  .dash-upcoming-cards{ grid-area:cards; }
-  .dash-grid{ grid-area:grid; }
-  .dash-side{ grid-area:side; display:flex; flex-direction:column; gap:24px; }
+  .dash-upcoming-cards{ grid-area:cards; min-width:0; }
+  .dash-grid{ grid-area:grid; min-width:0; }
+  .dash-side{ grid-area:side; display:flex; flex-direction:column; gap:24px; min-width:0; }
 
   /* 다가오는 공연 카드 (가로 스크롤) */
+  .upcoming-cards-wrap{ position:relative; }
   .upcoming-cards-row{
     display:flex;
     gap:16px;
     overflow-x:auto;
-    padding:4px 4px 12px;
+    overflow-y:hidden;
+    padding:4px 44px 12px;
     scroll-snap-type:x proximity;
     -webkit-overflow-scrolling:touch;
+    min-width:0;
   }
   .upcoming-card{
     flex:0 0 auto;
@@ -857,9 +862,20 @@
     }
     .past-grid{ grid-template-columns:repeat(2, 1fr); }
   }
+  @media (max-width:640px){
+    .cal-grid-card{ padding:12px 10px; }
+    .cal-grid-nav{ gap:6px; margin-bottom:12px; }
+    .cal-grid-nav button{ font-size:14px; padding:2px 4px; }
+    .cal-grid-days{ gap:2px; }
+    .cal-grid-day{ font-size:11px; }
+  }
   @media (max-width:520px){
     .past-grid{ grid-template-columns:1fr; }
-    .upcoming-card{ width:72vw; }
+    .upcoming-card{ width:70vw; }
+    .upcoming-cards-row{ padding:4px 34px 12px; }
+    .upcoming-cards-wrap .road-arrow{ width:30px; height:30px; font-size:15px; }
+    .upcoming-cards-wrap .road-arrow-left{ left:0; }
+    .upcoming-cards-wrap .road-arrow-right{ right:0; }
   }
 
   /* ---------- DISCOGRAPHY (가로 스크롤) ---------- */
@@ -2329,7 +2345,11 @@
 
     <div class="dash-upcoming-cards">
       <h3 class="calendar-block-title">다가오는 공연</h3>
-      <div class="upcoming-cards-row" id="upcomingCardsRow"></div>
+      <div class="upcoming-cards-wrap">
+        <button type="button" class="road-arrow road-arrow-left" id="upcomingPrev" aria-label="이전 공연">‹</button>
+        <div class="upcoming-cards-row" id="upcomingCardsRow"></div>
+        <button type="button" class="road-arrow road-arrow-right" id="upcomingNext" aria-label="다음 공연">›</button>
+      </div>
     </div>
 
     <div class="dash-grid">
@@ -2612,7 +2632,7 @@
 </section>
 
 <footer>
-  <span class="handwrite">— 로켓단 팬사이트 (제작 중) —</span>
+  <span class="handwrite">— 한로로 팬사이트 (제작 중) —</span>
   이 페이지는 아직 초안이에요. 아티스트 소개 · 디스코그래피 정보는 계속 다듬어질 예정입니다.
 </footer>
 
@@ -2733,6 +2753,20 @@
     });
     diaryNextBtn.addEventListener('click', () => {
       diaryArchiveEl.scrollBy({ left: diaryScrollStep(), behavior: 'smooth' });
+    });
+  }
+
+  // 다가오는 공연 카드 가로 스크롤 화살표
+  const upcomingCardsRowEl = document.getElementById('upcomingCardsRow');
+  const upcomingPrevBtn = document.getElementById('upcomingPrev');
+  const upcomingNextBtn = document.getElementById('upcomingNext');
+  if (upcomingCardsRowEl && upcomingPrevBtn && upcomingNextBtn) {
+    const upcomingScrollStep = () => Math.min(280, upcomingCardsRowEl.clientWidth * 0.8);
+    upcomingPrevBtn.addEventListener('click', () => {
+      upcomingCardsRowEl.scrollBy({ left: -upcomingScrollStep(), behavior: 'smooth' });
+    });
+    upcomingNextBtn.addEventListener('click', () => {
+      upcomingCardsRowEl.scrollBy({ left: upcomingScrollStep(), behavior: 'smooth' });
     });
   }
 
@@ -4122,7 +4156,8 @@
   // date: 'YYYY-MM-DD', 기간 일정은 dateEnd도 함께 적어주세요. venue/ticket/map은 확인되는 대로 채워주세요.
   const CALENDAR_DATA = [
     {
-      date: '2026-07-19',
+      date: '2026-07-18',
+      dateEnd: '2026-07-19',
       title: '사운드베리페스타 26',
       venue: '일산 킨텍스',
       category: '페스티벌',
