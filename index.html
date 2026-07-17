@@ -932,7 +932,7 @@
 
   /* ---------- BOARD ---------- */
   .board-section{
-    max-width:720px;
+    max-width:900px;
     margin:0 auto;
     padding:100px 24px 160px;
   }
@@ -1021,49 +1021,97 @@
   .board-submit-btn:hover{ opacity:0.85; }
   .board-submit-btn:disabled{ opacity:0.5; cursor:default; }
 
-  .board-list{ display:flex; flex-direction:column; gap:10px; }
-  .board-post{
-    background:var(--paper-fold);
-    border:1px solid var(--rule);
-    border-radius:2px;
-    padding:16px 20px;
-    position:relative;
+  .board-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    table-layout:fixed;
   }
-  .board-post-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:10px;
-    margin-bottom:6px;
-  }
-  .board-post-title{
-    font-weight:500;
-    font-size:15.5px;
-    color:var(--ink);
-  }
-  .board-post-meta{
-    font-family:'Noto Sans KR', sans-serif;
+  .board-table thead th{
+    background:var(--paper);
+    border-top:2px solid var(--ink);
+    border-bottom:1px solid var(--rule-strong);
+    padding:9px 10px;
+    font-weight:700;
     font-size:12.5px;
     color:var(--ink-soft);
+    text-align:center;
+  }
+  .board-table .board-col-num{ width:56px; }
+  .board-table .board-col-author{ width:110px; }
+  .board-table .board-col-date{ width:96px; }
+  .board-table .board-col-title{ text-align:left; }
+
+  .board-row{
+    border-bottom:1px solid var(--rule);
+    transition:background 0.1s ease;
+  }
+  .board-row:hover{ background:var(--paper); }
+  .board-row td{
+    padding:8px 10px;
+    color:var(--ink);
     white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .board-row .board-col-num,
+  .board-row .board-col-author,
+  .board-row .board-col-date{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12.5px;
+  }
+  .board-title-btn{
+    background:none;
+    border:none;
+    padding:0;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13.5px;
+    color:var(--ink);
+    cursor:pointer;
+    text-align:left;
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .board-title-btn:hover{ color:var(--moss); text-decoration:underline; }
+
+  .board-detail-row td{
+    padding:0;
+    border-bottom:1px solid var(--rule);
+    background:var(--paper);
+  }
+  .board-detail-inner{
+    position:relative;
+    padding:16px 20px 20px;
   }
   .board-post-content{
     font-size:14px;
-    color:var(--ink-soft);
+    color:var(--ink);
     line-height:1.7;
     white-space:pre-wrap;
     margin-bottom:10px;
+    padding-right:60px;
   }
   .board-post-photo{
     max-width:100%;
     border-radius:2px;
     display:block;
+    margin-bottom:10px;
   }
-  .board-post .delete-btn{
-    position:absolute; top:14px; right:16px;
+  .board-detail-inner .delete-btn{
+    position:absolute; top:16px; right:20px;
     border:none; background:none; color:var(--ink-soft); cursor:pointer; font-size:13px;
   }
-  .board-post .delete-btn:hover{ color:var(--berry); }
+  .board-detail-inner .delete-btn:hover{ color:var(--berry); }
+
+  @media (max-width:640px){
+    .board-table{ font-size:12.5px; }
+    .board-table .board-col-author{ width:70px; }
+    .board-table .board-col-date{ display:none; }
+    .board-table thead th.board-col-date{ display:none; }
+  }
 
   .comment-toggle-btn{
     display:inline-block;
@@ -1858,9 +1906,19 @@
   <!-- 전체: 자유+질문 글을 한데 모아 보여주는 화면 (글쓰기는 여기서는 할 수 없어요) -->
   <div class="board-panel active" data-panel="all">
     <p class="board-panel-note">자유게시판·질문게시판에 올라온 글이 모두 모여요. 글을 쓰려면 자유게시판이나 질문게시판 탭으로 이동해주세요.</p>
-    <div class="board-list" data-list="all">
-      <div class="archive-empty">불러오는 중…</div>
-    </div>
+    <table class="board-table">
+      <thead>
+        <tr>
+          <th class="board-col-num">번호</th>
+          <th class="board-col-title">제목</th>
+          <th class="board-col-author">글쓴이</th>
+          <th class="board-col-date">날짜</th>
+        </tr>
+      </thead>
+      <tbody class="board-list" data-list="all">
+        <tr><td colspan="4" class="archive-empty">불러오는 중…</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- 자유게시판 -->
@@ -1887,9 +1945,19 @@
       <button type="button" class="board-submit-btn">글쓰기</button>
     </div>
 
-    <div class="board-list" data-list="free">
-      <div class="archive-empty">불러오는 중…</div>
-    </div>
+    <table class="board-table">
+      <thead>
+        <tr>
+          <th class="board-col-num">번호</th>
+          <th class="board-col-title">제목</th>
+          <th class="board-col-author">글쓴이</th>
+          <th class="board-col-date">날짜</th>
+        </tr>
+      </thead>
+      <tbody class="board-list" data-list="free">
+        <tr><td colspan="4" class="archive-empty">불러오는 중…</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- 질문게시판 -->
@@ -1916,9 +1984,19 @@
       <button type="button" class="board-submit-btn">글쓰기</button>
     </div>
 
-    <div class="board-list" data-list="question">
-      <div class="archive-empty">불러오는 중…</div>
-    </div>
+    <table class="board-table">
+      <thead>
+        <tr>
+          <th class="board-col-num">번호</th>
+          <th class="board-col-title">제목</th>
+          <th class="board-col-author">글쓴이</th>
+          <th class="board-col-date">날짜</th>
+        </tr>
+      </thead>
+      <tbody class="board-list" data-list="question">
+        <tr><td colspan="4" class="archive-empty">불러오는 중…</td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
@@ -2616,7 +2694,7 @@
       renderBoardList(boardKey);
     }, (err) => {
       console.error(`[${boardKey}] 게시글을 불러오지 못했습니다:`, err);
-      listEl.innerHTML = '<div class="archive-empty">게시글을 불러오지 못했어요. Firestore 설정을 확인해 주세요.</div>';
+      listEl.innerHTML = '<tr><td colspan="4" class="archive-empty">게시글을 불러오지 못했어요. Firestore 설정을 확인해 주세요.</td></tr>';
     });
     boardState[boardKey].unsubscribe = unsubscribe;
 
@@ -2662,20 +2740,32 @@
     const posts = boardState[boardKey].posts;
 
     if (posts.length === 0) {
-      listEl.innerHTML = '<div class="archive-empty">아직 게시글이 없어요. 첫 글을 남겨보세요.</div>';
+      listEl.innerHTML = '<tr><td colspan="4" class="archive-empty">아직 게시글이 없어요. 첫 글을 남겨보세요.</td></tr>';
     } else {
-      listEl.innerHTML = '';
-      posts.forEach((post) => {
-        listEl.appendChild(buildBoardPostCard(post, boardKey));
-      });
+      const total = posts.length;
+      listEl.innerHTML = posts.map((post, idx) =>
+        buildBoardRowsHtml(post, boardKey, total - idx)
+      ).join('');
       wireDeleteButtons(listEl);
       wireCommentUI(listEl);
+      wireBoardRowToggle(listEl);
     }
 
     renderAllBoardList();
   }
 
-  function buildBoardPostCard(post, boardKey) {
+  function wireBoardRowToggle(container) {
+    container.querySelectorAll('.board-title-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const detailRow = container.querySelector(`.board-detail-row[data-post-id="${btn.dataset.postId}"]`);
+        if (!detailRow) return;
+        const isOpen = detailRow.style.display !== 'none';
+        detailRow.style.display = isOpen ? 'none' : 'table-row';
+      });
+    });
+  }
+
+  function buildBoardRowsHtml(post, boardKey, rowNum) {
     const isMine = myUid && post.authorUid === myUid;
     const canDelete = isAdminUser || isMine;
     const dateStr = post.createdAt && post.createdAt.toDate
@@ -2684,29 +2774,35 @@
     const badge = boardKey
       ? `<span class="board-badge ${boardKey}">${boardKey === 'free' ? '자유' : '질문'}</span>`
       : '';
-    const card = document.createElement('div');
-    card.className = 'board-post';
-    card.dataset.postId = post.id;
-    card.innerHTML = `
-      ${canDelete
-        ? `<button class="delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}" data-id="${post.id}" title="${isAdminUser && !isMine ? '관리자 권한으로 삭제' : '내 글 삭제'}">✕ 삭제</button>`
-        : ''}
-      <div class="board-post-top">
-        <span class="board-post-title">${badge}${post.title || '(제목 없음)'}</span>
-        <span class="board-post-meta">${post.author || '익명'} · ${dateStr}</span>
-      </div>
-      <div class="board-post-content">${post.content || ''}</div>
-      ${post.photo ? `<img class="board-post-photo" src="${post.photo}" alt="${post.author || '익명'}님이 첨부한 사진">` : ''}
-      <button type="button" class="comment-toggle-btn" data-post-id="${post.id}">💬 댓글</button>
-      <div class="comment-section" data-post-id="${post.id}" style="display:none;">
-        <div class="comment-list" data-post-id="${post.id}"></div>
-        <div class="comment-form">
-          <textarea class="comment-input" data-post-id="${post.id}" rows="2" placeholder="댓글을 남겨보세요 (익명으로 표시돼요)"></textarea>
-          <button type="button" class="comment-submit-btn" data-post-id="${post.id}">등록</button>
-        </div>
-      </div>
+    return `
+      <tr class="board-row">
+        <td class="board-col-num">${rowNum}</td>
+        <td class="board-col-title">
+          <button type="button" class="board-title-btn" data-post-id="${post.id}">${badge}${post.title || '(제목 없음)'}</button>
+        </td>
+        <td class="board-col-author">${post.author || '익명'}</td>
+        <td class="board-col-date">${dateStr}</td>
+      </tr>
+      <tr class="board-detail-row" data-post-id="${post.id}" style="display:none;">
+        <td colspan="4">
+          <div class="board-detail-inner">
+            ${canDelete
+              ? `<button class="delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}" data-id="${post.id}" title="${isAdminUser && !isMine ? '관리자 권한으로 삭제' : '내 글 삭제'}">✕ 삭제</button>`
+              : ''}
+            <div class="board-post-content">${post.content || ''}</div>
+            ${post.photo ? `<img class="board-post-photo" src="${post.photo}" alt="${post.author || '익명'}님이 첨부한 사진">` : ''}
+            <button type="button" class="comment-toggle-btn" data-post-id="${post.id}">💬 댓글</button>
+            <div class="comment-section" data-post-id="${post.id}" style="display:none;">
+              <div class="comment-list" data-post-id="${post.id}"></div>
+              <div class="comment-form">
+                <textarea class="comment-input" data-post-id="${post.id}" rows="2" placeholder="댓글을 남겨보세요 (익명으로 표시돼요)"></textarea>
+                <button type="button" class="comment-submit-btn" data-post-id="${post.id}">등록</button>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
     `;
-    return card;
   }
 
   function wireDeleteButtons(container) {
@@ -2735,7 +2831,7 @@
     container.querySelectorAll('.comment-toggle-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const postId = btn.dataset.postId;
-        const card = btn.closest('.board-post');
+        const card = btn.closest('.board-detail-inner');
         const section = card.querySelector('.comment-section');
         const isOpen = section.style.display !== 'none';
         section.style.display = isOpen ? 'none' : 'block';
@@ -2748,7 +2844,7 @@
     container.querySelectorAll('.comment-submit-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
         const postId = btn.dataset.postId;
-        const card = btn.closest('.board-post');
+        const card = btn.closest('.board-detail-inner');
         const textarea = card.querySelector('.comment-input');
         const content = textarea.value.trim();
         if (!content) return;
@@ -2903,16 +2999,17 @@
     });
 
     if (combined.length === 0) {
-      listEl.innerHTML = '<div class="archive-empty">아직 게시글이 없어요.</div>';
+      listEl.innerHTML = '<tr><td colspan="4" class="archive-empty">아직 게시글이 없어요.</td></tr>';
       return;
     }
 
-    listEl.innerHTML = '';
-    combined.forEach(({ post, boardKey }) => {
-      listEl.appendChild(buildBoardPostCard(post, boardKey));
-    });
+    const total = combined.length;
+    listEl.innerHTML = combined.map(({ post, boardKey }, idx) =>
+      buildBoardRowsHtml(post, boardKey, total - idx)
+    ).join('');
     wireDeleteButtons(listEl);
-      wireCommentUI(listEl);
+    wireCommentUI(listEl);
+    wireBoardRowToggle(listEl);
   }
 
   setupBoard('free');
@@ -2999,9 +3096,10 @@
       goToPage('board');
       showBoardTab(btn.dataset.board === 'free' ? 'free' : 'question');
       setTimeout(() => {
-        const card = document.querySelector(`.board-post .delete-btn[data-id="${btn.dataset.id}"]`)?.closest('.board-post')
-          || Array.from(document.querySelectorAll('.board-post-title')).find(el => el.textContent.includes(btn.dataset.title))?.closest('.board-post');
-        card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const titleBtn = document.querySelector(`.board-title-btn[data-post-id="${btn.dataset.id}"]`);
+        const row = titleBtn?.closest('.board-row');
+        row?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        titleBtn?.click();
       }, 150);
     } else if (type === 'diary') {
       goToPage('diary');
