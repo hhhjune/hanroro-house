@@ -3056,7 +3056,7 @@
       if(!res.ok) throw new Error('today.json fetch failed');
       const data = await res.json();
 
-      renderTodaySection('todayInsta', data.instagram, false);
+      renderTodaySection('todayInsta', data.instagram);
       renderTodaySection('todayYoutube', data.youtube);
       renderTodaySection('todayTiktok', data.tiktok);
 
