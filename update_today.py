@@ -195,7 +195,13 @@ def fetch_instagram_latest():
             link_match = re.search(r'href="(https://www\.picuki\.com/media/\d+)"', post)
             if not link_match:
                 continue
-            link = link_match.group(1)
+            picuki_link = link_match.group(1)
+
+            # Picuki 게시물 블록 안에 실제 인스타그램 shortcode(예: instagram.com/p/ABC123xyz_/)가
+            # 별도로 노출되어 있으면 그걸 우선 써서 진짜 인스타그램으로 연결해요.
+            # 못 찾으면 어쩔 수 없이 Picuki 자체 링크로 대체해요.
+            ig_match = re.search(r'instagram\.com/p/([A-Za-z0-9_-]+)', post)
+            link = f"https://www.instagram.com/p/{ig_match.group(1)}/" if ig_match else picuki_link
 
             caption_match = re.search(r'alt="([^"]*)"', post)
             caption_raw = caption_match.group(1) if caption_match else ""
@@ -231,10 +237,13 @@ def fetch_instagram_latest():
             if len(results) >= MAX_ITEMS_PER_SOURCE:
                 break
 
-            link_match = re.search(r'href="(/p/[^"]+)"', post)
+            link_match = re.search(r'href="/p/([A-Za-z0-9_-]+)', post)
             if not link_match:
                 continue
-            link = "https://imginn.com" + link_match.group(1)
+            # Imginn의 /p/{코드}/ 경로가 실제 인스타그램 게시물 shortcode와 같은 형식이라,
+            # 미러 사이트가 아니라 진짜 인스타그램(instagram.com/p/{코드}/)으로 바로 연결해요.
+            shortcode = link_match.group(1)
+            link = f"https://www.instagram.com/p/{shortcode}/"
 
             caption_match = re.search(r'alt="([^"]*)"', post)
             caption_raw = caption_match.group(1) if caption_match else ""
