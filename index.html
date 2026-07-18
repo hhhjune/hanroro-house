@@ -437,36 +437,6 @@
   }
   .save-image-btn:hover{ border-color:var(--moss); color:var(--moss); }
   .save-image-btn:disabled{ opacity:0.6; cursor:default; }
-  .cal-action-row{
-    display:flex;
-    justify-content:flex-end;
-    gap:8px;
-    margin-top:12px;
-  }
-  .cal-kakao-share-btn,
-  .cal-ics-btn{
-    display:block;
-    width:14.2857%;
-    min-width:80px;
-    white-space:normal;
-    word-break:keep-all;
-    text-align:center;
-    line-height:1.3;
-    padding:8px 6px;
-    font-size:12px;
-  }
-  .cal-ics-btn{
-    background:#fff;
-    color:var(--ink);
-    border:1px solid var(--rule-strong);
-    font-family:'Noto Sans KR', sans-serif;
-    font-weight:700;
-    border-radius:2px;
-    cursor:pointer;
-    transition:border-color 0.2s ease, color 0.2s ease;
-  }
-  .cal-ics-btn:hover{ border-color:var(--moss); color:var(--moss); }
-
   .quiz-progress{
     display:flex;
     align-items:center;
@@ -648,20 +618,12 @@
     border-radius:2px;
   }
   .upcoming-card-actions{ display:flex; gap:6px; }
-  .cal-ics-btn-mini, .cal-kakao-share-btn-mini{
+  .cal-kakao-share-btn-mini{
     font-size:11px;
     padding:4px 8px;
     border-radius:2px;
     cursor:pointer;
     white-space:nowrap;
-  }
-  .cal-ics-btn-mini{
-    background:#fff;
-    border:1px solid var(--rule-strong);
-    color:var(--ink-soft);
-  }
-  .cal-ics-btn-mini:hover{ border-color:var(--moss); color:var(--moss); }
-  .cal-kakao-share-btn-mini{
     background:#FEE500;
     border:none;
     color:#191600;
@@ -1937,7 +1899,7 @@
     .upcoming-card-title{ font-size:14px; }
     .upcoming-card-venue, .upcoming-card-date{ font-size:11px; }
     .upcoming-category-tag{ font-size:10px; }
-    .cal-ics-btn-mini, .cal-kakao-share-btn-mini{ font-size:10px; padding:3px 6px; }
+    .cal-kakao-share-btn-mini{ font-size:10px; padding:3px 6px; }
     .cal-grid-nav span{ font-size:14px; min-width:90px; }
     .cal-grid-weekdays{ font-size:11px; }
     .cal-grid-day{ font-size:11.5px; }
@@ -1961,7 +1923,7 @@
     .entry-moment{ font-size:13.5px; }
     .entry-author{ font-size:13px; }
 
-    .kakao-share-btn, .save-image-btn, .cal-ics-btn, .board-submit-btn{ font-size:12px; }
+    .kakao-share-btn, .save-image-btn, .board-submit-btn{ font-size:12px; }
   }
 </style>
 <!-- 카카오톡 공유 기능용 SDK. 아래 KAKAO_JS_KEY를 발급받은 실제 키로 교체해야 동작해요. -->
@@ -4196,54 +4158,6 @@
     },
   ];
 
-  // ---- 기기 캘린더에 일정 추가 (.ics 파일 다운로드) ----
-  function escapeIcsText(text){
-    return String(text).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
-  }
-
-  function addToDeviceCalendar(ev){
-    const startStr = ev.date.replace(/-/g, '');
-    const endBase = new Date(ev.dateEnd || ev.date);
-    endBase.setDate(endBase.getDate() + 1); // 종료일은 하루 뒤(배타적 종료)로 지정해야 캘린더 앱이 정확히 표시해요.
-    const endStr = endBase.toISOString().slice(0, 10).replace(/-/g, '');
-    const dtstamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-    const uid = `${startStr}-${Math.random().toString(36).slice(2)}@hanroro-house`;
-
-    const ics = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//hanroro-house//calendar//KO',
-      'BEGIN:VEVENT',
-      `UID:${uid}`,
-      `DTSTAMP:${dtstamp}`,
-      `DTSTART;VALUE=DATE:${startStr}`,
-      `DTEND;VALUE=DATE:${endStr}`,
-      `SUMMARY:${escapeIcsText(ev.title)}`,
-      `LOCATION:${escapeIcsText(ev.venue)}`,
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ].join('\r\n');
-
-    // 모바일(아이폰 등)에서는 캘린더 앱으로 바로 열리도록 data URI로 이동시키고,
-    // PC(데스크탑) 브라우저에는 그런 기능이 없어서 항상 파일로 다운로드되니까,
-    // 최소한 일정 이름이 붙은 파일로 받아지도록 따로 처리해요.
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
-      window.location.href = dataUri;
-    } else {
-      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${ev.title}.ics`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }
-  }
-
   // ---- 한국 시간(KST) 기준 '오늘' 계산 ----
   function getTodayKST() {
     const kstString = new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
@@ -4318,7 +4232,6 @@
                 <div class="upcoming-card-top">
                   ${occ.category ? `<span class="upcoming-category-tag">${occ.category}</span>` : '<span></span>'}
                   <div class="upcoming-card-actions">
-                    <button type="button" class="cal-ics-btn cal-ics-btn-mini" data-idx="${idx}" title="기기 캘린더에 추가">📅 캘린더 추가</button>
                     <button type="button" class="kakao-share-btn cal-kakao-share-btn-mini" data-idx="${idx}" title="카카오톡으로 공유">💬 공유</button>
                   </div>
                 </div>
@@ -4330,17 +4243,6 @@
           `;
         }).join('');
 
-        cardsRow.querySelectorAll('.cal-ics-btn-mini').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const occ = upcoming[parseInt(btn.dataset.idx, 10)];
-            addToDeviceCalendar({
-              date: occ.occStart.toISOString().slice(0, 10),
-              dateEnd: occ.occEnd !== occ.occStart ? occ.occEnd.toISOString().slice(0, 10) : null,
-              title: occ.title,
-              venue: occ.venue
-            });
-          });
-        });
         cardsRow.querySelectorAll('.cal-kakao-share-btn-mini').forEach(btn => {
           btn.addEventListener('click', () => {
             const occ = upcoming[parseInt(btn.dataset.idx, 10)];
