@@ -255,80 +255,77 @@
     font-size:14.5px;
     color:var(--ink-soft);
   }
-  .today-grid{
+  .video-showcase-row{
     display:grid;
-    grid-template-columns:repeat(3, 1fr);
+    grid-template-columns:repeat(2, 1fr);
     gap:22px;
   }
-  .today-card{
+  .video-showcase-card{
     background:var(--paper-fold);
     border:1px solid var(--rule);
-    padding:24px 20px;
-    box-shadow:none;
+    padding:16px;
   }
-  .today-card h3{
-    font-size:15px;
+  .video-showcase-label{
+    font-size:14px;
     font-family:'Noto Sans KR', sans-serif;
     font-weight:700;
-    margin-bottom:16px;
-  }
-  .today-list{
-    list-style:none;
-    margin:0;
-    padding:0;
-    min-height:40px;
-  }
-  .today-list li{
-    border-bottom:1px dotted var(--rule);
-    padding:9px 0;
-  }
-  .today-list li:last-child{ border-bottom:none; }
-  .today-list a{
-    color:var(--ink);
-    text-decoration:none;
-    font-size:13.5px;
-    line-height:1.5;
-    display:block;
-  }
-  .today-list a:hover{ color:var(--berry); }
-  .today-list .today-item-text{
-    color:var(--ink);
-    font-size:13.5px;
-    line-height:1.5;
-    display:block;
-  }
-  .today-list .today-date{
-    display:block;
-    font-family:'Noto Sans KR', sans-serif;
     color:var(--berry);
-    font-size:12px;
-    margin-bottom:2px;
+    margin-bottom:12px;
   }
-  .today-list li.hidden{ display:none; }
-  .today-more{
-    margin-top:14px;
-    width:100%;
-    background:none;
-    border:1px dashed var(--rule-strong);
-    color:var(--ink-soft);
-    font-family:'Noto Sans KR', sans-serif;
-    font-size:13px;
-    padding:7px 0;
-    border-radius:2px;
-    cursor:pointer;
-    transition:border-color 0.2s ease, color 0.2s ease;
-  }
-  .today-more:hover{ border-color:var(--berry); color:var(--berry); }
-  .today-profile-link{
+  .video-showcase-thumb-wrap{
+    position:relative;
     display:block;
-    text-align:center;
+    width:100%;
+    aspect-ratio:16/9;
+    background:var(--paper-deep);
+    overflow:hidden;
+    text-decoration:none;
+  }
+  .video-showcase-thumb{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .video-showcase-play{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:rgba(42,39,36,0.72);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    pointer-events:none;
+  }
+  .video-showcase-title{
     margin-top:12px;
+    font-size:14px;
+    color:var(--ink);
+    line-height:1.5;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .video-showcase-footer-link{
+    display:block;
+    margin-top:12px;
+    text-align:center;
     font-family:'Noto Sans KR', sans-serif;
-    font-size:13px;
+    font-size:12.5px;
     color:var(--moss-deep);
     text-decoration:none;
+    border-top:1px dotted var(--rule);
+    padding-top:10px;
   }
-  .today-profile-link:hover{ color:var(--berry); }
+  .video-showcase-footer-link:hover{ color:var(--berry); }
+
   .today-loading{
     font-size:13px;
     color:var(--ink-soft);
@@ -358,11 +355,8 @@
     line-height:1.7;
     text-align:center;
   }
-  @media (max-width:900px){
-    .today-grid{ grid-template-columns:repeat(2, 1fr); }
-  }
-  @media (max-width:520px){
-    .today-grid{ grid-template-columns:1fr; }
+  @media (max-width:640px){
+    .video-showcase-row{ grid-template-columns:1fr; }
   }
 
   /* ---------- QUIZ ---------- */
@@ -1861,6 +1855,35 @@
   }
   footer .handwrite{color:var(--berry); font-size:16px; display:block; margin-bottom:8px;}
 
+  .privacy-details{
+    margin-top:20px;
+    display:inline-block;
+    text-align:left;
+    max-width:520px;
+  }
+  .privacy-details summary{
+    cursor:pointer;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    text-decoration:underline;
+    text-underline-offset:3px;
+    list-style:none;
+  }
+  .privacy-details summary::-webkit-details-marker{ display:none; }
+  .privacy-details summary:hover{ color:var(--berry); }
+  .privacy-content{
+    margin-top:14px;
+    padding:16px 18px;
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    font-size:12.5px;
+    line-height:1.8;
+    color:var(--ink-soft);
+  }
+  .privacy-content p{ margin:0 0 10px; }
+  .privacy-content p:last-child{ margin-bottom:0; }
+  .privacy-content strong{ color:var(--ink); font-weight:500; }
+
   /* ---------- 모바일 글자 크기 축소 ---------- */
   @media (max-width:640px){
     body{ font-size:14px; }
@@ -1956,27 +1979,28 @@
   <div class="section-head">
     <span class="eyebrow handwrite">자동으로 업데이트되는</span>
     <h2>오늘, 한로로는</h2>
-    <p class="today-sub">인스타그램 · 유튜브 · 틱톡 소식을 한 곳에 모았어요.</p>
+    <p class="today-sub">유튜브 · 틱톡의 가장 최근 영상을 모았어요.</p>
   </div>
 
-  <div class="today-grid">
-    <div class="today-card">
-      <h3>📷 오늘 인스타</h3>
-      <ul class="today-list" id="todayInsta"><li class="today-loading">불러오는 중…</li></ul>
-      <button class="today-more" data-target="todayInsta">더보기</button>
-      <a class="today-profile-link" href="https://www.instagram.com/hanr0r0/" target="_blank" rel="noopener">@hanr0r0 프로필 바로가기 ↗</a>
+  <div class="video-showcase-row">
+    <div class="video-showcase-card">
+      <div class="video-showcase-label">▶ 최신 유튜브</div>
+      <a class="video-showcase-thumb-wrap" id="latestYoutubeLink" href="https://www.youtube.com/channel/UCrDa_5OU-rhvXqWlPx5hgKQ" target="_blank" rel="noopener">
+        <img class="video-showcase-thumb" id="latestYoutubeThumb" alt="" style="display:none;">
+        <span class="video-showcase-play">▶</span>
+      </a>
+      <div class="video-showcase-title" id="latestYoutubeTitle">불러오는 중…</div>
+      <a class="video-showcase-footer-link" href="https://www.youtube.com/channel/UCrDa_5OU-rhvXqWlPx5hgKQ" target="_blank" rel="noopener">다음에서 보기: ▶ YouTube</a>
     </div>
-    <div class="today-card">
-      <h3>▶ 오늘 유튜브</h3>
-      <ul class="today-list" id="todayYoutube"><li class="today-loading">불러오는 중…</li></ul>
-      <button class="today-more" data-target="todayYoutube">더보기</button>
-      <a class="today-profile-link" href="https://www.youtube.com/channel/UCrDa_5OU-rhvXqWlPx5hgKQ" target="_blank" rel="noopener">채널 바로가기 ↗</a>
-    </div>
-    <div class="today-card">
-      <h3>🎵 오늘 틱톡</h3>
-      <ul class="today-list" id="todayTiktok"><li class="today-loading">불러오는 중…</li></ul>
-      <button class="today-more" data-target="todayTiktok">더보기</button>
-      <a class="today-profile-link" href="https://www.tiktok.com/@hanroro_official" target="_blank" rel="noopener">@hanroro_official 프로필 바로가기 ↗</a>
+
+    <div class="video-showcase-card">
+      <div class="video-showcase-label">🎵 최신 틱톡</div>
+      <a class="video-showcase-thumb-wrap" id="latestTiktokLink" href="https://www.tiktok.com/@hanroro_official" target="_blank" rel="noopener">
+        <img class="video-showcase-thumb" id="latestTiktokThumb" alt="" style="display:none;">
+        <span class="video-showcase-play">▶</span>
+      </a>
+      <div class="video-showcase-title" id="latestTiktokTitle">불러오는 중…</div>
+      <a class="video-showcase-footer-link" href="https://www.tiktok.com/@hanroro_official" target="_blank" rel="noopener">다음에서 보기: 🎵 TikTok</a>
     </div>
   </div>
 
@@ -2598,6 +2622,19 @@
 <footer>
   <span class="handwrite">— 한로로 팬사이트 (제작 중) —</span>
   이 페이지는 아직 초안이에요. 아티스트 소개 · 디스코그래피 정보는 계속 다듬어질 예정입니다.
+
+  <details class="privacy-details">
+    <summary>이용안내 및 개인정보처리방침</summary>
+    <div class="privacy-content">
+      <p>이 사이트는 팬이 자발적으로 만든 비공식 팬사이트이며, 한로로 및 소속사와 관련이 없습니다.</p>
+      <p><strong>회원가입·로그인이 없어요.</strong> 이메일, 전화번호, 실명 등 개인 식별 정보를 입력받거나 저장하지 않아요.</p>
+      <p><strong>게시판·한 줄의 계절에 남기는 닉네임</strong>은 방문자가 매번 직접 입력하는 표시용 이름일 뿐, 실명 인증이나 계정과 연결되지 않아요.</p>
+      <p><strong>"내 글 삭제" 기능</strong>을 위해 브라우저마다 자동으로 부여되는 익명 식별값을 사용해요. 이 값은 이름·이메일 등 개인정보와 연결되지 않고, 브라우저(기기)를 바꾸면 새로 발급돼요.</p>
+      <p><strong>직접 첨부하는 사진</strong>은 작성한 글과 함께 저장되며, 작성자 본인이 언제든 삭제할 수 있어요.</p>
+      <p>관리자 로그인은 사이트 운영자 1인만 사용하며, 방문자 개인정보와는 무관해요.</p>
+      <p>운영 방식이나 저장되는 데이터의 세부 내용은 사이트 개편에 따라 바뀔 수 있어요.</p>
+    </div>
+  </details>
 </footer>
 
 <script>
@@ -3765,20 +3802,55 @@
   //   { "updated_at": "...", "instagram": [...], "youtube": [...], "tiktok": [...] }
   //   각 배열의 항목: { "date": "2026.07.13", "title": "...", "link": "https://..." }
 
-  function renderTodaySection(id, items, linkable = true){
-    const listEl = document.getElementById(id);
-    if(!listEl) return;
-    if(!items || items.length === 0){
-      listEl.innerHTML = '<li class="today-error">최신 소식을 불러오지 못했어요.</li>';
+  // 유튜브 링크에서 영상 ID를 뽑아 공식 썸네일 이미지 주소를 만들어요 (별도 API 키 필요 없음).
+  function extractYoutubeId(url){
+    const m = (url || '').match(/[?&]v=([^&]+)/);
+    return m ? m[1] : null;
+  }
+
+  function renderLatestYoutube(items){
+    const linkEl = document.getElementById('latestYoutubeLink');
+    const thumbEl = document.getElementById('latestYoutubeThumb');
+    const titleEl = document.getElementById('latestYoutubeTitle');
+    if (!items || items.length === 0) {
+      titleEl.textContent = '최신 영상을 불러오지 못했어요.';
       return;
     }
-    listEl.innerHTML = items.map((item, idx) => `
-      <li class="${idx >= 3 ? 'hidden' : ''}">
-        ${linkable
-          ? `<a href="${item.link}" target="_blank" rel="noopener"><span class="today-date">${item.date}</span>${item.title}</a>`
-          : `<span class="today-item-text"><span class="today-date">${item.date}</span>${item.title}</span>`}
-      </li>
-    `).join('');
+    const latest = items[0];
+    const videoId = extractYoutubeId(latest.link);
+    linkEl.href = latest.link;
+    titleEl.textContent = latest.title;
+    if (videoId) {
+      thumbEl.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      thumbEl.style.display = 'block';
+    }
+  }
+
+  // 틱톡은 공식 oEmbed(로그인 필요 없는 공개 API)로 썸네일을 가져와봐요.
+  // 실패해도 제목·링크는 today.json에 있는 값으로 그대로 보여줘요.
+  async function renderLatestTiktok(items){
+    const linkEl = document.getElementById('latestTiktokLink');
+    const thumbEl = document.getElementById('latestTiktokThumb');
+    const titleEl = document.getElementById('latestTiktokTitle');
+    if (!items || items.length === 0) {
+      titleEl.textContent = '최신 영상을 불러오지 못했어요.';
+      return;
+    }
+    const latest = items[0];
+    linkEl.href = latest.link;
+    titleEl.textContent = latest.title;
+    try {
+      const res = await fetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(latest.link)}`);
+      if (!res.ok) throw new Error('oembed failed');
+      const oembed = await res.json();
+      if (oembed.thumbnail_url) {
+        thumbEl.src = oembed.thumbnail_url;
+        thumbEl.style.display = 'block';
+      }
+      if (oembed.title) titleEl.textContent = oembed.title;
+    } catch (err) {
+      // 썸네일만 못 가져온 거라, 제목·링크는 이미 today.json 값으로 표시돼 있어요.
+    }
   }
 
   document.querySelectorAll('.today-more').forEach(btn => {
@@ -3793,16 +3865,14 @@
   });
 
   async function loadTodayData(){
-    const ids = ['todayInsta', 'todayYoutube', 'todayTiktok'];
     try{
       // 캐시를 타지 않도록 매번 다른 쿼리스트링을 붙여요.
       const res = await fetch(`./today.json?t=${Date.now()}`);
       if(!res.ok) throw new Error('today.json fetch failed');
       const data = await res.json();
 
-      renderTodaySection('todayInsta', data.instagram, false);
-      renderTodaySection('todayYoutube', data.youtube);
-      renderTodaySection('todayTiktok', data.tiktok);
+      renderLatestYoutube(data.youtube);
+      renderLatestTiktok(data.tiktok);
 
       const updatedEl = document.getElementById('todayUpdatedAt');
       if(updatedEl && data.updated_at){
@@ -3811,7 +3881,8 @@
       }
     }catch(err){
       // today.json이 아직 없거나(최초 배포 전) 읽기에 실패한 경우
-      ids.forEach(id => renderTodaySection(id, []));
+      document.getElementById('latestYoutubeTitle').textContent = '최신 영상을 불러오지 못했어요.';
+      document.getElementById('latestTiktokTitle').textContent = '최신 영상을 불러오지 못했어요.';
       const updatedEl = document.getElementById('todayUpdatedAt');
       if(updatedEl) updatedEl.textContent = 'today.json을 아직 찾을 수 없어요. update_today.py 실행 결과가 배포됐는지 확인해 주세요.';
     }
