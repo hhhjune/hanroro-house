@@ -3839,17 +3839,30 @@
     const latest = items[0];
     linkEl.href = latest.link;
     titleEl.textContent = latest.title;
+
+    const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(latest.link)}`;
+    let oembed = null;
+
+    // 1차: 직접 요청 (틱톡이 CORS를 막아두면 여기서 실패할 수 있어요)
     try {
-      const res = await fetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(latest.link)}`);
-      if (!res.ok) throw new Error('oembed failed');
-      const oembed = await res.json();
+      const res = await fetch(oembedUrl);
+      if (res.ok) oembed = await res.json();
+    } catch (err) { /* 2차 시도로 넘어가요 */ }
+
+    // 2차: 공개 CORS 우회 프록시를 한 번 거쳐서 재시도
+    if (!oembed) {
+      try {
+        const proxyRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(oembedUrl)}`);
+        if (proxyRes.ok) oembed = await proxyRes.json();
+      } catch (err) { /* 그래도 실패하면 제목·링크만 보여줘요 */ }
+    }
+
+    if (oembed) {
       if (oembed.thumbnail_url) {
         thumbEl.src = oembed.thumbnail_url;
         thumbEl.style.display = 'block';
       }
       if (oembed.title) titleEl.textContent = oembed.title;
-    } catch (err) {
-      // 썸네일만 못 가져온 거라, 제목·링크는 이미 today.json 값으로 표시돼 있어요.
     }
   }
 
