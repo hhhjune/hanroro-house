@@ -2021,11 +2021,19 @@
     white-space:pre-wrap;
     margin-bottom:16px;
   }
-  .board-post-photo{
-    max-width:100%;
-    border-radius:2px;
-    display:block;
+  .board-post-photos{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
     margin-bottom:16px;
+  }
+  .board-post-photo{
+    max-width:260px;
+    max-height:260px;
+    object-fit:cover;
+    border:1px solid var(--rule);
+    border-radius:4px;
+    display:block;
   }
   .comment-section-standalone{
     margin-top:28px;
@@ -2323,6 +2331,41 @@
     border-radius:4px;
     object-fit:cover;
   }
+  .board-photo-thumb{
+    position:relative;
+    display:inline-block;
+  }
+  .board-photo-thumb img{
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    border:1px solid var(--rule);
+    border-radius:4px;
+    display:block;
+  }
+  .board-photo-thumb-remove{
+    position:absolute;
+    top:-8px;
+    right:-8px;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    border:1px solid var(--rule-strong);
+    background:var(--paper);
+    color:var(--ink-soft);
+    font-size:12px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+  }
+  .board-photo-count{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    align-self:center;
+  }
   .remove-photo-btn{
     border:none;
     background:none;
@@ -2607,9 +2650,9 @@
   <nav class="site-gnb" id="siteGnb">
     <a href="#today">오늘, 한로로는</a>
     <a href="#board">게시판</a>
+    <a href="#quiz">한로로 게임</a>
     <a href="#discography">디스코그래피</a>
     <a href="#calendar">캘린더</a>
-    <a href="#quiz">한로로 게임</a>
     <a href="#diary">한 줄의 계절</a>
   </nav>
 </header>
@@ -3052,6 +3095,7 @@
         <h3 id="triviaResultScore"></h3>
         <p class="quiz-result-desc" id="triviaResultLabel"></p>
         <div class="share-btn-row">
+          <button type="button" class="kakao-share-btn" id="triviaKakaoShareBtn">💬 카카오톡으로 결과 공유하기</button>
           <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록에 남기기</button>
         </div>
         <button class="quiz-retry-btn" id="triviaRetryBtn">다시 풀어보기</button>
@@ -3336,12 +3380,9 @@
       </div>
       <textarea class="board-content-input" rows="4" placeholder="내용을 적어주세요"></textarea>
       <div class="board-photo-field">
-        <input type="file" class="board-photo-input" accept="image/*" id="freeBoardPhotoInput">
-        <label for="freeBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기</label>
-        <div class="photo-preview-wrap board-photo-preview-wrap" style="display:none;">
-          <img class="board-photo-preview-img" alt="첨부한 사진 미리보기">
-          <button type="button" class="remove-photo-btn board-photo-remove-btn">✕ 사진 지우기</button>
-        </div>
+        <input type="file" class="board-photo-input" accept="image/*" id="freeBoardPhotoInput" multiple>
+        <label for="freeBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기 (최대 5장)</label>
+        <div class="photo-preview-wrap board-photo-preview-wrap"></div>
       </div>
       <button type="button" class="board-submit-btn">글쓰기</button>
     </div>
@@ -3372,12 +3413,9 @@
       </div>
       <textarea class="board-content-input" rows="4" placeholder="내용을 적어주세요"></textarea>
       <div class="board-photo-field">
-        <input type="file" class="board-photo-input" accept="image/*" id="questionBoardPhotoInput">
-        <label for="questionBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기</label>
-        <div class="photo-preview-wrap board-photo-preview-wrap" style="display:none;">
-          <img class="board-photo-preview-img" alt="첨부한 사진 미리보기">
-          <button type="button" class="remove-photo-btn board-photo-remove-btn">✕ 사진 지우기</button>
-        </div>
+        <input type="file" class="board-photo-input" accept="image/*" id="questionBoardPhotoInput" multiple>
+        <label for="questionBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기 (최대 5장)</label>
+        <div class="photo-preview-wrap board-photo-preview-wrap"></div>
       </div>
       <button type="button" class="board-submit-btn">글쓰기</button>
     </div>
@@ -3408,12 +3446,9 @@
       </div>
       <textarea class="board-content-input" rows="4" placeholder="내용을 적어주세요"></textarea>
       <div class="board-photo-field">
-        <input type="file" class="board-photo-input" accept="image/*" id="infoBoardPhotoInput">
-        <label for="infoBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기</label>
-        <div class="photo-preview-wrap board-photo-preview-wrap" style="display:none;">
-          <img class="board-photo-preview-img" alt="첨부한 사진 미리보기">
-          <button type="button" class="remove-photo-btn board-photo-remove-btn">✕ 사진 지우기</button>
-        </div>
+        <input type="file" class="board-photo-input" accept="image/*" id="infoBoardPhotoInput" multiple>
+        <label for="infoBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기 (최대 5장)</label>
+        <div class="photo-preview-wrap board-photo-preview-wrap"></div>
       </div>
       <button type="button" class="board-submit-btn">글쓰기</button>
     </div>
@@ -3443,7 +3478,7 @@
     </div>
     <div class="board-detail-actions" id="boardDetailActions"></div>
     <div class="board-post-content" id="boardDetailContent"></div>
-    <img class="board-post-photo" id="boardDetailPhoto" style="display:none;">
+    <div class="board-post-photos" id="boardDetailPhotos" style="display:none;"></div>
 
     <div class="comment-section-standalone">
       <div class="comment-header-bar">
@@ -4668,7 +4703,7 @@
   const RESERVED_ADMIN_NICKNAMES = ['관리자', '운영자', 'admin'];
 
   const boardCol = collection(db, 'boardPosts');
-  const boardState = {}; // boardKey -> { posts, photoDataUrl, unsubscribe }
+  const boardState = {}; // boardKey -> { posts, photos, unsubscribe }
 
   function setupBoard(boardKey) {
     const screen = document.querySelector(`.board-panel[data-board="${boardKey}"]`);
@@ -4681,10 +4716,9 @@
     const listEl = screen.querySelector('.board-list');
     const photoInputEl = screen.querySelector('.board-photo-input');
     const photoPreviewWrapEl = screen.querySelector('.board-photo-preview-wrap');
-    const photoPreviewImgEl = screen.querySelector('.board-photo-preview-img');
-    const photoRemoveBtn = screen.querySelector('.board-photo-remove-btn');
     const writeToggleBtn = screen.querySelector('.board-write-toggle-btn');
     const writeFormEl = screen.querySelector('.board-write');
+    const MAX_BOARD_PHOTOS = 5;
 
     writeToggleBtn.addEventListener('click', () => {
       const isOpen = writeFormEl.style.display !== 'none';
@@ -4693,22 +4727,58 @@
       writeToggleBtn.classList.toggle('on', !isOpen);
     });
 
-    boardState[boardKey] = { posts: [], photoDataUrl: null };
+    boardState[boardKey] = { posts: [], photos: [] };
 
-    photoInputEl.addEventListener('change', () => {
-      const file = photoInputEl.files[0];
-      if (!file) return;
-      resizeImage(file, 800, (dataUrl) => {
-        boardState[boardKey].photoDataUrl = dataUrl;
-        photoPreviewImgEl.src = dataUrl;
-        photoPreviewWrapEl.style.display = 'flex';
+    function renderBoardPhotoPreview() {
+      const photos = boardState[boardKey].photos;
+      if (photos.length === 0) {
+        photoPreviewWrapEl.innerHTML = '';
+        return;
+      }
+      photoPreviewWrapEl.innerHTML =
+        photos.map((dataUrl, idx) => `
+          <div class="board-photo-thumb" data-idx="${idx}">
+            <img src="${dataUrl}" alt="첨부한 사진 미리보기 ${idx + 1}">
+            <button type="button" class="board-photo-thumb-remove" data-idx="${idx}" aria-label="사진 지우기">✕</button>
+          </div>
+        `).join('') +
+        `<span class="board-photo-count">${photos.length} / ${MAX_BOARD_PHOTOS}장</span>`;
+      photoPreviewWrapEl.querySelectorAll('.board-photo-thumb-remove').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.dataset.idx, 10);
+          boardState[boardKey].photos.splice(idx, 1);
+          renderBoardPhotoPreview();
+        });
       });
-    });
+    }
 
-    photoRemoveBtn.addEventListener('click', () => {
-      boardState[boardKey].photoDataUrl = null;
+    // 동영상은 저장 비용이 들어서 받지 않아요. 사진만, 게시글당 최대 5장까지 첨부할 수 있어요.
+    photoInputEl.addEventListener('change', () => {
+      const files = Array.from(photoInputEl.files || []);
       photoInputEl.value = '';
-      photoPreviewWrapEl.style.display = 'none';
+      if (files.length === 0) return;
+
+      const imageFiles = files.filter(f => f.type.startsWith('image/'));
+      if (imageFiles.length < files.length) {
+        alert('동영상은 첨부할 수 없어요. 사진 파일만 올려주세요.');
+      }
+
+      const remaining = MAX_BOARD_PHOTOS - boardState[boardKey].photos.length;
+      if (remaining <= 0) {
+        alert(`사진은 게시글당 최대 ${MAX_BOARD_PHOTOS}장까지 첨부할 수 있어요.`);
+        return;
+      }
+      const toAdd = imageFiles.slice(0, remaining);
+      if (imageFiles.length > toAdd.length) {
+        alert(`사진은 게시글당 최대 ${MAX_BOARD_PHOTOS}장까지 첨부할 수 있어요.`);
+      }
+
+      toAdd.forEach(file => {
+        resizeImage(file, 800, (dataUrl) => {
+          boardState[boardKey].photos.push(dataUrl);
+          renderBoardPhotoPreview();
+        });
+      });
     });
 
     const q = query(boardCol, where('board', '==', boardKey), orderBy('createdAt', 'desc'));
@@ -4745,14 +4815,14 @@
           authorUid: myUid,
           title,
           content,
-          photo: boardState[boardKey].photoDataUrl,
+          photos: boardState[boardKey].photos,
           createdAt: serverTimestamp()
         });
         titleInput.value = '';
         contentInput.value = '';
-        boardState[boardKey].photoDataUrl = null;
+        boardState[boardKey].photos = [];
         photoInputEl.value = '';
-        photoPreviewWrapEl.style.display = 'none';
+        renderBoardPhotoPreview();
         writeFormEl.style.display = 'none';
         writeToggleBtn.textContent = '✏️ 글쓰기';
         writeToggleBtn.classList.remove('on');
@@ -5102,9 +5172,18 @@
     document.getElementById('boardDetailMeta').textContent = `${post.author || '익명'} · ${dateStr}`;
     document.getElementById('boardDetailContent').textContent = post.content || '';
 
-    const photoEl = document.getElementById('boardDetailPhoto');
-    if (post.photo) { photoEl.src = post.photo; photoEl.style.display = 'block'; }
-    else { photoEl.style.display = 'none'; photoEl.removeAttribute('src'); }
+    const photosEl = document.getElementById('boardDetailPhotos');
+    // 예전 글은 photo(단일 사진) 필드로 저장돼 있을 수 있어서 함께 지원해요.
+    const photoList = (post.photos && post.photos.length) ? post.photos : (post.photo ? [post.photo] : []);
+    if (photoList.length) {
+      photosEl.innerHTML = photoList.map((src, idx) =>
+        `<img class="board-post-photo" src="${src}" alt="첨부 사진 ${idx + 1}">`
+      ).join('');
+      photosEl.style.display = 'flex';
+    } else {
+      photosEl.innerHTML = '';
+      photosEl.style.display = 'none';
+    }
 
     const actionsEl = document.getElementById('boardDetailActions');
     actionsEl.innerHTML = '';
@@ -6080,6 +6159,17 @@
 
     triviaResultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+
+  document.getElementById('triviaKakaoShareBtn').addEventListener('click', () => {
+    if (!currentTriviaResult) return;
+    shareToKakao(
+      `${currentTriviaResult.tier.emoji} 한로로 퀴즈 ${currentTriviaResult.score}/20점!`,
+      `나는 '${currentTriviaResult.tier.label}' — 너도 몇 점 나오는지 풀어봐`,
+      '#quiz',
+      'https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c8/a4/c6/c8a4c64f-89b3-9ef2-473f-4ad423a03c5b/887928030421.jpg/600x600bf-60.jpg',
+      '나도 풀어보기'
+    );
+  });
 
   triviaStartBtn.addEventListener('click', startTrivia);
   triviaRetryBtn.addEventListener('click', () => {
