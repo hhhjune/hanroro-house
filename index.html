@@ -3830,12 +3830,20 @@
     '나침반', '자처', '도망', '하루살이', '화해', '보수공사',
     '해초', '놀이터', '내일에서 온 티켓', '먹이사슬', '갈림길', '__에게',
     '이상비행', '당신의 밤은 나의 밤과 같습니까', '귀가', 'Like my groove', '1111', '뛰어!',
-    '게임 오버 (Game Over)', '너와 나 (You and I)'
+    '게임 오버 (Game Over)', '너와 나 (You and I)', '안녕', 'So Nice'
   ];
   const WORLDCUP_SONGS = WORLDCUP_SONG_TITLES.map(title => ({
     title,
     img: `images/whoyoufavorite/${title}.jpeg`
   }));
+
+  // 참가곡이 34곡이라 딱 떨어지는 2의 제곱수가 아니에요.
+  // 그래서 맨 처음에 "예선"으로 4곡(2경기)만 먼저 겨루게 해서 32곡으로 맞춘 다음,
+  // 32강 → 16강 → 8강 → 4강 → 결승 순서로 진행해요.
+  let worldcupStage = 'prelim';   // 'prelim'(예선) | 'main'(본선)
+  let worldcupPrelimQueue = [];   // 예선에서 아직 안 나온 대기열(4곡)
+  let worldcupPrelimWinners = []; // 예선 승자들(2곡)
+  let worldcupMainPool = [];      // 예선을 거치지 않고 32강에 바로 합류하는 곡들(30곡)
 
   let worldcupQueue = [];      // 이번 라운드에서 아직 안 나온 대기열
   let worldcupNextRound = [];  // 이번 라운드 승자들 (다음 라운드로)
@@ -3851,16 +3859,37 @@
   }
 
   function startWorldcup(){
-    worldcupQueue = shuffleArray(WORLDCUP_SONGS);
-    worldcupNextRound = [];
-    worldcupRoundSize = worldcupQueue.length;
-    worldcupTotalThisRound = worldcupRoundSize / 2;
+    const shuffled = shuffleArray(WORLDCUP_SONGS);
+    worldcupPrelimQueue = shuffled.slice(0, 4);   // 무작위 4곡으로 예선 2경기
+    worldcupMainPool = shuffled.slice(4);         // 나머지는 32강 직행
+    worldcupPrelimWinners = [];
+    worldcupStage = 'prelim';
+    worldcupTotalThisRound = 2;
     worldcupPlayedThisRound = 0;
 
     document.getElementById('worldcupResult').style.display = 'none';
     document.getElementById('worldcupRound').style.display = 'block';
 
-    nextWorldcupPair();
+    nextWorldcupPrelimPair();
+  }
+
+  function nextWorldcupPrelimPair(){
+    if (worldcupPrelimQueue.length < 2) {
+      // 예선 끝 → 예선 승자 2곡 + 나머지 30곡 = 32곡으로 본선 시작
+      worldcupQueue = shuffleArray([...worldcupMainPool, ...worldcupPrelimWinners]);
+      worldcupNextRound = [];
+      worldcupRoundSize = worldcupQueue.length; // 32
+      worldcupTotalThisRound = worldcupRoundSize / 2;
+      worldcupPlayedThisRound = 0;
+      worldcupStage = 'main';
+      nextWorldcupPair();
+      return;
+    }
+
+    worldcupCurrentPair = [worldcupPrelimQueue.shift(), worldcupPrelimQueue.shift()];
+    document.getElementById('worldcupRoundLabel').textContent =
+      `예선 · ${worldcupPlayedThisRound + 1} / ${worldcupTotalThisRound}`;
+    renderWorldcupPair();
   }
 
   function nextWorldcupPair(){
@@ -3878,13 +3907,12 @@
     }
 
     worldcupCurrentPair = [worldcupQueue.shift(), worldcupQueue.shift()];
+    document.getElementById('worldcupRoundLabel').textContent =
+      `${worldcupRoundName(worldcupRoundSize)} · ${worldcupPlayedThisRound + 1} / ${worldcupTotalThisRound}`;
     renderWorldcupPair();
   }
 
   function renderWorldcupPair(){
-    document.getElementById('worldcupRoundLabel').textContent =
-      `${worldcupRoundName(worldcupRoundSize)} · ${worldcupPlayedThisRound + 1} / ${worldcupTotalThisRound}`;
-
     const [a, b] = worldcupCurrentPair;
     document.getElementById('worldcupImgLeft').src = encodeURI(a.img);
     document.getElementById('worldcupTitleLeft').textContent = a.title;
@@ -3894,9 +3922,15 @@
 
   function pickWorldcup(winnerIdx){
     const winner = worldcupCurrentPair[winnerIdx];
-    worldcupNextRound.push(winner);
-    worldcupPlayedThisRound++;
-    nextWorldcupPair();
+    if (worldcupStage === 'prelim') {
+      worldcupPrelimWinners.push(winner);
+      worldcupPlayedThisRound++;
+      nextWorldcupPrelimPair();
+    } else {
+      worldcupNextRound.push(winner);
+      worldcupPlayedThisRound++;
+      nextWorldcupPair();
+    }
   }
 
   document.getElementById('worldcupPickLeft').addEventListener('click', () => pickWorldcup(0));
