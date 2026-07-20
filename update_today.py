@@ -247,6 +247,21 @@ def fetch_tiktok_latest():
                 "title": f"@{TIKTOK_USERNAME} — {title}",
                 "link": f"https://www.tiktok.com/@{TIKTOK_USERNAME}/video/{video_id}"
             })
+
+        # extract_flat 모드는 목록을 빠르게 가져오는 대신 썸네일 정보가 빠져있어요.
+        # 그래서 화면에 실제로 쓰이는 "가장 최근 영상" 1개에 대해서만, 그 영상
+        # 페이지에 다시 한번 접속해서(flat 아님) 썸네일 주소를 가져와요.
+        if results:
+            try:
+                detail_opts = {"quiet": True, "socket_timeout": 15}
+                with yt_dlp.YoutubeDL(detail_opts) as ydl:
+                    detail = ydl.extract_info(results[0]["link"], download=False)
+                thumbnail = detail.get("thumbnail")
+                if thumbnail:
+                    results[0]["thumbnail"] = thumbnail
+            except Exception as e:
+                print(f"[tiktok] 최신 영상 썸네일 조회 실패: {e}")
+
         return results
     except Exception as e:
         print(f"[tiktok] 수집 실패: {e}")
