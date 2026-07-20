@@ -361,11 +361,11 @@
 
   /* ---------- QUIZ ---------- */
   .quiz-section{
-    max-width:640px;
+    max-width:920px;
     margin:0 auto;
     padding:100px 24px 60px;
-    text-align:center;
   }
+  .quiz-section .section-head{ text-align:center; }
 
   .game-screen{ display:none; }
   .game-screen.active{ display:block; }
@@ -373,33 +373,62 @@
   .game-index-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:16px;
-    margin-top:30px;
+    gap:24px;
+    margin-top:36px;
   }
   .game-index-card{
     display:flex;
     flex-direction:column;
-    align-items:center;
-    gap:8px;
+    align-items:flex-start;
+    gap:10px;
     background:var(--paper-fold);
     border:1px solid var(--rule);
-    padding:32px 18px;
+    border-radius:4px;
+    padding:34px 30px;
     cursor:pointer;
-    text-align:center;
-    transition:transform 0.15s ease, border-color 0.15s ease;
+    text-align:left;
+    position:relative;
+    overflow:hidden;
+    transition:transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
   }
-  .game-index-card:hover{ transform:translateY(-3px); border-color:var(--berry); }
-  .game-index-emoji{ font-size:32px; }
+  .game-index-card::after{
+    content:'→';
+    position:absolute;
+    right:22px;
+    bottom:20px;
+    font-size:18px;
+    color:var(--rule-strong);
+    transition:transform 0.18s ease, color 0.18s ease;
+  }
+  .game-index-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--berry);
+    box-shadow:0 10px 24px rgba(42,39,36,0.08);
+  }
+  .game-index-card:hover::after{ color:var(--berry); transform:translateX(4px); }
+  .game-index-emoji{
+    font-size:30px;
+    width:56px;
+    height:56px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--paper);
+    border:1px solid var(--rule);
+    border-radius:50%;
+    margin-bottom:4px;
+  }
   .game-index-title{
     font-family:'Gowun Batang', serif;
-    font-size:17px;
+    font-size:19px;
     color:var(--ink);
   }
   .game-index-desc{
-    font-size:12px;
+    font-size:13px;
     color:var(--ink-soft);
+    padding-right:28px;
   }
-  @media (max-width:520px){
+  @media (max-width:640px){
     .game-index-grid{ grid-template-columns:1fr; }
   }
 
@@ -416,72 +445,123 @@
   .game-back-btn:hover{ color:var(--berry); }
 
   .guestbook-fill-btn{
-    display:block;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
     width:100%;
-    background:none;
-    border:1px dashed var(--rule-strong);
+    background:var(--paper);
+    border:1px solid var(--moss);
     color:var(--moss-deep);
     font-family:'Noto Sans KR', sans-serif;
-    font-size:13px;
-    padding:9px 0;
-    margin:6px 0 14px;
+    font-weight:500;
+    font-size:13.5px;
+    padding:11px 0;
+    margin:8px 0 14px;
     border-radius:2px;
     cursor:pointer;
+    transition:background 0.2s ease, color 0.2s ease;
   }
-  .guestbook-fill-btn:hover{ border-color:var(--moss); color:var(--moss); }
+  .guestbook-fill-btn:hover{ background:var(--moss); color:#fff; }
 
   .guestbook-section{
-    margin-top:56px;
+    margin-top:64px;
     text-align:left;
+    padding-top:40px;
+    border-top:1px dashed var(--rule-strong);
   }
+  .guestbook-section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .guestbook-section-head .calendar-block-title{ margin:0; }
+  .guestbook-section-sub{ font-size:12.5px; color:var(--ink-soft); }
+
   .guestbook-write{
     background:var(--paper-fold);
     border:1px solid var(--rule);
-    padding:18px;
-    margin:16px 0 24px;
+    border-radius:4px;
+    padding:20px;
+    margin:0 0 28px;
   }
+  .guestbook-write .board-write-row{ margin-bottom:10px; }
+  .guestbook-write .board-write-row input#guestbookAuthorInput{ flex:0 0 140px; }
+  .guestbook-write .board-write-row input#guestbookResultInput{ flex:1; }
+  .guestbook-write input,
   .guestbook-write textarea{
     width:100%;
+    background:#fff;
     border:1px solid var(--rule);
     border-radius:2px;
-    padding:9px 12px;
+    padding:10px 12px;
     font-family:'Noto Sans KR', sans-serif;
     font-size:13.5px;
-    margin-bottom:10px;
+    color:var(--ink);
     box-sizing:border-box;
+  }
+  .guestbook-write input::placeholder,
+  .guestbook-write textarea::placeholder{ color:var(--ink-soft); opacity:0.65; }
+  .guestbook-write textarea{
+    margin-bottom:12px;
     resize:vertical;
   }
-  .guestbook-list{ display:flex; flex-direction:column; gap:10px; }
+
+  .guestbook-list{ display:flex; flex-direction:column; gap:12px; }
   .guestbook-item{
-    background:var(--paper-fold);
+    background:#fff;
     border:1px solid var(--rule);
-    padding:14px 16px;
+    border-radius:6px;
+    padding:16px 18px;
     position:relative;
+    box-shadow:0 1px 3px rgba(42,39,36,0.05);
   }
   .guestbook-item-top{
     display:flex;
     align-items:center;
-    gap:8px;
-    margin-bottom:6px;
+    gap:10px;
+    margin-bottom:8px;
     flex-wrap:wrap;
   }
-  .guestbook-author{ font-size:13px; font-weight:500; color:var(--ink); }
+  .guestbook-avatar{
+    flex:0 0 auto;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:var(--moss-deep);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .guestbook-author{ font-size:13.5px; font-weight:700; color:var(--ink); }
   .guestbook-result-badge{
     display:inline-block;
     background:var(--berry);
     color:#fff;
     font-size:11.5px;
     font-weight:700;
-    padding:2px 9px;
+    padding:3px 10px;
     border-radius:100px;
   }
   .guestbook-date{ font-size:11px; color:var(--ink-soft); margin-left:auto; }
-  .guestbook-message{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; }
-  .guestbook-item .delete-btn{
-    position:absolute; top:14px; right:14px;
-    border:none; background:none; color:var(--ink-soft); cursor:pointer; font-size:12px;
+  .guestbook-message{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    line-height:1.6;
+    padding-left:36px;
   }
-  .guestbook-item .delete-btn:hover{ color:var(--berry); }
+  .guestbook-item .delete-btn{
+    position:absolute; top:16px; right:16px;
+    border:none; background:none; color:var(--ink-soft); cursor:pointer; font-size:12px;
+    opacity:0.6;
+  }
+  .guestbook-item .delete-btn:hover{ color:var(--berry); opacity:1; }
 
   .quiz-box{
     margin-top:26px;
@@ -1863,29 +1943,30 @@
     margin-top:44px;
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:10px;
     justify-content:flex-end;
+    opacity:0.55;
+    transition:opacity 0.2s ease;
   }
+  .admin-bar:hover{ opacity:1; }
   .admin-toggle-btn{
     background:none;
-    border:1px dashed var(--rule-strong);
+    border:none;
     color:var(--ink-soft);
     font-family:'Noto Sans KR', sans-serif;
-    font-size:13px;
-    padding:6px 14px;
-    border-radius:2px;
+    font-size:11px;
+    padding:2px 0;
     cursor:pointer;
-    transition:border-color 0.2s ease, color 0.2s ease;
+    transition:color 0.2s ease;
   }
-  .admin-toggle-btn:hover{ border-color:var(--berry); color:var(--berry); }
+  .admin-toggle-btn:hover{ color:var(--berry); text-decoration:underline; }
   .admin-toggle-btn.on{
-    border:1px solid var(--berry);
     color:var(--berry);
-    background:rgba(156,74,92,0.08);
+    font-weight:500;
   }
   .admin-status{
     font-family:'Noto Sans KR', sans-serif;
-    font-size:12.5px;
+    font-size:11px;
     color:var(--berry);
     opacity:0.85;
   }
@@ -2483,11 +2564,30 @@
         <span class="quiz-result-emoji" id="triviaResultEmoji"></span>
         <h3 id="triviaResultScore"></h3>
         <p class="quiz-result-desc" id="triviaResultLabel"></p>
+        <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록에 결과 남기기</button>
         <button class="quiz-retry-btn" id="triviaRetryBtn">다시 풀어보기</button>
       </div>
 
     </div>
   </div>
+
+  <!-- 방명록 -->
+  <div class="guestbook-section">
+    <div class="guestbook-section-head">
+      <h3 class="calendar-block-title">📖 방명록 — 내 게임 결과 자랑하기</h3>
+      <span class="guestbook-section-sub">게임 결과와 함께, 한마디 남겨보세요</span>
+    </div>
+    <div class="guestbook-write">
+      <div class="board-write-row">
+        <input type="text" id="guestbookAuthorInput" placeholder="닉네임">
+        <input type="text" id="guestbookResultInput" placeholder="예: 거울형 / 한로로 퀴즈 18점">
+      </div>
+      <textarea id="guestbookMessageInput" rows="2" placeholder="한마디 남겨보세요"></textarea>
+      <button type="button" class="board-submit-btn" id="guestbookSubmitBtn">방명록에 남기기</button>
+    </div>
+    <div class="guestbook-list" id="guestbookList"></div>
+  </div>
+</section>
 
 
 <section id="calendar" class="page calendar-section">
@@ -2597,7 +2697,7 @@
   <!-- 자유게시판 -->
   <div class="board-panel" data-panel="free" data-board="free">
     <div class="admin-bar">
-      <button type="button" class="admin-toggle-btn">🔧 관리자 로그인</button>
+      <button type="button" class="admin-toggle-btn">관리자</button>
       <span class="admin-status"></span>
     </div>
 
@@ -2637,7 +2737,7 @@
   <!-- 질문게시판 -->
   <div class="board-panel" data-panel="question" data-board="question">
     <div class="admin-bar">
-      <button type="button" class="admin-toggle-btn">🔧 관리자 로그인</button>
+      <button type="button" class="admin-toggle-btn">관리자</button>
       <span class="admin-status"></span>
     </div>
 
@@ -2677,7 +2777,7 @@
   <!-- 정보게시판 -->
   <div class="board-panel" data-panel="info" data-board="info">
     <div class="admin-bar">
-      <button type="button" class="admin-toggle-btn">🔧 관리자 로그인</button>
+      <button type="button" class="admin-toggle-btn">관리자</button>
       <span class="admin-status"></span>
     </div>
 
@@ -2723,7 +2823,7 @@
   </div>
 
   <div class="admin-bar">
-    <button type="button" id="adminToggleBtn" class="admin-toggle-btn">🔧 관리자 로그인</button>
+    <button type="button" id="adminToggleBtn" class="admin-toggle-btn">관리자</button>
     <span class="admin-status" id="adminStatus"></span>
   </div>
 
@@ -3060,10 +3160,10 @@
   function updateAdminUI() {
     adminToggleBtns.forEach(btn => {
       if (isAdminUser) {
-        btn.textContent = '🔓 관리자 로그아웃';
+        btn.textContent = '관리자 로그아웃';
         btn.classList.add('on');
       } else {
-        btn.textContent = '🔧 관리자 로그인';
+        btn.textContent = '관리자';
         btn.classList.remove('on');
       }
     });
@@ -4024,6 +4124,95 @@
       }, 150);
     }
   });
+
+  // ================= 방명록 (Firestore 연동) =================
+  // ⚠️ 이 블록은 반드시 이 모듈 스크립트 안에 있어야 해요.
+  // db / collection / myUid / isAdminUser는 위쪽 Firebase 초기화 코드에서 만든 값이라
+  // 아래쪽의 일반 <script>(모듈이 아닌)에서는 볼 수 없어요. 다른 script 태그로 옮기면
+  // "collection is not defined" 같은 에러가 나면서 그 뒤에 나오는 캘린더 코드까지
+  // 통째로 멈춰버려요 — 실제로 그래서 캘린더가 안 보였던 거예요.
+  const guestbookCol = collection(db, 'guestbookEntries');
+  const guestbookQuery = query(guestbookCol, orderBy('createdAt', 'desc'));
+  let currentGuestbookEntries = [];
+
+  onSnapshot(guestbookQuery, (snapshot) => {
+    currentGuestbookEntries = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderGuestbook();
+  }, (err) => {
+    console.error('방명록을 불러오지 못했습니다:', err);
+    const listEl = document.getElementById('guestbookList');
+    if (listEl) listEl.innerHTML = '<div class="archive-empty">방명록을 불러오지 못했어요. Firestore 설정을 확인해 주세요.</div>';
+  });
+
+  function renderGuestbook(){
+    const listEl = document.getElementById('guestbookList');
+    if (!listEl) return;
+    if (currentGuestbookEntries.length === 0) {
+      listEl.innerHTML = '<div class="archive-empty">아직 방명록이 없어요. 게임 결과를 남겨보세요!</div>';
+      return;
+    }
+    listEl.innerHTML = currentGuestbookEntries.map(entry => {
+      const isMine = myUid && entry.authorUid === myUid;
+      const canDelete = isAdminUser || isMine;
+      const dateStr = entry.createdAt && entry.createdAt.toDate
+        ? entry.createdAt.toDate().toLocaleDateString('ko-KR')
+        : '';
+      const authorName = entry.author || '익명';
+      return `
+        <div class="guestbook-item">
+          ${canDelete ? `<button class="delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}" data-id="${entry.id}" title="${isAdminUser && !isMine ? '관리자 권한으로 삭제' : '내 기록 삭제'}">✕</button>` : ''}
+          <div class="guestbook-item-top">
+            <span class="guestbook-avatar">${authorName.trim().charAt(0) || '?'}</span>
+            <span class="guestbook-author">${authorName}</span>
+            ${entry.result ? `<span class="guestbook-result-badge">${entry.result}</span>` : ''}
+            <span class="guestbook-date">${dateStr}</span>
+          </div>
+          ${entry.message ? `<div class="guestbook-message">${entry.message}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+
+    listEl.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('이 방명록을 삭제할까요?')) return;
+        try {
+          await deleteDoc(doc(db, 'guestbookEntries', btn.dataset.id));
+        } catch (err) {
+          alert('삭제에 실패했어요.');
+          console.error(err);
+        }
+      });
+    });
+  }
+
+  const guestbookAuthorInputEl = document.getElementById('guestbookAuthorInput');
+  const guestbookResultInputEl = document.getElementById('guestbookResultInput');
+  const guestbookMessageInputEl = document.getElementById('guestbookMessageInput');
+  const guestbookSubmitBtnEl = document.getElementById('guestbookSubmitBtn');
+
+  guestbookSubmitBtnEl.addEventListener('click', async () => {
+    const author = guestbookAuthorInputEl.value.trim();
+    const result = guestbookResultInputEl.value.trim();
+    const message = guestbookMessageInputEl.value.trim();
+    if (!author) { guestbookAuthorInputEl.focus(); return; }
+    if (!message && !result) { guestbookMessageInputEl.focus(); return; }
+    if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+
+    guestbookSubmitBtnEl.disabled = true;
+    try {
+      await addDoc(guestbookCol, {
+        author, authorUid: myUid, result, message,
+        createdAt: serverTimestamp()
+      });
+      guestbookResultInputEl.value = '';
+      guestbookMessageInputEl.value = '';
+    } catch (err) {
+      alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
+      console.error(err);
+    } finally {
+      guestbookSubmitBtnEl.disabled = false;
+    }
+  });
 </script>
 
 <script>
@@ -4514,85 +4703,11 @@
     triviaIntro.style.display = 'block';
   });
 
-  // ================= 방명록 =================
-  const guestbookCol = collection(db, 'guestbookEntries');
-  const guestbookQuery = query(guestbookCol, orderBy('createdAt', 'desc'));
-  let currentGuestbookEntries = [];
-
-  onSnapshot(guestbookQuery, (snapshot) => {
-    currentGuestbookEntries = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderGuestbook();
-  }, (err) => {
-    console.error('방명록을 불러오지 못했습니다:', err);
-    document.getElementById('guestbookList').innerHTML =
-      '<div class="archive-empty">방명록을 불러오지 못했어요. Firestore 설정을 확인해 주세요.</div>';
-  });
-
-  function renderGuestbook(){
-    const listEl = document.getElementById('guestbookList');
-    if (currentGuestbookEntries.length === 0) {
-      listEl.innerHTML = '<div class="archive-empty">아직 방명록이 없어요. 게임 결과를 남겨보세요!</div>';
-      return;
-    }
-    listEl.innerHTML = currentGuestbookEntries.map(entry => {
-      const isMine = myUid && entry.authorUid === myUid;
-      const canDelete = isAdminUser || isMine;
-      const dateStr = entry.createdAt && entry.createdAt.toDate
-        ? entry.createdAt.toDate().toLocaleDateString('ko-KR')
-        : '';
-      return `
-        <div class="guestbook-item">
-          ${canDelete ? `<button class="delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}" data-id="${entry.id}">✕</button>` : ''}
-          <div class="guestbook-item-top">
-            <span class="guestbook-author">${entry.author || '익명'}</span>
-            ${entry.result ? `<span class="guestbook-result-badge">${entry.result}</span>` : ''}
-            <span class="guestbook-date">${dateStr}</span>
-          </div>
-          ${entry.message ? `<div class="guestbook-message">${entry.message}</div>` : ''}
-        </div>
-      `;
-    }).join('');
-
-    listEl.querySelectorAll('.delete-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if (!confirm('이 방명록을 삭제할까요?')) return;
-        try {
-          await deleteDoc(doc(db, 'guestbookEntries', btn.dataset.id));
-        } catch (err) {
-          alert('삭제에 실패했어요.');
-          console.error(err);
-        }
-      });
-    });
-  }
-
-  const guestbookAuthorInput = document.getElementById('guestbookAuthorInput');
+  // ================= 방명록: 게임 결과 채우기 (DOM만 다루는 부분) =================
+  // Firestore 저장/불러오기 로직은 위쪽 모듈 스크립트로 옮겼어요 (db/collection이
+  // 필요한 코드라 이 script 태그 안에서는 쓸 수 없었어요).
   const guestbookResultInput = document.getElementById('guestbookResultInput');
   const guestbookMessageInput = document.getElementById('guestbookMessageInput');
-  const guestbookSubmitBtn = document.getElementById('guestbookSubmitBtn');
-
-  guestbookSubmitBtn.addEventListener('click', async () => {
-    const author = guestbookAuthorInput.value.trim();
-    const result = guestbookResultInput.value.trim();
-    const message = guestbookMessageInput.value.trim();
-    if (!author) { guestbookAuthorInput.focus(); return; }
-    if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
-
-    guestbookSubmitBtn.disabled = true;
-    try {
-      await addDoc(guestbookCol, {
-        author, authorUid: myUid, result, message,
-        createdAt: serverTimestamp()
-      });
-      guestbookResultInput.value = '';
-      guestbookMessageInput.value = '';
-    } catch (err) {
-      alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
-      console.error(err);
-    } finally {
-      guestbookSubmitBtn.disabled = false;
-    }
-  });
 
   function fillGuestbookWithResult(resultText){
     guestbookResultInput.value = resultText;
