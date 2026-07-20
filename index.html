@@ -3828,7 +3828,7 @@
 
   // 틱톡은 공식 oEmbed(로그인 필요 없는 공개 API)로 썸네일을 가져와봐요.
   // 실패해도 제목·링크는 today.json에 있는 값으로 그대로 보여줘요.
-  async function renderLatestTiktok(items){
+  function renderLatestTiktok(items){
     const linkEl = document.getElementById('latestTiktokLink');
     const thumbEl = document.getElementById('latestTiktokThumb');
     const titleEl = document.getElementById('latestTiktokTitle');
@@ -3840,29 +3840,11 @@
     linkEl.href = latest.link;
     titleEl.textContent = latest.title;
 
-    const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(latest.link)}`;
-    let oembed = null;
-
-    // 1차: 직접 요청 (틱톡이 CORS를 막아두면 여기서 실패할 수 있어요)
-    try {
-      const res = await fetch(oembedUrl);
-      if (res.ok) oembed = await res.json();
-    } catch (err) { /* 2차 시도로 넘어가요 */ }
-
-    // 2차: 공개 CORS 우회 프록시를 한 번 거쳐서 재시도
-    if (!oembed) {
-      try {
-        const proxyRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(oembedUrl)}`);
-        if (proxyRes.ok) oembed = await proxyRes.json();
-      } catch (err) { /* 그래도 실패하면 제목·링크만 보여줘요 */ }
-    }
-
-    if (oembed) {
-      if (oembed.thumbnail_url) {
-        thumbEl.src = oembed.thumbnail_url;
-        thumbEl.style.display = 'block';
-      }
-      if (oembed.title) titleEl.textContent = oembed.title;
+    // 썸네일은 브라우저에서 틱톡에 직접 요청하지 않고, update_today.py가 미리
+    // 가져와서 today.json에 넣어둔 thumbnail 값을 그대로 보여줘요(CORS 문제 없음).
+    if (latest.thumbnail) {
+      thumbEl.src = latest.thumbnail;
+      thumbEl.style.display = 'block';
     }
   }
 
