@@ -769,30 +769,74 @@
     justify-content:center;
     gap:36px;
   }
-  .worldcup-pick-btn{
+  .worldcup-pick-card{
     flex:1;
     max-width:320px;
-    background:#fff;
-    border:1px solid var(--rule);
-    border-radius:2px;
-    padding:10px;
-    cursor:pointer;
-    transition:border-color 0.15s ease, transform 0.15s ease;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
   }
-  .worldcup-pick-btn:hover{ border-color:var(--berry); transform:translateY(-3px); }
-  .worldcup-pick-btn img{
+  .worldcup-media{
+    position:relative;
     width:100%;
     aspect-ratio:1/1;
+    background:#000;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .worldcup-media img{
+    width:100%;
+    height:100%;
     object-fit:cover;
     display:block;
-    margin-bottom:10px;
   }
+  .worldcup-media iframe{
+    width:100%;
+    height:100%;
+    display:block;
+    border:none;
+  }
+  .worldcup-play-btn{
+    position:absolute;
+    inset:0;
+    margin:auto;
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    border:none;
+    background:rgba(20,16,14,0.55);
+    color:#fff;
+    font-size:19px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:background 0.15s ease, transform 0.15s ease;
+  }
+  .worldcup-play-btn:hover{ background:rgba(20,16,14,0.78); transform:scale(1.06); }
+  .worldcup-play-btn.playing{ display:none; }
   .worldcup-pick-title{
     display:block;
     font-size:14.5px;
     color:var(--ink);
     font-weight:500;
+    text-align:center;
   }
+  .worldcup-vote-btn{
+    width:100%;
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:9px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+  .worldcup-vote-btn:hover{ border-color:var(--berry); color:var(--berry); background:var(--paper-fold); }
   .worldcup-vs{
     font-family:'Gowun Batang', serif;
     font-size:16px;
@@ -864,7 +908,8 @@
   }
   @media (max-width:520px){
     .worldcup-pair{ gap:10px; }
-    .worldcup-pick-btn{ max-width:140px; }
+    .worldcup-pick-card{ max-width:140px; }
+    .worldcup-play-btn{ width:44px; height:44px; font-size:15px; }
     .worldcup-pick-title{ font-size:12.5px; }
     .worldcup-stats-name{ flex-basis:80px; font-size:11.5px; }
     .worldcup-stats-pct{ flex-basis:64px; font-size:11px; }
@@ -3064,15 +3109,23 @@
       <div class="worldcup-round" id="worldcupRound" style="display:none;">
         <div class="worldcup-round-label" id="worldcupRoundLabel"></div>
         <div class="worldcup-pair">
-          <button type="button" class="worldcup-pick-btn" id="worldcupPickLeft">
-            <img id="worldcupImgLeft" alt="">
+          <div class="worldcup-pick-card">
+            <div class="worldcup-media" id="worldcupMediaLeft">
+              <img id="worldcupImgLeft" alt="">
+              <button type="button" class="worldcup-play-btn" id="worldcupPlayLeft" aria-label="노래 들어보기">▶</button>
+            </div>
             <span class="worldcup-pick-title" id="worldcupTitleLeft"></span>
-          </button>
+            <button type="button" class="worldcup-vote-btn" id="worldcupPickLeft">이 곡 선택 →</button>
+          </div>
           <span class="worldcup-vs">VS</span>
-          <button type="button" class="worldcup-pick-btn" id="worldcupPickRight">
-            <img id="worldcupImgRight" alt="">
+          <div class="worldcup-pick-card">
+            <div class="worldcup-media" id="worldcupMediaRight">
+              <img id="worldcupImgRight" alt="">
+              <button type="button" class="worldcup-play-btn" id="worldcupPlayRight" aria-label="노래 들어보기">▶</button>
+            </div>
             <span class="worldcup-pick-title" id="worldcupTitleRight"></span>
-          </button>
+            <button type="button" class="worldcup-vote-btn" id="worldcupPickRight">이 곡 선택 →</button>
+          </div>
         </div>
       </div>
 
@@ -3575,6 +3628,7 @@
   document.querySelectorAll('.game-back-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.hasAttribute('data-worldcup-back')) {
+        if (typeof resetAllWorldcupMedia === 'function') resetAllWorldcupMedia();
         showGameScreen('gameWorldcupHubScreen');
         return;
       }
@@ -3591,6 +3645,9 @@
       tab.addEventListener('click', () => {
         subtabs.forEach(t => t.classList.toggle('active', t === tab));
         subpanels.forEach(p => p.classList.toggle('active', p.dataset.subpanel === tab.dataset.subtab));
+        if (tab.dataset.subtab === 'guestbook' && screen.dataset.game === 'worldcup' && typeof resetAllWorldcupMedia === 'function') {
+          resetAllWorldcupMedia();
+        }
       });
     });
   });
@@ -3832,9 +3889,24 @@
     '이상비행', '당신의 밤은 나의 밤과 같습니까', '귀가', 'Like my groove', '1111', '뛰어!',
     '게임 오버 (Game Over)', '너와 나 (You and I)', '안녕', 'So Nice'
   ];
+  // ▼▼▼ 여기에 노래 제목별 유튜브 videoId를 채워주세요 ▼▼▼
+  // videoId는 유튜브 주소 https://www.youtube.com/watch?v=XXXXXXXXXXX 에서
+  // XXXXXXXXXXX(11자리) 부분이에요. (쇼츠/뮤비 링크 아무거나 상관없어요)
+  // 비워두면 그 곡은 재생 버튼을 눌러도 "영상 준비중" 안내만 뜨고 재생은 안 돼요.
+  const WORLDCUP_VIDEO_IDS = {
+    '입춘': { videoId:'kIiW3XRP7bU', start:48 }, '사랑하게 될 거야': { videoId:'h0KIWaUEIgQ', start:92 }, '생존법': { videoId:'puw1hdSnSX0', start:71 }, '재': { videoId:'C77DJ8nySoo', start:79 }, 
+    '0+0': { videoId:'DCHfD0', start:13 }, '금붕어': { videoId:'dAgY7zUqd8E', start:145 },
+    '비틀비틀 짝짜꿍': { videoId:'eERmo7trq4k', start:62 }, '거울': { videoId:'OV668xgCau8', start:164 }, 'ㅈㅣㅂ': { videoId:'cz9NHQv4', start:0 }, '용의자': { videoId:'EPMh3g5qh2Y', start: 0}, '정류장': { videoId:'2EMgY5E5Ook', start:190 }, '시간을 달리네': { videoId:'tKERw3_ked0', start:202 },
+    '나침반': { videoId:'4JwkYsfKRKM', start: 44 }, '자처': { videoId:'JyoltvsJ9Fw', start:181 }, '도망': { videoId:'nhntH2wn3m0', start:74 }, '하루살이': { videoId:'ss_WdwNGawM', start:80 }, '화해': { videoId:'gC2zA8NRzXk', start:181 }, '보수공사': { videoId:'RWMIDk2e2U4', start:111 },
+    '해초': { videoId:'29cTL5J_w-c', start:0 }, '놀이터': { videoId:'Sh2QhzNiD9Y', start:216 }, '내일에서 온 티켓': { videoId:'cp0eesd7h_w', start:0 }, '먹이사슬': { videoId:'4HZ8wh2MMpQ', start:100 }, '갈림길': { videoId:'9hjnGy4aVgo', start:0 }, '__에게': { videoId:'RuwWXZiR3AU', start:0 },
+    '이상비행': { videoId:'OmHl_zuoD1k', start:0 }, '당신의 밤은 나의 밤과 같습니까': { videoId:'tFEe3pwlQgE', start:72 }, '귀가': { videoId:'VQPnYg1a3hk', start:15 }, 'Like my groove': { videoId:'kBlzhXc4R90', start: 0 }, '1111': { videoId:'Gofn_ULNd5Q', start:73 }, '뛰어!': { videoId:'wzd3oLw2uqA', start:82 },
+    '게임 오버 (Game Over)': { videoId:'qrzKsS-4lZo', start:148 }, '너와 나 (You and I)': { videoId:'Tos8R9Tcem8', start:180 }, '안녕': { videoId:'DaI8s1s3phM', start:25 }, 'So Nice': { videoId:'sVCslmpfZrc', start:6 }
+  };
   const WORLDCUP_SONGS = WORLDCUP_SONG_TITLES.map(title => ({
     title,
-    img: `images/whoyoufavorite/${title}.jpeg`
+    img: `images/whoyoufavorite/${title}.jpeg`,
+    videoId: WORLDCUP_VIDEO_IDS[title]?.videoId || '',
+    start: WORLDCUP_VIDEO_IDS[title]?.start || 0
   }));
 
   // 참가곡이 34곡이라 딱 떨어지는 2의 제곱수가 아니에요.
@@ -3857,6 +3929,89 @@
     if (size === 4) return '4강';
     return `${size}강`;
   }
+
+  // ---- 유튜브 IFrame API로 그 자리에서 바로 듣기 ----
+  let youtubeApiReady = false;
+  let youtubeApiLoading = false;
+  const youtubeApiCallbacks = [];
+  function ensureYoutubeApi(callback){
+    if (youtubeApiReady && window.YT && window.YT.Player) { callback(); return; }
+    youtubeApiCallbacks.push(callback);
+    if (!youtubeApiLoading) {
+      youtubeApiLoading = true;
+      window.onYouTubeIframeAPIReady = () => {
+        youtubeApiReady = true;
+        youtubeApiCallbacks.splice(0).forEach(cb => cb());
+      };
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    }
+  }
+
+  const worldcupPlayers = { left: null, right: null };
+  const worldcupSideEls = {
+    left: { media: 'worldcupMediaLeft', img: 'worldcupImgLeft', play: 'worldcupPlayLeft', host: 'worldcupPlayerHostLeft' },
+    right: { media: 'worldcupMediaRight', img: 'worldcupImgRight', play: 'worldcupPlayRight', host: 'worldcupPlayerHostRight' }
+  };
+
+  function resetWorldcupMedia(side){
+    const player = worldcupPlayers[side];
+    if (player && typeof player.destroy === 'function') {
+      try { player.destroy(); } catch (e) { /* 이미 정리된 경우 무시 */ }
+    }
+    worldcupPlayers[side] = null;
+    const { media, img, play } = worldcupSideEls[side];
+    const mediaEl = document.getElementById(media);
+    const host = mediaEl && mediaEl.querySelector('.worldcup-player-host');
+    if (host) host.remove();
+    const imgEl = document.getElementById(img);
+    const playBtn = document.getElementById(play);
+    if (imgEl) imgEl.style.display = '';
+    if (playBtn) { playBtn.style.display = ''; playBtn.classList.remove('playing'); }
+  }
+
+  function resetAllWorldcupMedia(){
+    resetWorldcupMedia('left');
+    resetWorldcupMedia('right');
+  }
+
+  function playWorldcupSong(side){
+    const song = side === 'left' ? worldcupCurrentPair[0] : worldcupCurrentPair[1];
+    if (!song || !song.videoId) {
+      alert('아직 이 곡의 영상이 준비되지 않았어요.');
+      return;
+    }
+    const { media, img, play, host: hostId } = worldcupSideEls[side];
+    const mediaEl = document.getElementById(media);
+    document.getElementById(img).style.display = 'none';
+    document.getElementById(play).style.display = 'none';
+
+    let host = document.getElementById(hostId);
+    if (!host) {
+      host = document.createElement('div');
+      host.id = hostId;
+      host.className = 'worldcup-player-host';
+      mediaEl.appendChild(host);
+    }
+
+    ensureYoutubeApi(() => {
+      worldcupPlayers[side] = new YT.Player(hostId, {
+        videoId: song.videoId,
+        playerVars: { autoplay: 1, playsinline: 1, rel: 0, start: song.start || 0 },
+        events: { onReady: (e) => e.target.playVideo() }
+      });
+    });
+  }
+
+  document.getElementById('worldcupPlayLeft').addEventListener('click', (e) => {
+    e.stopPropagation();
+    playWorldcupSong('left');
+  });
+  document.getElementById('worldcupPlayRight').addEventListener('click', (e) => {
+    e.stopPropagation();
+    playWorldcupSong('right');
+  });
 
   function startWorldcup(){
     const shuffled = shuffleArray(WORLDCUP_SONGS);
@@ -3913,6 +4068,7 @@
   }
 
   function renderWorldcupPair(){
+    resetAllWorldcupMedia();
     const [a, b] = worldcupCurrentPair;
     document.getElementById('worldcupImgLeft').src = encodeURI(a.img);
     document.getElementById('worldcupTitleLeft').textContent = a.title;
@@ -3939,6 +4095,7 @@
   let currentWorldcupWinner = null;
 
   function finishWorldcup(winner){
+    resetAllWorldcupMedia();
     currentWorldcupWinner = winner;
     document.getElementById('worldcupRound').style.display = 'none';
     document.getElementById('worldcupResult').style.display = 'block';
