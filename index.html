@@ -748,6 +748,127 @@
     text-align:center;
     box-shadow:none;
   }
+  .worldcup-box{
+    margin-top:26px;
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:36px 30px;
+    text-align:center;
+    box-shadow:none;
+  }
+  .worldcup-round-label{
+    font-family:'Gowun Batang', serif;
+    font-size:18px;
+    color:var(--berry);
+    margin-bottom:24px;
+  }
+  .worldcup-pair{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:20px;
+  }
+  .worldcup-pick-btn{
+    flex:1;
+    max-width:220px;
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:10px;
+    cursor:pointer;
+    transition:border-color 0.15s ease, transform 0.15s ease;
+  }
+  .worldcup-pick-btn:hover{ border-color:var(--berry); transform:translateY(-3px); }
+  .worldcup-pick-btn img{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    display:block;
+    margin-bottom:10px;
+  }
+  .worldcup-pick-title{
+    display:block;
+    font-size:14.5px;
+    color:var(--ink);
+    font-weight:500;
+  }
+  .worldcup-vs{
+    font-family:'Gowun Batang', serif;
+    font-size:16px;
+    color:var(--ink-soft);
+    flex-shrink:0;
+  }
+  .worldcup-result-img{
+    display:block;
+    width:200px;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    margin:0 auto 16px;
+    border:1px solid var(--rule);
+  }
+  .worldcup-stats{
+    margin-top:28px;
+    padding-top:20px;
+    border-top:1px dashed var(--rule-strong);
+    text-align:left;
+  }
+  .worldcup-stats-title{
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:15px;
+    margin:0 0 6px;
+    text-align:center;
+  }
+  .worldcup-stats-total{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    text-align:center;
+    margin:0 0 16px;
+  }
+  .worldcup-stats-list{ display:flex; flex-direction:column; gap:8px; }
+  .worldcup-stats-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+  }
+  .worldcup-stats-row.mine{ font-weight:700; color:var(--berry); }
+  .worldcup-stats-rank{
+    flex:0 0 18px;
+    color:var(--ink-soft);
+    text-align:right;
+  }
+  .worldcup-stats-name{
+    flex:0 0 110px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .worldcup-stats-bar-wrap{
+    flex:1;
+    height:8px;
+    background:var(--paper-deep);
+    border-radius:100px;
+    overflow:hidden;
+  }
+  .worldcup-stats-bar{
+    height:100%;
+    background:var(--moss);
+    border-radius:100px;
+  }
+  .worldcup-stats-row.mine .worldcup-stats-bar{ background:var(--berry); }
+  .worldcup-stats-pct{
+    flex:0 0 76px;
+    text-align:right;
+    color:var(--ink-soft);
+  }
+  @media (max-width:520px){
+    .worldcup-pair{ gap:10px; }
+    .worldcup-pick-btn{ max-width:140px; }
+    .worldcup-pick-title{ font-size:12.5px; }
+    .worldcup-stats-name{ flex-basis:80px; font-size:11.5px; }
+    .worldcup-stats-pct{ flex-basis:64px; font-size:11px; }
+  }
   .memory-intro p{
     font-size:15px;
     color:var(--ink-soft);
@@ -2273,23 +2394,25 @@
   }
   footer .handwrite{color:var(--berry); font-size:16px; display:block; margin-bottom:8px;}
   .footer-draft-note{ margin:0; }
-  
+
   .privacy-details{
     margin-top:20px;
     display:inline-block;
     text-align:left;
     max-width:520px;
   }
-  .privacy-details summary{
+  .privacy-toggle-btn{
+    background:none;
+    border:none;
+    padding:0;
     cursor:pointer;
+    font-family:'Noto Sans KR', sans-serif;
     font-size:12.5px;
     color:var(--ink-soft);
     text-decoration:underline;
     text-underline-offset:3px;
-    list-style:none;
   }
-  .privacy-details summary::-webkit-details-marker{ display:none; }
-  .privacy-details summary:hover{ color:var(--berry); }
+  .privacy-toggle-btn:hover{ color:var(--berry); }
   .privacy-content{
     margin-top:14px;
     padding:16px 18px;
@@ -2733,6 +2856,14 @@
         </span>
         <span class="game-index-arrow">›</span>
       </button>
+      <button type="button" class="game-index-row" data-goto="gameWorldcupHubScreen">
+        <span class="game-index-icon">🏆</span>
+        <span class="game-index-text">
+          <span class="game-index-title">이상형 월드컵</span>
+          <span class="game-index-desc">1:1로 골라서 최애 뽑기</span>
+        </span>
+        <span class="game-index-arrow">›</span>
+      </button>
     </div>
   </div>
 
@@ -2900,6 +3031,82 @@
         <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
       </div>
       <div class="guestbook-list" data-game="memory"></div>
+    </div>
+  </div>
+
+  <!-- 이상형 월드컵: 어떤 월드컵을 할지 고르는 화면 (앞으로 더 추가될 예정) -->
+  <div class="game-screen" id="gameWorldcupHubScreen">
+    <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
+    <div class="game-index-list">
+      <button type="button" class="game-index-row" data-goto="gameWorldcupPlayScreen" data-worldcup="songs">
+        <span class="game-index-icon">🎵</span>
+        <span class="game-index-text">
+          <span class="game-index-title">한로로 노래 이상형 월드컵</span>
+          <span class="game-index-desc">32강 · 최애곡 뽑기</span>
+        </span>
+        <span class="game-index-arrow">›</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 이상형 월드컵: 실제 토너먼트 진행 화면 -->
+  <div class="game-screen" id="gameWorldcupPlayScreen" data-game="worldcup">
+    <button type="button" class="game-back-btn" data-back data-worldcup-back>← 이상형 월드컵 목록으로</button>
+
+    <div class="game-subtabs">
+      <button type="button" class="game-subtab active" data-subtab="play">게임</button>
+      <button type="button" class="game-subtab" data-subtab="guestbook">방명록</button>
+    </div>
+
+    <div class="game-subpanel active" data-subpanel="play">
+    <div class="worldcup-box" id="worldcupBox">
+
+      <div class="worldcup-round" id="worldcupRound" style="display:none;">
+        <div class="worldcup-round-label" id="worldcupRoundLabel"></div>
+        <div class="worldcup-pair">
+          <button type="button" class="worldcup-pick-btn" id="worldcupPickLeft">
+            <img id="worldcupImgLeft" alt="">
+            <span class="worldcup-pick-title" id="worldcupTitleLeft"></span>
+          </button>
+          <span class="worldcup-vs">VS</span>
+          <button type="button" class="worldcup-pick-btn" id="worldcupPickRight">
+            <img id="worldcupImgRight" alt="">
+            <span class="worldcup-pick-title" id="worldcupTitleRight"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="worldcup-result" id="worldcupResult" style="display:none;">
+        <span class="quiz-result-emoji">🏆</span>
+        <img class="worldcup-result-img" id="worldcupResultImg" alt="">
+        <h3 id="worldcupResultText"></h3>
+        <div class="share-btn-row">
+          <button type="button" class="save-image-btn" id="worldcupCopyLinkBtn">🔗 공유하기(주소 복사)</button>
+          <button type="button" class="kakao-share-btn" id="worldcupKakaoBtn">💙 카카오톡 공유</button>
+        </div>
+        <button type="button" class="guestbook-fill-btn" id="worldcupGuestbookBtn">📖 방명록에 결과 남기기</button>
+        <button type="button" class="quiz-retry-btn" id="worldcupRetryBtn">🔁 다시 하기</button>
+
+        <div class="worldcup-stats" id="worldcupStats">
+          <h4 class="worldcup-stats-title">📊 실시간 최애곡 통계</h4>
+          <p class="worldcup-stats-total" id="worldcupStatsTotal"></p>
+          <div class="worldcup-stats-list" id="worldcupStatsList"></div>
+        </div>
+      </div>
+
+    </div>
+    </div>
+
+    <div class="game-subpanel" data-subpanel="guestbook">
+      <div class="guestbook-write">
+        <div class="board-write-row">
+          <input type="text" class="guestbook-author-input" placeholder="닉네임">
+          <input type="text" class="guestbook-result-input" placeholder="예: 최애곡 - 사랑하게 될 거야">
+        </div>
+        <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
+        <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
+      </div>
+      <div class="guestbook-list" data-game="worldcup"></div>
     </div>
   </div>
 </section>
@@ -3254,11 +3461,9 @@
   <span class="handwrite">— 한로로 팬사이트 (제작 중) —</span>
   <p class="footer-draft-note">이 페이지는 아직 초안이에요. 아티스트 소개 · 디스코그래피 정보는 계속 다듬어질 예정입니다.</p>
 
-  <details class="privacy-details">
-
-  <details class="privacy-details">
-    <summary>이용안내 및 개인정보처리방침</summary>
-    <div class="privacy-content">
+  <div class="privacy-details">
+    <button type="button" class="privacy-toggle-btn" id="privacyToggleBtn">이용안내 및 개인정보처리방침</button>
+    <div class="privacy-content" id="privacyContent" style="display:none;">
       <p>이 사이트는 팬이 자발적으로 만든 비공식 팬사이트이며, 한로로 및 소속사와 관련이 없습니다.</p>
       <p><strong>회원가입·로그인이 없어요.</strong> 이메일, 전화번호, 실명 등 개인 식별 정보를 입력받거나 저장하지 않아요.</p>
       <p><strong>게시판·한 줄의 계절에 남기는 닉네임</strong>은 방문자가 매번 직접 입력하는 표시용 이름일 뿐, 실명 인증이나 계정과 연결되지 않아요.</p>
@@ -3267,10 +3472,16 @@
       <p><span id="adminToggleBtn" class="admin-toggle-btn admin-hidden-trigger">관리자 로그인</span>은 사이트 운영자 1인만 사용하며, 방문자 개인정보와는 무관해요. <span class="admin-status" id="adminStatus"></span></p>
       <p>운영 방식이나 저장되는 데이터의 세부 내용은 사이트 개편에 따라 바뀔 수 있어요.</p>
     </div>
-  </details>
+  </div>
 </footer>
 
 <script>
+  // ---- 이용안내 및 개인정보처리방침 펼치기/접기 ----
+  document.getElementById('privacyToggleBtn')?.addEventListener('click', () => {
+    const contentEl = document.getElementById('privacyContent');
+    contentEl.style.display = contentEl.style.display === 'none' ? 'block' : 'none';
+  });
+
   // ---- 카카오톡 공유 ----
   // ⚠️ 실제로 동작하려면 Kakao Developers에서 발급받은 JavaScript 키로 교체해야 해요.
   const KAKAO_JS_KEY = 'a42a8e71b23fa6391534d4bfea2e2f73';
@@ -3356,10 +3567,17 @@
     gameScreens.forEach(s => s.classList.toggle('active', s.id === id));
   }
   document.querySelectorAll('.game-index-row').forEach(card => {
-    card.addEventListener('click', () => showGameScreen(card.dataset.goto));
+    card.addEventListener('click', () => {
+      showGameScreen(card.dataset.goto);
+      if (card.dataset.worldcup === 'songs') startWorldcup();
+    });
   });
   document.querySelectorAll('.game-back-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (btn.hasAttribute('data-worldcup-back')) {
+        showGameScreen('gameWorldcupHubScreen');
+        return;
+      }
       showGameScreen('gameIndexScreen');
       resetMemoryToIntro();
     });
@@ -3604,6 +3822,121 @@
   document.getElementById('memoryBackToDiffBtn')?.addEventListener('click', resetMemoryToIntro);
   document.getElementById('memoryRetryBtn')?.addEventListener('click', resetMemoryToIntro);
 
+  // ================= 이상형 월드컵 =================
+  // 이미지 경로: images/whoyoufavorite/{노래 제목}.jpeg
+  const WORLDCUP_SONG_TITLES = [
+    '입춘', '사랑하게 될 거야', '생존법', '재', '0+0', '금붕어',
+    '비틀비틀 짝짜꿍', '거울', 'ㅈㅣㅂ', '용의자', '정류장', '시간을 달리네',
+    '나침반', '자처', '도망', '하루살이', '화해', '보수공사',
+    '해초', '놀이터', '내일에서 온 티켓', '먹이사슬', '갈림길', '__에게',
+    '이상비행', '당신의 밤은 나의 밤과 같습니까', '귀가', 'Like my groove', '1111', '애증',
+    '게임 오버 (Game Over)', '너와 나 (You and I)'
+  ];
+  const WORLDCUP_SONGS = WORLDCUP_SONG_TITLES.map(title => ({
+    title,
+    img: `images/whoyoufavorite/${title}.jpeg`
+  }));
+
+  let worldcupQueue = [];      // 이번 라운드에서 아직 안 나온 대기열
+  let worldcupNextRound = [];  // 이번 라운드 승자들 (다음 라운드로)
+  let worldcupCurrentPair = [];
+  let worldcupTotalThisRound = 0;
+  let worldcupPlayedThisRound = 0;
+  let worldcupRoundSize = 32; // 남은 참가자 수(32강/16강/8강/4강/결승)
+
+  function worldcupRoundName(size){
+    if (size === 2) return '결승';
+    if (size === 4) return '4강';
+    return `${size}강`;
+  }
+
+  function startWorldcup(){
+    worldcupQueue = shuffleArray(WORLDCUP_SONGS);
+    worldcupNextRound = [];
+    worldcupRoundSize = worldcupQueue.length;
+    worldcupTotalThisRound = worldcupRoundSize / 2;
+    worldcupPlayedThisRound = 0;
+
+    document.getElementById('worldcupResult').style.display = 'none';
+    document.getElementById('worldcupRound').style.display = 'block';
+
+    nextWorldcupPair();
+  }
+
+  function nextWorldcupPair(){
+    if (worldcupQueue.length < 2) {
+      // 이번 라운드 끝. 다음 라운드로 넘어가거나, 1명 남았으면 최종 우승.
+      if (worldcupNextRound.length === 1) {
+        finishWorldcup(worldcupNextRound[0]);
+        return;
+      }
+      worldcupQueue = worldcupNextRound;
+      worldcupNextRound = [];
+      worldcupRoundSize = worldcupQueue.length;
+      worldcupTotalThisRound = worldcupRoundSize / 2;
+      worldcupPlayedThisRound = 0;
+    }
+
+    worldcupCurrentPair = [worldcupQueue.shift(), worldcupQueue.shift()];
+    renderWorldcupPair();
+  }
+
+  function renderWorldcupPair(){
+    document.getElementById('worldcupRoundLabel').textContent =
+      `${worldcupRoundName(worldcupRoundSize)} · ${worldcupPlayedThisRound + 1} / ${worldcupTotalThisRound}`;
+
+    const [a, b] = worldcupCurrentPair;
+    document.getElementById('worldcupImgLeft').src = encodeURI(a.img);
+    document.getElementById('worldcupTitleLeft').textContent = a.title;
+    document.getElementById('worldcupImgRight').src = encodeURI(b.img);
+    document.getElementById('worldcupTitleRight').textContent = b.title;
+  }
+
+  function pickWorldcup(winnerIdx){
+    const winner = worldcupCurrentPair[winnerIdx];
+    worldcupNextRound.push(winner);
+    worldcupPlayedThisRound++;
+    nextWorldcupPair();
+  }
+
+  document.getElementById('worldcupPickLeft').addEventListener('click', () => pickWorldcup(0));
+  document.getElementById('worldcupPickRight').addEventListener('click', () => pickWorldcup(1));
+
+  let currentWorldcupWinner = null;
+
+  function finishWorldcup(winner){
+    currentWorldcupWinner = winner;
+    document.getElementById('worldcupRound').style.display = 'none';
+    document.getElementById('worldcupResult').style.display = 'block';
+    document.getElementById('worldcupResultImg').src = encodeURI(winner.img);
+    document.getElementById('worldcupResultText').textContent = `당신의 최애곡은 '${winner.title}'였습니다!`;
+    // 통계 집계는 Firebase가 필요해서, 모듈 스크립트 쪽에 만들어둔 함수를 불러다 써요.
+    if (window.recordWorldcupResult) window.recordWorldcupResult(winner.title);
+  }
+
+  document.getElementById('worldcupRetryBtn').addEventListener('click', startWorldcup);
+
+  document.getElementById('worldcupCopyLinkBtn').addEventListener('click', async () => {
+    const url = location.origin + location.pathname + '#quiz';
+    try {
+      await navigator.clipboard.writeText(url);
+      alert('링크를 복사했어요! 원하는 곳에 붙여넣기 해보세요.');
+    } catch (err) {
+      prompt('아래 주소를 복사해서 공유해 보세요.', url);
+    }
+  });
+
+  document.getElementById('worldcupKakaoBtn').addEventListener('click', () => {
+    if (!currentWorldcupWinner) return;
+    shareToKakao(
+      `🏆 당신의 최애곡은 '${currentWorldcupWinner.title}'였습니다!`,
+      '한로로 노래 이상형 월드컵 — 당신의 최애곡은 무엇일까요?',
+      '#quiz',
+      new URL(currentWorldcupWinner.img, location.href).href,
+      '나도 해보기'
+    );
+  });
+
   // 게시판: 전체 / 자유게시판 / 질문게시판 탭 전환
   const boardTabButtons = document.querySelectorAll('.board-tab');
   const boardPanels = document.querySelectorAll('.board-panel');
@@ -3679,7 +4012,7 @@
   // =========================================================
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
   import {
-    getFirestore, collection, addDoc, deleteDoc, doc, updateDoc,
+    getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, setDoc, increment,
     onSnapshot, query, orderBy, where, serverTimestamp, getCountFromServer
   } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
   import {
@@ -4826,6 +5159,65 @@
   setupGuestbook('personality');
   setupGuestbook('trivia');
   setupGuestbook('memory');
+  setupGuestbook('worldcup');
+
+  // ================= 이상형 월드컵 실시간 통계 =================
+  // 문서 하나(worldcupStats/songs)에 곡별 득표수를 map으로 모아둬요.
+  // 매 결과마다 문서 하나만 읽고/쓰면 되니까 훨씬 가벼워요.
+  const worldcupStatsRef = doc(db, 'worldcupStats', 'songs');
+
+  onSnapshot(worldcupStatsRef, (snap) => {
+    const data = snap.exists() ? snap.data() : {};
+    renderWorldcupStats(data);
+  }, (err) => {
+    console.error('[월드컵 통계] 불러오기 실패:', err);
+  });
+
+  function renderWorldcupStats(data){
+    const totalEl = document.getElementById('worldcupStatsTotal');
+    const listEl = document.getElementById('worldcupStatsList');
+    if (!totalEl || !listEl) return;
+
+    const counts = data.counts || {};
+    const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
+    totalEl.textContent = total > 0 ? `지금까지 총 ${total.toLocaleString('ko-KR')}명이 참여했어요` : '아직 결과가 없어요. 첫 번째로 참여해보세요!';
+
+    const ranked = Object.entries(counts)
+      .map(([title, count]) => ({ title, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10); // 상위 10곡만 보여줘요
+
+    listEl.innerHTML = ranked.map((row, idx) => {
+      const pct = total > 0 ? Math.round((row.count / total) * 100) : 0;
+      const isMine = currentWorldcupWinnerTitle === row.title;
+      return `
+        <div class="worldcup-stats-row${isMine ? ' mine' : ''}">
+          <span class="worldcup-stats-rank">${idx + 1}</span>
+          <span class="worldcup-stats-name">${row.title}</span>
+          <div class="worldcup-stats-bar-wrap">
+            <div class="worldcup-stats-bar" style="width:${pct}%"></div>
+          </div>
+          <span class="worldcup-stats-pct">${pct}% (${row.count})</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  let currentWorldcupWinnerTitle = null;
+
+  // 플레인 스크립트(모듈이 아닌 쪽)에서 이 함수를 호출해요 — 이상형 월드컵 게임
+  // 로직 자체는 Firebase가 필요 없어서 일반 스크립트에 있고, 통계 저장만 여기서 해요.
+  window.recordWorldcupResult = async function(title){
+    currentWorldcupWinnerTitle = title;
+    try {
+      await setDoc(worldcupStatsRef, {
+        counts: { [title]: increment(1) }
+      }, { merge: true });
+    } catch (err) {
+      console.error('[월드컵 통계] 기록 실패:', err);
+    }
+  };
+
 
   // "📖 방명록에 결과 남기기" 버튼: 같은 게임 화면 안에서 방명록 탭으로 바꾸고, 결과값을 미리 채워줘요.
   function fillGuestbookWithResult(gameKey, resultText){
@@ -4850,6 +5242,9 @@
   });
   document.getElementById('memoryGuestbookBtn')?.addEventListener('click', () => {
     fillGuestbookWithResult('memory', `${memoryTotalPairs}쌍 · 시도 ${memoryMoves}번 · ${formatMemoryTime(memorySeconds)}`);
+  });
+  document.getElementById('worldcupGuestbookBtn')?.addEventListener('click', () => {
+    if (currentWorldcupWinner) fillGuestbookWithResult('worldcup', `최애곡 - ${currentWorldcupWinner.title}`);
   });
 </script>
 
