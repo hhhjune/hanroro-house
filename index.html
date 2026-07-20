@@ -1804,34 +1804,68 @@
   }
   .comment-count-badge:empty{ display:none; }
 
-  .board-detail-row td{
-    padding:0;
-    border-bottom:1px solid var(--rule);
-    background:var(--paper);
+  .board-post-detail{
+    padding:8px 4px 0;
   }
-  .board-detail-inner{
-    position:relative;
-    padding:16px 20px 20px;
+  .board-detail-back-btn{
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:14px;
+    cursor:pointer;
+    padding:0;
+    margin-bottom:18px;
+  }
+  .board-detail-back-btn:hover{ color:var(--berry); }
+  .board-detail-header{
+    border-bottom:1px solid var(--rule-strong);
+    padding-bottom:16px;
+    margin-bottom:16px;
+  }
+  .board-detail-header .board-badge{ margin-bottom:8px; }
+  .board-detail-title{
+    font-family:'Gowun Batang', serif;
+    font-size:20px;
+    margin:6px 0 8px;
+  }
+  .board-detail-meta{
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .board-detail-actions{
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    margin-bottom:12px;
+  }
+  .board-detail-actions .delete-btn,
+  .board-detail-actions .pin-toggle-btn{
+    font-size:12.5px;
   }
   .board-post-content{
-    font-size:14px;
+    font-size:14.5px;
     color:var(--ink);
-    line-height:1.7;
+    line-height:1.8;
     white-space:pre-wrap;
-    margin-bottom:10px;
-    padding-right:60px;
+    margin-bottom:16px;
   }
   .board-post-photo{
     max-width:100%;
     border-radius:2px;
     display:block;
-    margin-bottom:10px;
+    margin-bottom:16px;
   }
-  .board-detail-inner .delete-btn{
-    position:absolute; top:16px; right:20px;
-    border:none; background:none; color:var(--ink-soft); cursor:pointer; font-size:13px;
+  .comment-section-standalone{
+    margin-top:28px;
+    padding-top:20px;
+    border-top:1px dashed var(--rule-strong);
   }
-  .board-detail-inner .delete-btn:hover{ color:var(--berry); }
+  .comment-section-title{
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:15px;
+    margin:0 0 14px;
+  }
 
   @media (max-width:640px){
     .board-table{ font-size:12.5px; }
@@ -3081,6 +3115,28 @@
       </tbody>
     </table>
   </div>
+
+  <!-- 게시글 상세 화면: 목록에서 제목을 누르면 이 화면 하나로 전환돼요 -->
+  <div class="board-post-detail" id="boardPostDetail" style="display:none;">
+    <button type="button" class="board-detail-back-btn" id="boardDetailBackBtn">← 목록으로</button>
+    <div class="board-detail-header">
+      <span class="board-badge" id="boardDetailBadge"></span>
+      <h3 class="board-detail-title" id="boardDetailTitle"></h3>
+      <div class="board-detail-meta" id="boardDetailMeta"></div>
+    </div>
+    <div class="board-detail-actions" id="boardDetailActions"></div>
+    <div class="board-post-content" id="boardDetailContent"></div>
+    <img class="board-post-photo" id="boardDetailPhoto" style="display:none;">
+
+    <div class="comment-section-standalone">
+      <h4 class="comment-section-title">댓글</h4>
+      <div class="comment-list" id="boardDetailCommentList"></div>
+      <div class="comment-form">
+        <textarea class="comment-input" id="boardDetailCommentInput" rows="2" placeholder="댓글을 남겨보세요 (익명으로 표시돼요)"></textarea>
+        <button type="button" class="comment-submit-btn" id="boardDetailCommentSubmitBtn">등록</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="diary" class="page diary">
@@ -4135,9 +4191,6 @@
       listEl.innerHTML = posts.map((post, idx) =>
         buildBoardRowsHtml(post, boardKey, total - idx)
       ).join('');
-      wireDeleteButtons(listEl);
-      wirePinToggle(listEl);
-      wireCommentUI(listEl);
       wireBoardRowToggle(listEl);
       loadCommentCounts(listEl);
     }
@@ -4148,10 +4201,7 @@
   function wireBoardRowToggle(container) {
     container.querySelectorAll('.board-title-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const detailRow = container.querySelector(`.board-detail-row[data-post-id="${btn.dataset.postId}"]`);
-        if (!detailRow) return;
-        const isOpen = detailRow.style.display !== 'none';
-        detailRow.style.display = isOpen ? 'none' : 'table-row';
+        openBoardPostDetail(btn.dataset.postId, btn.dataset.boardKey);
       });
     });
   }
@@ -4174,46 +4224,22 @@
   }
 
   function buildBoardRowsHtml(post, boardKey, rowNum) {
-    const isMine = myUid && post.authorUid === myUid;
-    const canDelete = isAdminUser || isMine;
-    const dateStr = post.createdAt && post.createdAt.toDate
-      ? post.createdAt.toDate().toLocaleDateString('ko-KR')
-      : '';
     const badge = boardKey
       ? `<span class="board-badge ${boardKey}">${boardKey === 'free' ? '자유' : boardKey === 'question' ? '질문' : '정보'}</span>`
+      : '';
+    const dateStr = post.createdAt && post.createdAt.toDate
+      ? post.createdAt.toDate().toLocaleDateString('ko-KR')
       : '';
     const pinnedBadge = post.pinned ? `<span class="pinned-badge">📌 공지</span>` : '';
     return `
       <tr class="board-row${post.pinned ? ' pinned-row' : ''}">
         <td class="board-col-num">${post.pinned ? '📌' : rowNum}</td>
         <td class="board-col-title">
-          ${pinnedBadge}<button type="button" class="board-title-btn" data-post-id="${post.id}">${badge}${post.title || '(제목 없음)'}</button>
+          ${pinnedBadge}<button type="button" class="board-title-btn" data-post-id="${post.id}" data-board-key="${boardKey}">${badge}${post.title || '(제목 없음)'}</button>
           <span class="comment-count-badge" data-count-post-id="${post.id}"></span>
         </td>
         <td class="board-col-author">${post.author || '익명'}</td>
         <td class="board-col-date">${dateStr}</td>
-      </tr>
-      <tr class="board-detail-row" data-post-id="${post.id}" style="display:none;">
-        <td colspan="4">
-          <div class="board-detail-inner">
-            ${canDelete
-              ? `<button class="delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}" data-id="${post.id}" title="${isAdminUser && !isMine ? '관리자 권한으로 삭제' : '내 글 삭제'}">✕ 삭제</button>`
-              : ''}
-            ${isAdminUser
-              ? `<button type="button" class="pin-toggle-btn" data-id="${post.id}" data-pinned="${post.pinned ? '1' : '0'}">${post.pinned ? '📌 고정 해제' : '📌 상단 고정'}</button>`
-              : ''}
-            <div class="board-post-content">${post.content || ''}</div>
-            ${post.photo ? `<img class="board-post-photo" src="${post.photo}" alt="${post.author || '익명'}님이 첨부한 사진">` : ''}
-            <button type="button" class="comment-toggle-btn" data-post-id="${post.id}">💬 댓글</button>
-            <div class="comment-section" data-post-id="${post.id}" style="display:none;">
-              <div class="comment-list" data-post-id="${post.id}"></div>
-              <div class="comment-form">
-                <textarea class="comment-input" data-post-id="${post.id}" rows="2" placeholder="댓글을 남겨보세요 (익명으로 표시돼요)"></textarea>
-                <button type="button" class="comment-submit-btn" data-post-id="${post.id}">등록</button>
-              </div>
-            </div>
-          </div>
-        </td>
       </tr>
     `;
   }
@@ -4258,120 +4284,71 @@
   const commentUnsubscribers = {}; // postId -> unsubscribe
   const commentsCache = {};        // postId -> comments[]
 
-  function wireCommentUI(container) {
-    container.querySelectorAll('.comment-toggle-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const postId = btn.dataset.postId;
-        const card = btn.closest('.board-detail-inner');
-        const section = card.querySelector('.comment-section');
-        const isOpen = section.style.display !== 'none';
-        section.style.display = isOpen ? 'none' : 'block';
-        if (!isOpen && !commentUnsubscribers[postId]) {
-          subscribeComments(postId);
-        }
-      });
-    });
-
-    container.querySelectorAll('.comment-submit-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const postId = btn.dataset.postId;
-        const card = btn.closest('.board-detail-inner');
-        const textarea = card.querySelector('.comment-input');
-        const content = textarea.value.trim();
-        if (!content) return;
-        if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
-        btn.disabled = true;
-        try {
-          await addDoc(collection(db, 'boardPosts', postId, 'comments'), {
-            content,
-            authorUid: myUid,
-            replyTo: null,
-            createdAt: serverTimestamp()
-          });
-          textarea.value = '';
-        } catch (err) {
-          alert('댓글 등록에 실패했어요. 잠시 후 다시 시도해 주세요.');
-          console.error(err);
-        } finally {
-          btn.disabled = false;
-        }
-      });
-    });
-  }
+  // 댓글은 이제 목록에서 바로 안 열리고, 게시글 상세 화면(#boardPostDetail) 안에서만
+  // 보이고 쓸 수 있어요. 그래서 댓글 관련 요소가 화면 전체에 딱 하나씩만 있어요.
+  let currentCommentUnsub = null;
 
   function subscribeComments(postId) {
+    if (currentCommentUnsub) { currentCommentUnsub(); currentCommentUnsub = null; }
     const q = query(collection(db, 'boardPosts', postId, 'comments'), orderBy('createdAt', 'asc'));
-    const unsub = onSnapshot(q, (snapshot) => {
+    currentCommentUnsub = onSnapshot(q, (snapshot) => {
       commentsCache[postId] = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       renderComments(postId);
+      const badge = document.querySelector(`.comment-count-badge[data-count-post-id="${postId}"]`);
+      if (badge) badge.textContent = commentsCache[postId].length > 0 ? `[${commentsCache[postId].length}]` : '';
     }, (err) => {
       console.error(`[comments:${postId}] 불러오기 실패:`, err);
     });
-    commentUnsubscribers[postId] = unsub;
+  }
+
+  // 댓글·답글을 트리(부모→자식) 구조로 정리해요. 답글에 다시 답글을 달아도
+  // 재귀적으로 얼마든지 깊이 들어갈 수 있어요.
+  function buildCommentTree(comments) {
+    const byId = {};
+    comments.forEach(c => { byId[c.id] = { ...c, children: [] }; });
+    const roots = [];
+    comments.forEach(c => {
+      if (c.replyTo && byId[c.replyTo]) {
+        byId[c.replyTo].children.push(byId[c.id]);
+      } else {
+        roots.push(byId[c.id]); // 최상위 댓글, 또는 원 댓글이 삭제된 답글
+      }
+    });
+    return roots;
+  }
+
+  function buildCommentNodeHtml(node, postId, depth) {
+    const canDelete = isAdminUser || (myUid && node.authorUid === myUid);
+    const indent = Math.min(depth, 5) * 18;
+    return `
+      <div class="comment-item${depth > 0 ? ' reply' : ''}" data-comment-id="${node.id}" style="margin-left:${indent}px;">
+        <div class="comment-top">
+          <span class="comment-author">익명</span>
+          ${canDelete ? `<button class="comment-delete-btn" data-post-id="${postId}" data-comment-id="${node.id}">삭제</button>` : ''}
+        </div>
+        <div class="comment-content">${node.content}</div>
+        <button type="button" class="comment-reply-btn" data-comment-id="${node.id}">답글</button>
+        <div class="comment-reply-form" data-comment-id="${node.id}" style="display:none;">
+          <textarea class="comment-reply-input" rows="2" placeholder="답글을 남겨보세요 (익명으로 표시돼요)"></textarea>
+          <button type="button" class="comment-reply-submit-btn" data-post-id="${postId}" data-parent-id="${node.id}">등록</button>
+        </div>
+        ${node.children.length ? `<div class="comment-replies">${node.children.map(child => buildCommentNodeHtml(child, postId, depth + 1)).join('')}</div>` : ''}
+      </div>
+    `;
   }
 
   function renderComments(postId) {
-    const listEl = document.querySelector(`.comment-list[data-post-id="${postId}"]`);
-    if (!listEl) return;
+    const listEl = document.getElementById('boardDetailCommentList');
+    if (!listEl || postId !== currentDetailPostId) return;
     const comments = commentsCache[postId] || [];
+    const tree = buildCommentTree(comments);
 
-    // 댓글을 펼쳐서 실시간으로 보고 있는 동안에는, 목록에 있는 댓글수 뱃지도
-    // 같이 최신 상태로 맞춰줘요.
-    const badge = document.querySelector(`.comment-count-badge[data-count-post-id="${postId}"]`);
-    if (badge) badge.textContent = comments.length > 0 ? `[${comments.length}]` : '';
-
-    const topLevel = comments.filter(c => !c.replyTo);
-    const repliesByParent = {};
-    comments.filter(c => c.replyTo).forEach(c => {
-      if (!repliesByParent[c.replyTo]) repliesByParent[c.replyTo] = [];
-      repliesByParent[c.replyTo].push(c);
-    });
-    // 원 댓글이 삭제된 답글은 최상위로 끌어올려서 안 보이지 않게 해요
-    const topLevelIds = new Set(topLevel.map(c => c.id));
-    Object.keys(repliesByParent).forEach(parentId => {
-      if (!topLevelIds.has(parentId)) {
-        topLevel.push(...repliesByParent[parentId]);
-        delete repliesByParent[parentId];
-      }
-    });
-
-    if (topLevel.length === 0) {
+    if (tree.length === 0) {
       listEl.innerHTML = '<div class="comment-empty">아직 댓글이 없어요.</div>';
       return;
     }
 
-    const canDeleteComment = (c) => isAdminUser || (myUid && c.authorUid === myUid);
-
-    const buildReplyHtml = (r) => `
-      <div class="comment-item reply" data-comment-id="${r.id}">
-        <div class="comment-top">
-          <span class="comment-author">익명</span>
-          ${canDeleteComment(r) ? `<button class="comment-delete-btn" data-post-id="${postId}" data-comment-id="${r.id}">삭제</button>` : ''}
-        </div>
-        <div class="comment-content">${r.content}</div>
-      </div>
-    `;
-
-    const buildCommentHtml = (c) => {
-      const replies = repliesByParent[c.id] || [];
-      return `
-        <div class="comment-item" data-comment-id="${c.id}">
-          <div class="comment-top">
-            <span class="comment-author">익명</span>
-            ${canDeleteComment(c) ? `<button class="comment-delete-btn" data-post-id="${postId}" data-comment-id="${c.id}">삭제</button>` : ''}
-          </div>
-          <div class="comment-content">${c.content}</div>
-          <button type="button" class="comment-reply-btn" data-comment-id="${c.id}">답글</button>
-          <div class="comment-reply-form" data-comment-id="${c.id}" style="display:none;">
-            <textarea class="comment-reply-input" rows="2" placeholder="답글을 남겨보세요 (익명으로 표시돼요)"></textarea>
-            <button type="button" class="comment-reply-submit-btn" data-post-id="${postId}" data-parent-id="${c.id}">등록</button>
-          </div>
-          ${replies.length ? `<div class="comment-replies">${replies.map(buildReplyHtml).join('')}</div>` : ''}
-        </div>
-      `;
-    };
-
-    listEl.innerHTML = topLevel.map(buildCommentHtml).join('');
+    listEl.innerHTML = tree.map(node => buildCommentNodeHtml(node, postId, 0)).join('');
 
     listEl.querySelectorAll('.comment-reply-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -4419,6 +4396,116 @@
     });
   }
 
+  // 게시글 상세 화면 (목록 → 클릭 → 이 화면으로 전환, 디시인사이드처럼)
+  let currentDetailPostId = null;
+  let currentDetailBoardKey = null;
+
+  function openBoardPostDetail(postId, boardKey) {
+    const post = (boardState[boardKey]?.posts || []).find(p => p.id === postId);
+    if (!post) return;
+    currentDetailPostId = postId;
+    currentDetailBoardKey = boardKey;
+
+    document.getElementById('boardTabs').style.display = 'none';
+    document.querySelector('.board-search-row').style.display = 'none';
+    document.querySelectorAll('.board-panel').forEach(p => { p.style.display = 'none'; });
+    document.getElementById('boardPostDetail').style.display = 'block';
+
+    const isMine = myUid && post.authorUid === myUid;
+    const canDelete = isAdminUser || isMine;
+    const dateStr = post.createdAt && post.createdAt.toDate
+      ? post.createdAt.toDate().toLocaleDateString('ko-KR')
+      : '';
+    const badgeLabel = boardKey === 'free' ? '자유' : boardKey === 'question' ? '질문' : '정보';
+
+    document.getElementById('boardDetailBadge').textContent = badgeLabel;
+    document.getElementById('boardDetailBadge').className = `board-badge ${boardKey}`;
+    document.getElementById('boardDetailTitle').textContent = post.title || '(제목 없음)';
+    document.getElementById('boardDetailMeta').textContent = `${post.author || '익명'} · ${dateStr}`;
+    document.getElementById('boardDetailContent').textContent = post.content || '';
+
+    const photoEl = document.getElementById('boardDetailPhoto');
+    if (post.photo) { photoEl.src = post.photo; photoEl.style.display = 'block'; }
+    else { photoEl.style.display = 'none'; photoEl.removeAttribute('src'); }
+
+    const actionsEl = document.getElementById('boardDetailActions');
+    actionsEl.innerHTML = '';
+    if (canDelete) {
+      const delBtn = document.createElement('button');
+      delBtn.className = `delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}`;
+      delBtn.textContent = isAdminUser && !isMine ? '✕ 관리자 권한으로 삭제' : '✕ 삭제';
+      delBtn.addEventListener('click', async () => {
+        if (!confirm('이 글을 삭제할까요?')) return;
+        try {
+          await deleteDoc(doc(db, 'boardPosts', postId));
+          closeBoardPostDetail();
+        } catch (err) {
+          alert('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.');
+          console.error(err);
+        }
+      });
+      actionsEl.appendChild(delBtn);
+    }
+    if (isAdminUser) {
+      const pinBtn = document.createElement('button');
+      pinBtn.className = 'pin-toggle-btn';
+      pinBtn.textContent = post.pinned ? '📌 고정 해제' : '📌 상단 고정';
+      pinBtn.addEventListener('click', async () => {
+        pinBtn.disabled = true;
+        try {
+          await updateDoc(doc(db, 'boardPosts', postId), { pinned: !post.pinned });
+          closeBoardPostDetail();
+        } catch (err) {
+          alert('고정 상태를 바꾸지 못했어요.');
+          console.error(err);
+        } finally {
+          pinBtn.disabled = false;
+        }
+      });
+      actionsEl.appendChild(pinBtn);
+    }
+
+    document.getElementById('boardDetailCommentInput').value = '';
+    subscribeComments(postId);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function closeBoardPostDetail() {
+    if (currentCommentUnsub) { currentCommentUnsub(); currentCommentUnsub = null; }
+    currentDetailPostId = null;
+    currentDetailBoardKey = null;
+    document.getElementById('boardPostDetail').style.display = 'none';
+    document.getElementById('boardTabs').style.display = '';
+    document.querySelector('.board-search-row').style.display = '';
+    document.querySelectorAll('.board-panel').forEach(p => { p.style.display = ''; });
+  }
+
+  document.getElementById('boardDetailBackBtn').addEventListener('click', closeBoardPostDetail);
+
+  document.getElementById('boardDetailCommentSubmitBtn').addEventListener('click', async () => {
+    const textarea = document.getElementById('boardDetailCommentInput');
+    const content = textarea.value.trim();
+    if (!content || !currentDetailPostId) return;
+    if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+    const btn = document.getElementById('boardDetailCommentSubmitBtn');
+    btn.disabled = true;
+    try {
+      await addDoc(collection(db, 'boardPosts', currentDetailPostId, 'comments'), {
+        content,
+        authorUid: myUid,
+        replyTo: null,
+        createdAt: serverTimestamp()
+      });
+      textarea.value = '';
+    } catch (err) {
+      alert('댓글 등록에 실패했어요. 잠시 후 다시 시도해 주세요.');
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
   // "전체" 탭: 자유+질문 글을 합쳐서 보여줘요 (글쓰기는 각 게시판에서만 가능)
   function renderAllBoardList() {
     const panel = document.querySelector('.board-panel[data-panel="all"]');
@@ -4445,9 +4532,6 @@
     listEl.innerHTML = combined.map(({ post, boardKey }, idx) =>
       buildBoardRowsHtml(post, boardKey, total - idx)
     ).join('');
-    wireDeleteButtons(listEl);
-    wirePinToggle(listEl);
-    wireCommentUI(listEl);
     wireBoardRowToggle(listEl);
     loadCommentCounts(listEl);
   }
@@ -4510,9 +4594,6 @@
     listEl.innerHTML = filtered.map(({ post, boardKey }, idx) =>
       buildBoardRowsHtml(post, boardKey, total - idx)
     ).join('');
-    wireDeleteButtons(listEl);
-    wirePinToggle(listEl);
-    wireCommentUI(listEl);
     wireBoardRowToggle(listEl);
     loadCommentCounts(listEl);
   }
