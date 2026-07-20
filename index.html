@@ -370,67 +370,61 @@
   .game-screen{ display:none; }
   .game-screen.active{ display:block; }
 
-  .game-index-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:24px;
-    margin-top:36px;
-  }
-  .game-index-card{
+  .game-index-list{
     display:flex;
     flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-    background:var(--paper-fold);
-    border:1px solid var(--rule);
-    border-radius:4px;
-    padding:34px 30px;
+    gap:0;
+    margin-top:30px;
+    border-top:1px solid var(--rule);
+  }
+  .game-index-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    width:100%;
+    background:none;
+    border:none;
+    border-bottom:1px solid var(--rule);
+    padding:18px 6px;
     cursor:pointer;
     text-align:left;
-    position:relative;
-    overflow:hidden;
-    transition:transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    transition:background 0.15s ease;
   }
-  .game-index-card::after{
-    content:'→';
-    position:absolute;
-    right:22px;
-    bottom:20px;
-    font-size:18px;
-    color:var(--rule-strong);
-    transition:transform 0.18s ease, color 0.18s ease;
-  }
-  .game-index-card:hover{
-    transform:translateY(-4px);
-    border-color:var(--berry);
-    box-shadow:0 10px 24px rgba(42,39,36,0.08);
-  }
-  .game-index-card:hover::after{ color:var(--berry); transform:translateX(4px); }
-  .game-index-emoji{
-    font-size:30px;
-    width:56px;
-    height:56px;
+  .game-index-row:hover{ background:var(--paper-fold); }
+  .game-index-icon{
+    flex-shrink:0;
+    font-size:24px;
+    width:44px;
+    height:44px;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:var(--paper);
+    background:var(--paper-fold);
     border:1px solid var(--rule);
     border-radius:50%;
-    margin-bottom:4px;
+  }
+  .game-index-text{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
   }
   .game-index-title{
     font-family:'Gowun Batang', serif;
-    font-size:19px;
+    font-size:16px;
     color:var(--ink);
   }
   .game-index-desc{
-    font-size:13px;
+    font-size:12.5px;
     color:var(--ink-soft);
-    padding-right:28px;
   }
-  @media (max-width:640px){
-    .game-index-grid{ grid-template-columns:1fr; }
+  .game-index-arrow{
+    flex-shrink:0;
+    font-size:20px;
+    color:var(--rule-strong);
+    transition:color 0.15s ease, transform 0.15s ease;
   }
+  .game-index-row:hover .game-index-arrow{ color:var(--berry); transform:translateX(3px); }
 
   .game-back-btn{
     background:none;
@@ -481,16 +475,42 @@
   .guestbook-section-head .calendar-block-title{ margin:0; }
   .guestbook-section-sub{ font-size:12.5px; color:var(--ink-soft); }
 
+  .game-subtabs{
+    display:flex;
+    gap:0;
+    margin:16px 0 24px;
+    border-bottom:1px solid var(--rule);
+  }
+  .game-subtab{
+    background:none;
+    border:none;
+    padding:10px 20px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:14px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+  }
+  .game-subtab:hover{ color:var(--moss-deep); }
+  .game-subtab.active{
+    color:var(--berry);
+    font-weight:700;
+    border-bottom-color:var(--berry);
+  }
+  .game-subpanel{ display:none; }
+  .game-subpanel.active{ display:block; }
+
   .guestbook-write{
     background:var(--paper-fold);
     border:1px solid var(--rule);
     border-radius:4px;
     padding:20px;
-    margin:0 0 28px;
+    margin:0 0 24px;
   }
   .guestbook-write .board-write-row{ margin-bottom:10px; }
-  .guestbook-write .board-write-row input#guestbookAuthorInput{ flex:0 0 140px; }
-  .guestbook-write .board-write-row input#guestbookResultInput{ flex:1; }
+  .guestbook-write .board-write-row input:first-child{ flex:0 0 120px; }
+  .guestbook-write .board-write-row input:last-child{ flex:1; }
   .guestbook-write input,
   .guestbook-write textarea{
     width:100%;
@@ -510,56 +530,55 @@
     resize:vertical;
   }
 
-  .guestbook-list{ display:flex; flex-direction:column; gap:12px; }
+  .guestbook-list{ display:flex; flex-direction:column; }
   .guestbook-item{
-    background:#fff;
-    border:1px solid var(--rule);
-    border-radius:6px;
-    padding:16px 18px;
-    position:relative;
-    box-shadow:0 1px 3px rgba(42,39,36,0.05);
-  }
-  .guestbook-item-top{
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     gap:10px;
-    margin-bottom:8px;
-    flex-wrap:wrap;
+    padding:14px 4px;
+    border-bottom:1px solid var(--rule);
   }
+  .guestbook-item:last-child{ border-bottom:none; }
   .guestbook-avatar{
     flex:0 0 auto;
-    width:26px;
-    height:26px;
+    width:32px;
+    height:32px;
     border-radius:50%;
-    background:var(--moss-deep);
-    color:#fff;
-    font-size:12px;
-    font-weight:700;
+    background:var(--paper-deep);
+    color:var(--ink-soft);
+    font-size:15px;
     display:flex;
     align-items:center;
     justify-content:center;
   }
+  .guestbook-item-body{ flex:1; min-width:0; }
+  .guestbook-item-top{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    margin-bottom:4px;
+  }
   .guestbook-author{ font-size:13.5px; font-weight:700; color:var(--ink); }
+  .guestbook-date{ font-size:11.5px; color:var(--ink-soft); }
   .guestbook-result-badge{
     display:inline-block;
-    background:var(--berry);
-    color:#fff;
+    background:rgba(156,74,92,0.1);
+    color:var(--berry);
     font-size:11.5px;
     font-weight:700;
-    padding:3px 10px;
+    padding:2px 9px;
     border-radius:100px;
+    margin-bottom:6px;
   }
-  .guestbook-date{ font-size:11px; color:var(--ink-soft); margin-left:auto; }
   .guestbook-message{
     font-size:13.5px;
     color:var(--ink-soft);
     line-height:1.6;
-    padding-left:36px;
   }
   .guestbook-item .delete-btn{
-    position:absolute; top:16px; right:16px;
+    flex:0 0 auto;
     border:none; background:none; color:var(--ink-soft); cursor:pointer; font-size:12px;
-    opacity:0.6;
+    opacity:0.5;
   }
   .guestbook-item .delete-btn:hover{ color:var(--berry); opacity:1; }
 
@@ -788,6 +807,33 @@
   /* 실제 트럼프 카드 비율(2.5in x 3.5in ≈ 5:7)에 맞춘 카드 그리드 —
      앨범 커버는 정사각형이라 비율이 안 맞지만, object-fit:cover로 카드 프레임에 꽉 채워요.
      열 개수(4열/6열)는 난이도에 맞춰 JS가 정사각형 보드가 되도록 지정해요. */
+  .memory-grid-wrap{
+    position:relative;
+    max-width:520px;
+    margin:0 auto;
+  }
+  .memory-countdown-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(237,232,220,0.88);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    z-index:5;
+  }
+  .memory-countdown-overlay span:first-child{
+    font-family:'Gowun Batang', serif;
+    font-size:64px;
+    font-weight:700;
+    color:var(--berry);
+    line-height:1;
+  }
+  .memory-countdown-label{
+    font-size:14px;
+    color:var(--ink-soft);
+  }
   .memory-grid{
     display:grid;
     grid-template-columns:repeat(4, 1fr);
@@ -2627,29 +2673,44 @@
 
   <!-- 게임 목록 화면 -->
   <div class="game-screen active" id="gameIndexScreen">
-    <div class="game-index-grid">
-      <button type="button" class="game-index-card" data-goto="gamePersonalityScreen">
-        <span class="game-index-emoji">🎧</span>
-        <span class="game-index-title">당신은 어떤 한로로일까요?</span>
-        <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
+    <div class="game-index-list">
+      <button type="button" class="game-index-row" data-goto="gamePersonalityScreen">
+        <span class="game-index-icon">🎧</span>
+        <span class="game-index-text">
+          <span class="game-index-title">당신은 어떤 한로로일까요?</span>
+          <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
+        </span>
+        <span class="game-index-arrow">›</span>
       </button>
-      <button type="button" class="game-index-card" data-goto="gameTriviaScreen">
-        <span class="game-index-emoji">🧠</span>
-        <span class="game-index-title">한로로 퀴즈</span>
-        <span class="game-index-desc">20문항 · 얼마나 잘 아는지 테스트</span>
+      <button type="button" class="game-index-row" data-goto="gameTriviaScreen">
+        <span class="game-index-icon">🧠</span>
+        <span class="game-index-text">
+          <span class="game-index-title">한로로 퀴즈</span>
+          <span class="game-index-desc">20문항 · 얼마나 잘 아는지 테스트</span>
+        </span>
+        <span class="game-index-arrow">›</span>
       </button>
-      <button type="button" class="game-index-card" data-goto="gameMemoryScreen">
-        <span class="game-index-emoji">🃏</span>
-        <span class="game-index-title">앨범 커버 짝 맞추기</span>
-        <span class="game-index-desc">카드 뒤집기 · 같은 앨범 커버 찾기</span>
+      <button type="button" class="game-index-row" data-goto="gameMemoryScreen">
+        <span class="game-index-icon">🃏</span>
+        <span class="game-index-text">
+          <span class="game-index-title">앨범 커버 짝 맞추기</span>
+          <span class="game-index-desc">카드 뒤집기 · 같은 앨범 커버 찾기</span>
+        </span>
+        <span class="game-index-arrow">›</span>
       </button>
     </div>
   </div>
 
   <!-- 게임1: 당신은 어떤 한로로일까요 -->
-  <div class="game-screen" id="gamePersonalityScreen">
+  <div class="game-screen" id="gamePersonalityScreen" data-game="personality">
     <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
 
+    <div class="game-subtabs">
+      <button type="button" class="game-subtab active" data-subtab="play">게임</button>
+      <button type="button" class="game-subtab" data-subtab="guestbook">방명록</button>
+    </div>
+
+    <div class="game-subpanel active" data-subpanel="play">
     <div class="quiz-box" id="quizBox">
 
       <div class="quiz-intro" id="quizIntro">
@@ -2682,12 +2743,31 @@
       </div>
 
     </div>
+    </div>
+
+    <div class="game-subpanel" data-subpanel="guestbook">
+      <div class="guestbook-write">
+        <div class="board-write-row">
+          <input type="text" class="guestbook-author-input" placeholder="닉네임">
+          <input type="text" class="guestbook-result-input" placeholder="예: 거울형">
+        </div>
+        <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
+        <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
+      </div>
+      <div class="guestbook-list" data-game="personality"></div>
+    </div>
   </div>
 
   <!-- 게임2: 한로로 퀴즈 -->
-  <div class="game-screen" id="gameTriviaScreen">
+  <div class="game-screen" id="gameTriviaScreen" data-game="trivia">
     <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
 
+    <div class="game-subtabs">
+      <button type="button" class="game-subtab active" data-subtab="play">게임</button>
+      <button type="button" class="game-subtab" data-subtab="guestbook">방명록</button>
+    </div>
+
+    <div class="game-subpanel active" data-subpanel="play">
     <div class="quiz-box" id="triviaBox">
 
       <div class="quiz-intro" id="triviaIntro">
@@ -2713,12 +2793,31 @@
       </div>
 
     </div>
+    </div>
+
+    <div class="game-subpanel" data-subpanel="guestbook">
+      <div class="guestbook-write">
+        <div class="board-write-row">
+          <input type="text" class="guestbook-author-input" placeholder="닉네임">
+          <input type="text" class="guestbook-result-input" placeholder="예: 한로로 퀴즈 18점">
+        </div>
+        <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
+        <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
+      </div>
+      <div class="guestbook-list" data-game="trivia"></div>
+    </div>
   </div>
 
   <!-- 게임3: 앨범 커버 짝 맞추기 -->
-  <div class="game-screen" id="gameMemoryScreen">
+  <div class="game-screen" id="gameMemoryScreen" data-game="memory">
     <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
 
+    <div class="game-subtabs">
+      <button type="button" class="game-subtab active" data-subtab="play">게임</button>
+      <button type="button" class="game-subtab" data-subtab="guestbook">방명록</button>
+    </div>
+
+    <div class="game-subpanel active" data-subpanel="play">
     <div class="memory-box" id="memoryBox">
 
       <div class="memory-intro" id="memoryIntro">
@@ -2736,34 +2835,37 @@
           <span>시간 <strong id="memoryTimer">00:00</strong></span>
           <button type="button" class="memory-restart-btn" id="memoryBackToDiffBtn">← 뒤로가기</button>
         </div>
-        <div class="memory-grid" id="memoryGrid"></div>
+        <div class="memory-grid-wrap">
+          <div class="memory-grid" id="memoryGrid"></div>
+          <div class="memory-countdown-overlay" id="memoryCountdownOverlay" style="display:none;">
+            <span id="memoryCountdownNumber">3</span>
+            <span class="memory-countdown-label">잘 기억해두세요!</span>
+          </div>
+        </div>
       </div>
 
       <div class="memory-result" id="memoryResult" style="display:none;">
         <span class="quiz-result-emoji">🎉</span>
         <h3>모두 맞췄어요!</h3>
         <p class="quiz-result-desc" id="memoryResultDesc"></p>
+        <button type="button" class="guestbook-fill-btn" id="memoryGuestbookBtn">📖 방명록에 결과 남기기</button>
         <button class="quiz-retry-btn" id="memoryRetryBtn">다시 도전하기</button>
       </div>
 
     </div>
-  </div>
+    </div>
 
-  <!-- 방명록 -->
-  <div class="guestbook-section">
-    <div class="guestbook-section-head">
-      <h3 class="calendar-block-title">📖 방명록 — 내 게임 결과 자랑하기</h3>
-      <span class="guestbook-section-sub">게임 결과와 함께, 한마디 남겨보세요</span>
-    </div>
-    <div class="guestbook-write">
-      <div class="board-write-row">
-        <input type="text" id="guestbookAuthorInput" placeholder="닉네임">
-        <input type="text" id="guestbookResultInput" placeholder="예: 거울형 / 한로로 퀴즈 18점">
+    <div class="game-subpanel" data-subpanel="guestbook">
+      <div class="guestbook-write">
+        <div class="board-write-row">
+          <input type="text" class="guestbook-author-input" placeholder="닉네임">
+          <input type="text" class="guestbook-result-input" placeholder="예: 16장 6번 만에 클리어">
+        </div>
+        <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
+        <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
       </div>
-      <textarea id="guestbookMessageInput" rows="2" placeholder="한마디 남겨보세요"></textarea>
-      <button type="button" class="board-submit-btn" id="guestbookSubmitBtn">방명록에 남기기</button>
+      <div class="guestbook-list" data-game="memory"></div>
     </div>
-    <div class="guestbook-list" id="guestbookList"></div>
   </div>
 </section>
 
@@ -2874,10 +2976,6 @@
 
   <!-- 자유게시판 -->
   <div class="board-panel" data-panel="free" data-board="free">
-    <div class="admin-bar">
-      <button type="button" class="admin-toggle-btn">관리자</button>
-      <span class="admin-status"></span>
-    </div>
 
     <button type="button" class="board-write-toggle-btn">✏️ 글쓰기</button>
     <div class="board-write" style="display:none;">
@@ -2914,10 +3012,6 @@
 
   <!-- 질문게시판 -->
   <div class="board-panel" data-panel="question" data-board="question">
-    <div class="admin-bar">
-      <button type="button" class="admin-toggle-btn">관리자</button>
-      <span class="admin-status"></span>
-    </div>
 
     <button type="button" class="board-write-toggle-btn">✏️ 글쓰기</button>
     <div class="board-write" style="display:none;">
@@ -2954,10 +3048,6 @@
 
   <!-- 정보게시판 -->
   <div class="board-panel" data-panel="info" data-board="info">
-    <div class="admin-bar">
-      <button type="button" class="admin-toggle-btn">관리자</button>
-      <span class="admin-status"></span>
-    </div>
 
     <button type="button" class="board-write-toggle-btn">✏️ 글쓰기</button>
     <div class="board-write" style="display:none;">
@@ -2998,11 +3088,6 @@
     <span class="eyebrow handwrite">매일 남기는 감성 한 줄</span>
     <h2>한 줄의 계절</h2>
     <p class="diary-sub">오늘 하루도 당신만의 계절이 지나갔을 거예요.<br>한로로의 노래처럼, 오늘을 한 줄로 남겨보세요.</p>
-  </div>
-
-  <div class="admin-bar">
-    <button type="button" id="adminToggleBtn" class="admin-toggle-btn">관리자</button>
-    <span class="admin-status" id="adminStatus"></span>
   </div>
 
   <div class="diary-archive-wrap">
@@ -3120,7 +3205,7 @@
       <p><strong>게시판·한 줄의 계절에 남기는 닉네임</strong>은 방문자가 매번 직접 입력하는 표시용 이름일 뿐, 실명 인증이나 계정과 연결되지 않아요.</p>
       <p><strong>"내 글 삭제" 기능</strong>을 위해 브라우저마다 자동으로 부여되는 익명 식별값을 사용해요. 이 값은 이름·이메일 등 개인정보와 연결되지 않고, 브라우저(기기)를 바꾸면 새로 발급돼요.</p>
       <p><strong>직접 첨부하는 사진</strong>은 작성한 글과 함께 저장되며, 작성자 본인이 언제든 삭제할 수 있어요.</p>
-      <p>관리자 로그인은 사이트 운영자 1인만 사용하며, 방문자 개인정보와는 무관해요.</p>
+      <p><span id="adminToggleBtn" class="admin-toggle-btn admin-hidden-trigger">관리자 로그인</span>은 사이트 운영자 1인만 사용하며, 방문자 개인정보와는 무관해요. <span class="admin-status" id="adminStatus"></span></p>
       <p>운영 방식이나 저장되는 데이터의 세부 내용은 사이트 개편에 따라 바뀔 수 있어요.</p>
     </div>
   </details>
@@ -3211,13 +3296,25 @@
   function showGameScreen(id){
     gameScreens.forEach(s => s.classList.toggle('active', s.id === id));
   }
-  document.querySelectorAll('.game-index-card').forEach(card => {
+  document.querySelectorAll('.game-index-row').forEach(card => {
     card.addEventListener('click', () => showGameScreen(card.dataset.goto));
   });
   document.querySelectorAll('.game-back-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       showGameScreen('gameIndexScreen');
       resetMemoryToIntro();
+    });
+  });
+
+  // 게임 화면 안의 "게임 | 방명록" 서브탭
+  document.querySelectorAll('.game-screen').forEach(screen => {
+    const subtabs = screen.querySelectorAll('.game-subtab');
+    const subpanels = screen.querySelectorAll('.game-subpanel');
+    subtabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        subtabs.forEach(t => t.classList.toggle('active', t === tab));
+        subpanels.forEach(p => p.classList.toggle('active', p.dataset.subpanel === tab.dataset.subtab));
+      });
     });
   });
 
@@ -3359,6 +3456,25 @@
     }
   }
 
+  function showMemoryCountdown(seconds, onDone) {
+    const overlay = document.getElementById('memoryCountdownOverlay');
+    const numberEl = document.getElementById('memoryCountdownNumber');
+    let n = seconds;
+    if (!overlay || !numberEl) { onDone(); return; }
+    overlay.style.display = 'flex';
+    numberEl.textContent = n;
+    const interval = setInterval(() => {
+      n--;
+      if (n > 0) {
+        numberEl.textContent = n;
+      } else {
+        clearInterval(interval);
+        overlay.style.display = 'none';
+        onDone();
+      }
+    }, 1000);
+  }
+
   function startMemoryGame(pairs) {
     const pairCount = Math.min(pairs, MEMORY_ALBUMS.length);
     // 매번 완전히 새로 랜덤 셔플: 카드 선택 → 쌍 구성 → 배치 순서까지 모두 새로 섞어요.
@@ -3368,7 +3484,7 @@
     memoryMatchedCount = 0;
     memoryMoves = 0;
     memoryFlipped = [];
-    memoryLocked = false;
+    memoryLocked = true; // 미리보기가 끝날 때까지는 카드를 못 누르게 잠가둬요.
 
     const introEl = document.getElementById('memoryIntro');
     const playEl = document.getElementById('memoryPlay');
@@ -3382,14 +3498,27 @@
     const totalCards = pairCount * 2;
     const cols = Math.round(Math.sqrt(totalCards));
     const grid = document.getElementById('memoryGrid');
+    const gridWrap = grid ? grid.closest('.memory-grid-wrap') : null;
+    const computedWidth = `${cols * 78 + (cols - 1) * 10}px`;
     if (grid) {
       grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-      grid.style.maxWidth = `${cols * 78 + (cols - 1) * 10}px`;
+      grid.style.maxWidth = computedWidth;
     }
+    if (gridWrap) gridWrap.style.maxWidth = computedWidth;
 
     renderMemoryGrid();
     updateMemoryStats();
-    startMemoryTimer();
+
+    // 시작 전, 모든 카드를 3초간 앞면으로 보여준 뒤(3·2·1 카운트다운과 함께)
+    // 전부 뒤집어서 진짜 게임을 시작해요. 이 미리보기 시간은 기록에 포함되지 않아요.
+    const allCardEls = grid ? Array.from(grid.querySelectorAll('.memory-card')) : [];
+    allCardEls.forEach(el => el.classList.add('flipped', 'peek'));
+
+    showMemoryCountdown(3, () => {
+      allCardEls.forEach(el => el.classList.remove('flipped', 'peek'));
+      memoryLocked = false;
+      startMemoryTimer();
+    });
   }
 
   // 카드게임 화면을 완전히 초기 상태(난이도 선택 화면)로 되돌려요.
@@ -4501,49 +4630,51 @@
     }
   });
 
-  // ================= 방명록 (Firestore 연동) =================
-  // ⚠️ 이 블록은 반드시 이 모듈 스크립트 안에 있어야 해요.
-  // db / collection / myUid / isAdminUser는 위쪽 Firebase 초기화 코드에서 만든 값이라
-  // 아래쪽의 일반 <script>(모듈이 아닌)에서는 볼 수 없어요. 다른 script 태그로 옮기면
-  // "collection is not defined" 같은 에러가 나면서 그 뒤에 나오는 캘린더 코드까지
-  // 통째로 멈춰버려요 — 실제로 그래서 캘린더가 안 보였던 거예요.
+  // ================= 방명록 (게임별로 따로, Firestore 연동) =================
   const guestbookCol = collection(db, 'guestbookEntries');
-  const guestbookQuery = query(guestbookCol, orderBy('createdAt', 'desc'));
-  let currentGuestbookEntries = [];
+  const guestbookStateByGame = {}; // gameKey -> { entries: [] }
 
-  onSnapshot(guestbookQuery, (snapshot) => {
-    currentGuestbookEntries = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderGuestbook();
-  }, (err) => {
-    console.error('방명록을 불러오지 못했습니다:', err);
-    const listEl = document.getElementById('guestbookList');
-    if (listEl) listEl.innerHTML = '<div class="archive-empty">방명록을 불러오지 못했어요. Firestore 설정을 확인해 주세요.</div>';
-  });
+  // "3시간 전" 처럼 상대적인 시간으로 보여줘요.
+  function formatRelativeTime(date){
+    if (!date) return '';
+    const diffMs = Date.now() - date.getTime();
+    const min = Math.floor(diffMs / 60000);
+    if (min < 1) return '방금 전';
+    if (min < 60) return `${min}분 전`;
+    const hour = Math.floor(min / 60);
+    if (hour < 24) return `${hour}시간 전`;
+    const day = Math.floor(hour / 24);
+    if (day < 7) return `${day}일 전`;
+    return date.toLocaleDateString('ko-KR');
+  }
 
-  function renderGuestbook(){
-    const listEl = document.getElementById('guestbookList');
+  function renderGuestbook(gameKey){
+    const listEl = document.querySelector(`.guestbook-list[data-game="${gameKey}"]`);
     if (!listEl) return;
-    if (currentGuestbookEntries.length === 0) {
+    const entries = guestbookStateByGame[gameKey]?.entries || [];
+
+    if (entries.length === 0) {
       listEl.innerHTML = '<div class="archive-empty">아직 방명록이 없어요. 게임 결과를 남겨보세요!</div>';
       return;
     }
-    listEl.innerHTML = currentGuestbookEntries.map(entry => {
+
+    listEl.innerHTML = entries.map(entry => {
       const isMine = myUid && entry.authorUid === myUid;
       const canDelete = isAdminUser || isMine;
-      const dateStr = entry.createdAt && entry.createdAt.toDate
-        ? entry.createdAt.toDate().toLocaleDateString('ko-KR')
-        : '';
+      const dateObj = entry.createdAt && entry.createdAt.toDate ? entry.createdAt.toDate() : null;
       const authorName = entry.author || '익명';
       return `
         <div class="guestbook-item">
-          ${canDelete ? `<button class="delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}" data-id="${entry.id}" title="${isAdminUser && !isMine ? '관리자 권한으로 삭제' : '내 기록 삭제'}">✕</button>` : ''}
-          <div class="guestbook-item-top">
-            <span class="guestbook-avatar">${authorName.trim().charAt(0) || '?'}</span>
-            <span class="guestbook-author">${authorName}</span>
+          <span class="guestbook-avatar">👤</span>
+          <div class="guestbook-item-body">
+            <div class="guestbook-item-top">
+              <span class="guestbook-author">${authorName}</span>
+              <span class="guestbook-date">${formatRelativeTime(dateObj)}</span>
+            </div>
             ${entry.result ? `<span class="guestbook-result-badge">${entry.result}</span>` : ''}
-            <span class="guestbook-date">${dateStr}</span>
+            ${entry.message ? `<div class="guestbook-message">${entry.message}</div>` : ''}
           </div>
-          ${entry.message ? `<div class="guestbook-message">${entry.message}</div>` : ''}
+          ${canDelete ? `<button class="delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}" data-id="${entry.id}" title="${isAdminUser && !isMine ? '관리자 권한으로 삭제' : '내 기록 삭제'}">✕</button>` : ''}
         </div>
       `;
     }).join('');
@@ -4561,33 +4692,80 @@
     });
   }
 
-  const guestbookAuthorInputEl = document.getElementById('guestbookAuthorInput');
-  const guestbookResultInputEl = document.getElementById('guestbookResultInput');
-  const guestbookMessageInputEl = document.getElementById('guestbookMessageInput');
-  const guestbookSubmitBtnEl = document.getElementById('guestbookSubmitBtn');
+  function setupGuestbook(gameKey){
+    const screen = document.querySelector(`.game-screen[data-game="${gameKey}"]`);
+    if (!screen) return;
 
-  guestbookSubmitBtnEl.addEventListener('click', async () => {
-    const author = guestbookAuthorInputEl.value.trim();
-    const result = guestbookResultInputEl.value.trim();
-    const message = guestbookMessageInputEl.value.trim();
-    if (!author) { guestbookAuthorInputEl.focus(); return; }
-    if (!message && !result) { guestbookMessageInputEl.focus(); return; }
-    if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+    const authorInput = screen.querySelector('.guestbook-author-input');
+    const resultInput = screen.querySelector('.guestbook-result-input');
+    const messageInput = screen.querySelector('.guestbook-message-input');
+    const submitBtn = screen.querySelector('.guestbook-submit-btn');
+    if (!authorInput || !submitBtn) return;
 
-    guestbookSubmitBtnEl.disabled = true;
-    try {
-      await addDoc(guestbookCol, {
-        author, authorUid: myUid, result, message,
-        createdAt: serverTimestamp()
-      });
-      guestbookResultInputEl.value = '';
-      guestbookMessageInputEl.value = '';
-    } catch (err) {
-      alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
-      console.error(err);
-    } finally {
-      guestbookSubmitBtnEl.disabled = false;
-    }
+    guestbookStateByGame[gameKey] = { entries: [] };
+
+    const q = query(guestbookCol, where('game', '==', gameKey), orderBy('createdAt', 'desc'));
+    onSnapshot(q, (snapshot) => {
+      guestbookStateByGame[gameKey].entries = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderGuestbook(gameKey);
+    }, (err) => {
+      console.error(`[방명록:${gameKey}] 불러오기 실패:`, err);
+      const listEl = screen.querySelector(`.guestbook-list[data-game="${gameKey}"]`);
+      if (listEl) listEl.innerHTML = '<div class="archive-empty">방명록을 불러오지 못했어요. Firestore 설정을 확인해 주세요.</div>';
+    });
+
+    submitBtn.addEventListener('click', async () => {
+      const author = authorInput.value.trim();
+      const result = resultInput ? resultInput.value.trim() : '';
+      const message = messageInput ? messageInput.value.trim() : '';
+      if (!author) { authorInput.focus(); return; }
+      if (!message && !result) { (messageInput || authorInput).focus(); return; }
+      if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+
+      submitBtn.disabled = true;
+      try {
+        await addDoc(guestbookCol, {
+          game: gameKey, author, authorUid: myUid, result, message,
+          createdAt: serverTimestamp()
+        });
+        if (resultInput) resultInput.value = '';
+        if (messageInput) messageInput.value = '';
+      } catch (err) {
+        alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  setupGuestbook('personality');
+  setupGuestbook('trivia');
+  setupGuestbook('memory');
+
+  // "📖 방명록에 결과 남기기" 버튼: 같은 게임 화면 안에서 방명록 탭으로 바꾸고, 결과값을 미리 채워줘요.
+  function fillGuestbookWithResult(gameKey, resultText){
+    const screen = document.querySelector(`.game-screen[data-game="${gameKey}"]`);
+    if (!screen) return;
+    const subtabs = screen.querySelectorAll('.game-subtab');
+    const subpanels = screen.querySelectorAll('.game-subpanel');
+    subtabs.forEach(t => t.classList.toggle('active', t.dataset.subtab === 'guestbook'));
+    subpanels.forEach(p => p.classList.toggle('active', p.dataset.subpanel === 'guestbook'));
+
+    const resultInput = screen.querySelector('.guestbook-result-input');
+    const messageInput = screen.querySelector('.guestbook-message-input');
+    if (resultInput) resultInput.value = resultText;
+    if (messageInput) messageInput.focus();
+  }
+
+  document.getElementById('personalityGuestbookBtn')?.addEventListener('click', () => {
+    if (currentQuizType) fillGuestbookWithResult('personality', currentQuizType.name);
+  });
+  document.getElementById('triviaGuestbookBtn')?.addEventListener('click', () => {
+    if (currentTriviaResult) fillGuestbookWithResult('trivia', `한로로 퀴즈 ${currentTriviaResult.score}점 (${currentTriviaResult.tier.label})`);
+  });
+  document.getElementById('memoryGuestbookBtn')?.addEventListener('click', () => {
+    fillGuestbookWithResult('memory', `${memoryTotalPairs}쌍 · 시도 ${memoryMoves}번 · ${formatMemoryTime(memorySeconds)}`);
   });
 </script>
 
