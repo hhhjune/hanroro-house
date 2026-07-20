@@ -439,19 +439,18 @@
   .game-back-btn:hover{ color:var(--berry); }
 
   .guestbook-fill-btn{
-    display:flex;
+    display:inline-flex;
     align-items:center;
     justify-content:center;
-    gap:6px;
-    width:100%;
+    gap:5px;
     background:var(--paper);
     border:1px solid var(--moss);
     color:var(--moss-deep);
     font-family:'Noto Sans KR', sans-serif;
-    font-weight:500;
-    font-size:13.5px;
-    padding:11px 0;
-    margin:8px 0 14px;
+    font-weight:700;
+    font-size:12.5px;
+    padding:8px 16px;
+    margin:0;
     border-radius:2px;
     cursor:pointer;
     transition:background 0.2s ease, color 0.2s ease;
@@ -525,6 +524,11 @@
   }
   .guestbook-write input::placeholder,
   .guestbook-write textarea::placeholder{ color:var(--ink-soft); opacity:0.65; }
+  .guestbook-write input[readonly]{
+    background:var(--paper-deep);
+    color:var(--ink-soft);
+    cursor:not-allowed;
+  }
   .guestbook-write textarea{
     margin-bottom:12px;
     resize:vertical;
@@ -603,8 +607,9 @@
     color:#fff;
     border:none;
     font-family:'Noto Sans KR', sans-serif;
-    font-size:16px;
-    padding:12px 28px;
+    font-weight:700;
+    font-size:12.5px;
+    padding:8px 18px;
     border-radius:2px;
     cursor:pointer;
     transition:opacity 0.2s ease;
@@ -612,10 +617,10 @@
   .quiz-start-btn:hover, .quiz-retry-btn:hover{ opacity:0.85; }
 
   .share-btn-row{
-    margin:16px 0;
+    margin:14px 0;
     display:flex;
     justify-content:center;
-    gap:10px;
+    gap:8px;
     flex-wrap:wrap;
   }
   .kakao-share-btn{
@@ -625,8 +630,8 @@
     border:none;
     font-family:'Noto Sans KR', sans-serif;
     font-weight:700;
-    font-size:14px;
-    padding:10px 20px;
+    font-size:12.5px;
+    padding:8px 16px;
     border-radius:2px;
     cursor:pointer;
     transition:opacity 0.2s ease;
@@ -639,8 +644,8 @@
     border:1px solid var(--rule-strong);
     font-family:'Noto Sans KR', sans-serif;
     font-weight:700;
-    font-size:14px;
-    padding:10px 20px;
+    font-size:12.5px;
+    padding:8px 16px;
     border-radius:2px;
     cursor:pointer;
     transition:border-color 0.2s ease, color 0.2s ease;
@@ -776,10 +781,6 @@
     flex-direction:column;
     align-items:center;
     gap:10px;
-  }
-  @media (min-width:641px){
-    .worldcup-pair{ gap:56px; }
-    .worldcup-pick-card{ max-width:460px; }
   }
   .worldcup-media{
     position:relative;
@@ -2068,14 +2069,12 @@
     padding:8px 0;
   }
   .comment-item{
-    padding:10px 0;
+    padding:4px 0;
     border-bottom:1px solid var(--rule);
   }
   .comment-item.reply{
-    margin-left:20px;
     border-bottom:none;
-    padding:8px 0 8px 12px;
-    border-left:2px solid var(--rule);
+    padding:4px 0;
   }
   .comment-top{
     display:flex;
@@ -2096,6 +2095,10 @@
     white-space:pre-wrap;
     line-height:1.35;
     margin-bottom:1px;
+  }
+  .comment-content.comment-deleted{
+    color:var(--ink-soft);
+    font-style:italic;
   }
   .comment-reply-btn{
     display:block;
@@ -2118,13 +2121,17 @@
     cursor:pointer;
   }
   .comment-delete-btn:hover{ color:var(--berry); }
-  .comment-replies{ margin-top:6px; }
-  .comment-reply-form{ margin-top:8px; }
+  .comment-replies{
+    margin-top:2px;
+    padding-left:14px;
+    border-left:2px solid var(--rule-strong);
+  }
+  .comment-reply-form{ margin-top:4px; }
   .comment-form{
     display:flex;
     flex-direction:column;
-    gap:8px;
-    margin-top:10px;
+    gap:6px;
+    margin-top:8px;
   }
   .comment-input, .comment-reply-input{
     width:100%;
@@ -2539,6 +2546,7 @@
     .board-tab{ font-size:13px; padding:8px 12px; }
     .board-post-content{ font-size:13px; }
     .comment-content{ font-size:12.5px; }
+    .comment-replies{ padding-left:10px; }
 
     .diary-page .field-group label{ font-size:13px; }
     .entry-moment{ font-size:13.5px; }
@@ -2959,8 +2967,8 @@
         <div class="share-btn-row">
           <button type="button" class="save-image-btn" id="quizSaveImageBtn">📥 결과 이미지로 저장하기</button>
           <button type="button" class="kakao-share-btn" id="quizKakaoShareBtn">💬 카카오톡으로 결과 공유하기</button>
+          <button type="button" class="guestbook-fill-btn" id="personalityGuestbookBtn">📖 방명록에 남기기</button>
         </div>
-        <button type="button" class="guestbook-fill-btn" id="personalityGuestbookBtn">📖 방명록에 결과 남기기</button>
         <button class="quiz-retry-btn" id="quizRetryBtn">다시 테스트하기</button>
       </div>
 
@@ -2971,7 +2979,7 @@
       <div class="guestbook-write">
         <div class="board-write-row">
           <input type="text" class="guestbook-author-input" placeholder="닉네임">
-          <input type="text" class="guestbook-result-input" placeholder="예: 거울형">
+          <input type="text" class="guestbook-result-input" placeholder="게임 결과를 먼저 완료해주세요" readonly>
         </div>
         <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
         <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
@@ -3010,7 +3018,9 @@
         <span class="quiz-result-emoji" id="triviaResultEmoji"></span>
         <h3 id="triviaResultScore"></h3>
         <p class="quiz-result-desc" id="triviaResultLabel"></p>
-        <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록에 결과 남기기</button>
+        <div class="share-btn-row">
+          <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록에 남기기</button>
+        </div>
         <button class="quiz-retry-btn" id="triviaRetryBtn">다시 풀어보기</button>
       </div>
 
@@ -3021,7 +3031,7 @@
       <div class="guestbook-write">
         <div class="board-write-row">
           <input type="text" class="guestbook-author-input" placeholder="닉네임">
-          <input type="text" class="guestbook-result-input" placeholder="예: 한로로 퀴즈 18점">
+          <input type="text" class="guestbook-result-input" placeholder="게임 결과를 먼저 완료해주세요" readonly>
         </div>
         <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
         <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
@@ -3070,7 +3080,9 @@
         <span class="quiz-result-emoji">🎉</span>
         <h3>모두 맞췄어요!</h3>
         <p class="quiz-result-desc" id="memoryResultDesc"></p>
-        <button type="button" class="guestbook-fill-btn" id="memoryGuestbookBtn">📖 방명록에 결과 남기기</button>
+        <div class="share-btn-row">
+          <button type="button" class="guestbook-fill-btn" id="memoryGuestbookBtn">📖 방명록에 남기기</button>
+        </div>
         <button class="quiz-retry-btn" id="memoryRetryBtn">다시 도전하기</button>
       </div>
 
@@ -3081,7 +3093,7 @@
       <div class="guestbook-write">
         <div class="board-write-row">
           <input type="text" class="guestbook-author-input" placeholder="닉네임">
-          <input type="text" class="guestbook-result-input" placeholder="예: 16장 6번 만에 클리어">
+          <input type="text" class="guestbook-result-input" placeholder="게임 결과를 먼저 완료해주세요" readonly>
         </div>
         <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
         <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
@@ -3147,8 +3159,8 @@
         <div class="share-btn-row">
           <button type="button" class="save-image-btn" id="worldcupCopyLinkBtn">🔗 공유하기(주소 복사)</button>
           <button type="button" class="kakao-share-btn" id="worldcupKakaoBtn">💙 카카오톡 공유</button>
+          <button type="button" class="guestbook-fill-btn" id="worldcupGuestbookBtn">📖 방명록에 남기기</button>
         </div>
-        <button type="button" class="guestbook-fill-btn" id="worldcupGuestbookBtn">📖 방명록에 결과 남기기</button>
         <button type="button" class="quiz-retry-btn" id="worldcupRetryBtn">🔁 다시 하기</button>
 
         <div class="worldcup-stats" id="worldcupStats">
@@ -3165,7 +3177,7 @@
       <div class="guestbook-write">
         <div class="board-write-row">
           <input type="text" class="guestbook-author-input" placeholder="닉네임">
-          <input type="text" class="guestbook-result-input" placeholder="예: 최애곡 - 사랑하게 될 거야">
+          <input type="text" class="guestbook-result-input" placeholder="게임 결과를 먼저 완료해주세요" readonly>
         </div>
         <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
         <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
@@ -3695,7 +3707,8 @@
   let memoryTotalPairs = 0;
   let memoryLocked = false;
   let memoryTimerInterval = null;
-  let memorySeconds = 0;
+  let memoryStartTime = 0;
+  let memoryElapsedMs = 0;
 
   function shuffleArray(arr) {
     const a = arr.slice();
@@ -3706,10 +3719,12 @@
     return a;
   }
 
-  function formatMemoryTime(sec) {
-    const m = String(Math.floor(sec / 60)).padStart(2, '0');
-    const s = String(sec % 60).padStart(2, '0');
-    return `${m}:${s}`;
+  function formatMemoryTime(ms) {
+    const totalMs = Math.max(0, Math.floor(ms));
+    const m = String(Math.floor(totalMs / 60000)).padStart(2, '0');
+    const s = String(Math.floor((totalMs % 60000) / 1000)).padStart(2, '0');
+    const msPart = String(totalMs % 1000).padStart(3, '0');
+    return `${m}:${s}.${msPart}`;
   }
 
   function stopMemoryTimer() {
@@ -3719,13 +3734,14 @@
 
   function startMemoryTimer() {
     stopMemoryTimer();
-    memorySeconds = 0;
+    memoryStartTime = Date.now();
+    memoryElapsedMs = 0;
     const timerEl = document.getElementById('memoryTimer');
     if (timerEl) timerEl.textContent = formatMemoryTime(0);
     memoryTimerInterval = setInterval(() => {
-      memorySeconds++;
-      if (timerEl) timerEl.textContent = formatMemoryTime(memorySeconds);
-    }, 1000);
+      memoryElapsedMs = Date.now() - memoryStartTime;
+      if (timerEl) timerEl.textContent = formatMemoryTime(memoryElapsedMs);
+    }, 31); // 30fps 정도로 갱신하면 밀리초가 자연스럽게 흘러가요.
   }
 
   function updateMemoryStats() {
@@ -3790,14 +3806,17 @@
   }
 
   function finishMemoryGame() {
+    memoryElapsedMs = Date.now() - memoryStartTime; // 멈추기 직전 마지막 순간까지 정확히 반영
     stopMemoryTimer();
+    const timerEl = document.getElementById('memoryTimer');
+    if (timerEl) timerEl.textContent = formatMemoryTime(memoryElapsedMs);
     const playEl = document.getElementById('memoryPlay');
     const resultEl = document.getElementById('memoryResult');
     const descEl = document.getElementById('memoryResultDesc');
     if (playEl) playEl.style.display = 'none';
     if (resultEl) resultEl.style.display = 'block';
     if (descEl) {
-      descEl.textContent = `${memoryTotalPairs}쌍을 시도 ${memoryMoves}번, ${formatMemoryTime(memorySeconds)} 만에 모두 맞췄어요!`;
+      descEl.textContent = `${memoryTotalPairs}쌍을 시도 ${memoryMoves}번, ${formatMemoryTime(memoryElapsedMs)} 만에 모두 맞췄어요!`;
     }
   }
 
@@ -3875,7 +3894,7 @@
     memoryLocked = false;
     memoryMoves = 0;
     memoryMatchedCount = 0;
-    memorySeconds = 0;
+    memoryElapsedMs = 0;
     const introEl = document.getElementById('memoryIntro');
     const playEl = document.getElementById('memoryPlay');
     const resultEl = document.getElementById('memoryResult');
@@ -4009,7 +4028,7 @@
     ensureYoutubeApi(() => {
       worldcupPlayers[side] = new YT.Player(hostId, {
         videoId: song.videoId,
-        playerVars: { autoplay: 1, playsinline: 1, start: song.start || 0, iv_load_policy: 3, rel: 0},
+        playerVars: { autoplay: 1, playsinline: 1, rel: 0, start: song.start || 0 },
         events: { onReady: (e) => e.target.playVideo() }
       });
     });
@@ -4856,10 +4875,24 @@
   }
 
   function buildCommentNodeHtml(node, postId, depth) {
-    const canDelete = isAdminUser || (myUid && node.authorUid === myUid);
-    const indent = Math.min(depth, 5) * 18;
+    const canDelete = !node.deleted && (isAdminUser || (myUid && node.authorUid === myUid));
+    const childrenHtml = node.children.length
+      ? `<div class="comment-replies">${node.children.map(child => buildCommentNodeHtml(child, postId, depth + 1)).join('')}</div>`
+      : '';
+
+    if (node.deleted) {
+      // 삭제된 댓글이어도 답글이 달려있을 수 있어서, 자리는 그대로 남겨두고
+      // 내용만 "삭제된 댓글입니다"로 바꿔서 보여줘요 (답글 구조는 안 깨져요).
+      return `
+        <div class="comment-item${depth > 0 ? ' reply' : ''}" data-comment-id="${node.id}">
+          <div class="comment-content comment-deleted">삭제된 댓글입니다.</div>
+          ${childrenHtml}
+        </div>
+      `;
+    }
+
     return `
-      <div class="comment-item${depth > 0 ? ' reply' : ''}" data-comment-id="${node.id}" style="margin-left:${indent}px;">
+      <div class="comment-item${depth > 0 ? ' reply' : ''}" data-comment-id="${node.id}">
         <div class="comment-top">
           <span class="comment-author">익명</span>
           ${canDelete ? `<button class="comment-delete-btn" data-post-id="${postId}" data-comment-id="${node.id}">삭제</button>` : ''}
@@ -4870,7 +4903,7 @@
           <textarea class="comment-reply-input" rows="2" placeholder="답글을 남겨보세요 (익명으로 표시돼요)"></textarea>
           <button type="button" class="comment-reply-submit-btn" data-post-id="${postId}" data-parent-id="${node.id}">등록</button>
         </div>
-        ${node.children.length ? `<div class="comment-replies">${node.children.map(child => buildCommentNodeHtml(child, postId, depth + 1)).join('')}</div>` : ''}
+        ${childrenHtml}
       </div>
     `;
   }
@@ -4923,9 +4956,14 @@
 
     listEl.querySelectorAll('.comment-delete-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
-        if (!confirm('이 댓글을 삭제할까요?')) return;
+        if (!confirm('이 댓글을 삭제할까요? (답글이 있으면 "삭제된 댓글입니다"로만 표시되고, 답글은 그대로 남아요)')) return;
         try {
-          await deleteDoc(doc(db, 'boardPosts', btn.dataset.postId, 'comments', btn.dataset.commentId));
+          // 완전히 지워버리면 그 밑에 달린 답글들이 부모를 잃고 최상위로 붕 떠버려서,
+          // 실제로는 지우지 않고 "삭제됨" 표시만 남겨요. 답글 구조는 그대로 유지돼요.
+          await updateDoc(doc(db, 'boardPosts', btn.dataset.postId, 'comments', btn.dataset.commentId), {
+            deleted: true,
+            content: ''
+          });
         } catch (err) {
           alert('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.');
           console.error(err);
@@ -5443,7 +5481,7 @@
     if (currentTriviaResult) fillGuestbookWithResult('trivia', `한로로 퀴즈 ${currentTriviaResult.score}점 (${currentTriviaResult.tier.label})`);
   });
   document.getElementById('memoryGuestbookBtn')?.addEventListener('click', () => {
-    fillGuestbookWithResult('memory', `${memoryTotalPairs}쌍 · 시도 ${memoryMoves}번 · ${formatMemoryTime(memorySeconds)}`);
+    fillGuestbookWithResult('memory', `${memoryTotalPairs}쌍 · 시도 ${memoryMoves}번 · ${formatMemoryTime(memoryElapsedMs)}`);
   });
   document.getElementById('worldcupGuestbookBtn')?.addEventListener('click', () => {
     if (currentWorldcupWinner) fillGuestbookWithResult('worldcup', `최애곡 - ${currentWorldcupWinner.title}`);
