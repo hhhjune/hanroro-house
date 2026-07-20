@@ -1385,6 +1385,7 @@
   }
   .board-badge.free{ background:var(--moss); }
   .board-badge.question{ background:#B8860B; }
+  .board-badge.info{ background:#3A6EA5; }
 
   .pinned-badge{
     display:inline-block;
@@ -2579,6 +2580,7 @@
     <button type="button" class="board-tab active" data-tab="all">전체</button>
     <button type="button" class="board-tab" data-tab="free">자유게시판</button>
     <button type="button" class="board-tab" data-tab="question">질문게시판</button>
+    <button type="button" class="board-tab" data-tab="info">정보게시판</button>
   </div>
 
   <div class="board-search-row">
@@ -2683,6 +2685,46 @@
         </tr>
       </thead>
       <tbody class="board-list" data-list="question">
+        <tr><td colspan="4" class="archive-empty">불러오는 중…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 정보게시판 -->
+  <div class="board-panel" data-panel="info" data-board="info">
+    <div class="admin-bar">
+      <button type="button" class="admin-toggle-btn">🔧 관리자 로그인</button>
+      <span class="admin-status"></span>
+    </div>
+
+    <button type="button" class="board-write-toggle-btn">✏️ 글쓰기</button>
+    <div class="board-write" style="display:none;">
+      <div class="board-write-row">
+        <input type="text" class="board-author-input" placeholder="닉네임">
+        <input type="text" class="board-title-input" placeholder="제목">
+      </div>
+      <textarea class="board-content-input" rows="4" placeholder="내용을 적어주세요"></textarea>
+      <div class="board-photo-field">
+        <input type="file" class="board-photo-input" accept="image/*" id="infoBoardPhotoInput">
+        <label for="infoBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기</label>
+        <div class="photo-preview-wrap board-photo-preview-wrap" style="display:none;">
+          <img class="board-photo-preview-img" alt="첨부한 사진 미리보기">
+          <button type="button" class="remove-photo-btn board-photo-remove-btn">✕ 사진 지우기</button>
+        </div>
+      </div>
+      <button type="button" class="board-submit-btn">글쓰기</button>
+    </div>
+
+    <table class="board-table">
+      <thead>
+        <tr>
+          <th class="board-col-num">번호</th>
+          <th class="board-col-title">제목</th>
+          <th class="board-col-author">글쓴이</th>
+          <th class="board-col-date">날짜</th>
+        </tr>
+      </thead>
+      <tbody class="board-list" data-list="info">
         <tr><td colspan="4" class="archive-empty">불러오는 중…</td></tr>
       </tbody>
     </table>
@@ -3549,7 +3591,7 @@
       ? post.createdAt.toDate().toLocaleDateString('ko-KR')
       : '';
     const badge = boardKey
-      ? `<span class="board-badge ${boardKey}">${boardKey === 'free' ? '자유' : '질문'}</span>`
+      ? `<span class="board-badge ${boardKey}">${boardKey === 'free' ? '자유' : boardKey === 'question' ? '질문' : '정보'}</span>`
       : '';
     const pinnedBadge = post.pinned ? `<span class="pinned-badge">📌 공지</span>` : '';
     return `
@@ -3796,7 +3838,8 @@
 
     const combined = [
       ...(boardState.free?.posts || []).map(p => ({ post: p, boardKey: 'free' })),
-      ...(boardState.question?.posts || []).map(p => ({ post: p, boardKey: 'question' }))
+      ...(boardState.question?.posts || []).map(p => ({ post: p, boardKey: 'question' })),
+      ...(boardState.info?.posts || []).map(p => ({ post: p, boardKey: 'info' }))
     ].sort((a, b) => {
       if (!!a.post.pinned !== !!b.post.pinned) return a.post.pinned ? -1 : 1;
       const at = a.post.createdAt && a.post.createdAt.toMillis ? a.post.createdAt.toMillis() : 0;
@@ -3822,6 +3865,7 @@
 
   setupBoard('free');
   setupBoard('question');
+  setupBoard('info');
 
   // ---------- 게시판 전용 통합검색 (제목 / 제목+내용) ----------
   // 상단 로고 옆 통합검색과는 완전히 별개예요. 지금 열려있는 탭(전체/자유/질문)
@@ -3839,7 +3883,8 @@
     if (panelKey === 'all') {
       return [
         ...(boardState.free?.posts || []).map(post => ({ post, boardKey: 'free' })),
-        ...(boardState.question?.posts || []).map(post => ({ post, boardKey: 'question' }))
+        ...(boardState.question?.posts || []).map(post => ({ post, boardKey: 'question' })),
+        ...(boardState.info?.posts || []).map(post => ({ post, boardKey: 'info' }))
       ].sort((a, b) => {
         if (!!a.post.pinned !== !!b.post.pinned) return a.post.pinned ? -1 : 1;
         const at = a.post.createdAt && a.post.createdAt.toMillis ? a.post.createdAt.toMillis() : 0;
@@ -3893,6 +3938,7 @@
     boardSearchInputEl.value = '';
     renderBoardList('free');
     renderBoardList('question');
+    renderBoardList('info');
   };
 
   // ---------- 통합검색 ----------
@@ -3924,6 +3970,11 @@
       .filter(p => (p.title || '').toLowerCase().includes(kw) || (p.content || '').toLowerCase().includes(kw))
       .map(p => ({ type: 'board', boardKey: 'question', id: p.id, title: p.title, author: p.author }));
     if (qMatches.length) groups.push({ label: '❓ 질문게시판', items: qMatches });
+
+    const infoMatches = (boardState.info?.posts || [])
+      .filter(p => (p.title || '').toLowerCase().includes(kw) || (p.content || '').toLowerCase().includes(kw))
+      .map(p => ({ type: 'board', boardKey: 'info', id: p.id, title: p.title, author: p.author }));
+    if (infoMatches.length) groups.push({ label: 'ℹ️ 정보게시판', items: infoMatches });
 
     const diaryMatches = currentEntries
       .filter(e => (e.moment || '').toLowerCase().includes(kw) || (e.author || '').toLowerCase().includes(kw))
@@ -3974,7 +4025,7 @@
       goToPage('discography');
     } else if (type === 'board') {
       goToPage('board');
-      showBoardTab(btn.dataset.board === 'free' ? 'free' : 'question');
+      showBoardTab(btn.dataset.board);
       setTimeout(() => {
         const titleBtn = document.querySelector(`.board-title-btn[data-post-id="${btn.dataset.id}"]`);
         const row = titleBtn?.closest('.board-row');
