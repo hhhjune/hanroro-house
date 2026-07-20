@@ -719,6 +719,145 @@
     margin-bottom:18px;
   }
 
+  /* ---------- MEMORY (앨범 커버 짝 맞추기) ---------- */
+  .memory-box{
+    margin-top:26px;
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:36px 30px;
+    text-align:center;
+    box-shadow:none;
+  }
+  .memory-intro p{
+    font-size:15px;
+    color:var(--ink-soft);
+    margin-bottom:26px;
+    line-height:1.7;
+  }
+  .memory-diff-row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+  }
+  .memory-diff-btn{
+    background:#fff;
+    border:1px solid var(--rule-strong);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:14px;
+    padding:12px 20px;
+    border-radius:2px;
+    cursor:pointer;
+    transition:border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  }
+  .memory-diff-btn:hover{
+    border-color:var(--berry);
+    color:var(--berry);
+    background:rgba(156,74,92,0.05);
+  }
+  .memory-stats{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    margin-bottom:22px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+  .memory-stats strong{
+    color:var(--ink);
+    font-weight:700;
+  }
+  .memory-restart-btn{
+    background:none;
+    border:1px solid var(--rule-strong);
+    color:var(--ink-soft);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+    padding:6px 14px;
+    border-radius:2px;
+    cursor:pointer;
+    transition:border-color 0.2s ease, color 0.2s ease;
+  }
+  .memory-restart-btn:hover{ border-color:var(--berry); color:var(--berry); }
+
+  /* 실제 트럼프 카드 비율(2.5in x 3.5in ≈ 5:7)에 맞춘 카드 그리드 —
+     앨범 커버는 정사각형이라 비율이 안 맞지만, object-fit:cover로 카드 프레임에 꽉 채워요.
+     열 개수(4열/6열)는 난이도에 맞춰 JS가 정사각형 보드가 되도록 지정해요. */
+  .memory-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+    max-width:520px;
+    margin:0 auto;
+  }
+  .memory-card{
+    aspect-ratio:5/7;
+    perspective:700px;
+    cursor:pointer;
+  }
+  .memory-card-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    transition:transform 0.45s cubic-bezier(0.4,0.2,0.2,1);
+    transform-style:preserve-3d;
+  }
+  .memory-card.flipped .memory-card-inner,
+  .memory-card.matched .memory-card-inner{
+    transform:rotateY(180deg);
+  }
+  .memory-card-face{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    border-radius:6px;
+    border:1px solid var(--rule-strong);
+    overflow:hidden;
+  }
+  .memory-card-back{
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 6px, transparent 6px 12px),
+      linear-gradient(160deg, var(--moss) 0%, var(--moss-deep) 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .memory-card-back::after{
+    content:'한로로';
+    font-family:'Gowun Batang', serif;
+    color:rgba(255,255,255,0.82);
+    font-size:11px;
+    letter-spacing:3px;
+    writing-mode:vertical-rl;
+  }
+  .memory-card-front{
+    transform:rotateY(180deg);
+    background:#fff;
+  }
+  .memory-card-front img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .memory-card.matched .memory-card-face{
+    border-color:var(--berry);
+    box-shadow:0 0 0 1px var(--berry) inset;
+  }
+  .memory-card:not(.flipped):not(.matched):hover .memory-card-back{
+    filter:brightness(1.08);
+  }
+  @media (max-width:640px){
+    .memory-grid{ gap:8px; }
+    .memory-box{ padding:26px 16px; }
+  }
+
   /* ---------- CALENDAR ---------- */
   .calendar-section{
     max-width:1080px;
@@ -2499,6 +2638,11 @@
         <span class="game-index-title">한로로 퀴즈</span>
         <span class="game-index-desc">20문항 · 얼마나 잘 아는지 테스트</span>
       </button>
+      <button type="button" class="game-index-card" data-goto="gameMemoryScreen">
+        <span class="game-index-emoji">🃏</span>
+        <span class="game-index-title">앨범 커버 짝 맞추기</span>
+        <span class="game-index-desc">카드 뒤집기 · 같은 앨범 커버 찾기</span>
+      </button>
     </div>
   </div>
 
@@ -2566,6 +2710,40 @@
         <p class="quiz-result-desc" id="triviaResultLabel"></p>
         <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록에 결과 남기기</button>
         <button class="quiz-retry-btn" id="triviaRetryBtn">다시 풀어보기</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 게임3: 앨범 커버 짝 맞추기 -->
+  <div class="game-screen" id="gameMemoryScreen">
+    <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
+
+    <div class="memory-box" id="memoryBox">
+
+      <div class="memory-intro" id="memoryIntro">
+        <p>같은 앨범 커버 두 장을 찾아 짝을 맞추는 카드 게임이에요.<br>난이도를 골라 시작해보세요.</p>
+        <div class="memory-diff-row">
+          <button type="button" class="memory-diff-btn" data-pairs="8">쉬움 · 4×4 (16장)</button>
+          <button type="button" class="memory-diff-btn" data-pairs="18">어려움 · 6×6 (36장, 전체)</button>
+        </div>
+      </div>
+
+      <div class="memory-play" id="memoryPlay" style="display:none;">
+        <div class="memory-stats">
+          <span>시도 <strong id="memoryMoves">0</strong></span>
+          <span>남은 짝 <strong id="memoryRemaining">0</strong></span>
+          <span>시간 <strong id="memoryTimer">00:00</strong></span>
+          <button type="button" class="memory-restart-btn" id="memoryBackToDiffBtn">← 뒤로가기</button>
+        </div>
+        <div class="memory-grid" id="memoryGrid"></div>
+      </div>
+
+      <div class="memory-result" id="memoryResult" style="display:none;">
+        <span class="quiz-result-emoji">🎉</span>
+        <h3>모두 맞췄어요!</h3>
+        <p class="quiz-result-desc" id="memoryResultDesc"></p>
+        <button class="quiz-retry-btn" id="memoryRetryBtn">다시 도전하기</button>
       </div>
 
     </div>
@@ -3037,8 +3215,206 @@
     card.addEventListener('click', () => showGameScreen(card.dataset.goto));
   });
   document.querySelectorAll('.game-back-btn').forEach(btn => {
-    btn.addEventListener('click', () => showGameScreen('gameIndexScreen'));
+    btn.addEventListener('click', () => {
+      showGameScreen('gameIndexScreen');
+      resetMemoryToIntro();
+    });
   });
+
+  // ---- 게임3: 앨범 커버 짝 맞추기 (Memory Match) ----
+  // images/calendar/ 폴더에 넣어둔 앨범 커버 18장(기존 17장 + 사진.jpeg).
+  // 실제 앨범 이미지는 정사각형이지만, 카드는 실제 트럼프 카드 비율(5:7)로 만들고
+  // object-fit:cover로 채워요(위쪽 CSS .memory-card-front img 참고).
+  const MEMORY_ALBUMS = [
+    { title: '거울', img: 'images/calendar/거울.jpeg' },
+    { title: '나침반', img: 'images/calendar/나침반.jpeg' },
+    { title: '너와 나', img: 'images/calendar/너와 나.jpeg' },
+    { title: '당밤나밤', img: 'images/calendar/당밤나밤.jpeg' },
+    { title: '도망', img: 'images/calendar/도망.jpeg' },
+    { title: '라이크마이그르부', img: 'images/calendar/라이크마이그르부.jpeg' },
+    { title: '먹이사슬', img: 'images/calendar/먹이사슬.jpeg' },
+    { title: '비비짝', img: 'images/calendar/비비짝.jpeg' },
+    { title: '생존법', img: 'images/calendar/생존법.jpeg' },
+    { title: '쏘나이스', img: 'images/calendar/쏘나이스.jpeg' },
+    { title: '애증', img: 'images/calendar/애증.jpeg' },
+    { title: '이상비행', img: 'images/calendar/이상비행.jpeg' },
+    { title: '입춘', img: 'images/calendar/입춘.jpeg' },
+    { title: '자몽살구클럽', img: 'images/calendar/자몽살구클럽.jpeg' },
+    { title: '정류장', img: 'images/calendar/정류장.jpeg' },
+    { title: '집', img: 'images/calendar/집.jpeg' },
+    { title: '하루살이', img: 'images/calendar/하루살이.jpeg' },
+    { title: '사진', img: 'images/calendar/사진.jpeg' }
+  ];
+
+  let memoryDeck = [];
+  let memoryFlipped = [];
+  let memoryMatchedCount = 0;
+  let memoryMoves = 0;
+  let memoryTotalPairs = 0;
+  let memoryLocked = false;
+  let memoryTimerInterval = null;
+  let memorySeconds = 0;
+
+  function shuffleArray(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function formatMemoryTime(sec) {
+    const m = String(Math.floor(sec / 60)).padStart(2, '0');
+    const s = String(sec % 60).padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  function stopMemoryTimer() {
+    clearInterval(memoryTimerInterval);
+    memoryTimerInterval = null;
+  }
+
+  function startMemoryTimer() {
+    stopMemoryTimer();
+    memorySeconds = 0;
+    const timerEl = document.getElementById('memoryTimer');
+    if (timerEl) timerEl.textContent = formatMemoryTime(0);
+    memoryTimerInterval = setInterval(() => {
+      memorySeconds++;
+      if (timerEl) timerEl.textContent = formatMemoryTime(memorySeconds);
+    }, 1000);
+  }
+
+  function updateMemoryStats() {
+    const movesEl = document.getElementById('memoryMoves');
+    const remainingEl = document.getElementById('memoryRemaining');
+    if (movesEl) movesEl.textContent = memoryMoves;
+    if (remainingEl) remainingEl.textContent = memoryTotalPairs - memoryMatchedCount;
+  }
+
+  function renderMemoryGrid() {
+    const grid = document.getElementById('memoryGrid');
+    if (!grid) return;
+    grid.innerHTML = memoryDeck.map((card, idx) => `
+      <div class="memory-card" data-idx="${idx}">
+        <div class="memory-card-inner">
+          <div class="memory-card-face memory-card-back"></div>
+          <div class="memory-card-face memory-card-front">
+            <img src="${encodeURI(card.img)}" alt="${card.title} 앨범 커버" loading="lazy">
+          </div>
+        </div>
+      </div>
+    `).join('');
+    grid.querySelectorAll('.memory-card').forEach(el => {
+      el.addEventListener('click', () => handleMemoryCardClick(el));
+    });
+  }
+
+  function handleMemoryCardClick(el) {
+    if (memoryLocked) return;
+    if (el.classList.contains('flipped') || el.classList.contains('matched')) return;
+
+    el.classList.add('flipped');
+    const idx = parseInt(el.dataset.idx, 10);
+    memoryFlipped.push({ el, idx });
+
+    if (memoryFlipped.length === 2) {
+      memoryMoves++;
+      updateMemoryStats();
+      memoryLocked = true;
+      const [a, b] = memoryFlipped;
+      const isMatch = memoryDeck[a.idx].title === memoryDeck[b.idx].title;
+
+      if (isMatch) {
+        setTimeout(() => {
+          a.el.classList.add('matched');
+          b.el.classList.add('matched');
+          memoryMatchedCount++;
+          memoryFlipped = [];
+          memoryLocked = false;
+          updateMemoryStats();
+          if (memoryMatchedCount === memoryTotalPairs) finishMemoryGame();
+        }, 400);
+      } else {
+        setTimeout(() => {
+          a.el.classList.remove('flipped');
+          b.el.classList.remove('flipped');
+          memoryFlipped = [];
+          memoryLocked = false;
+        }, 800);
+      }
+    }
+  }
+
+  function finishMemoryGame() {
+    stopMemoryTimer();
+    const playEl = document.getElementById('memoryPlay');
+    const resultEl = document.getElementById('memoryResult');
+    const descEl = document.getElementById('memoryResultDesc');
+    if (playEl) playEl.style.display = 'none';
+    if (resultEl) resultEl.style.display = 'block';
+    if (descEl) {
+      descEl.textContent = `${memoryTotalPairs}쌍을 시도 ${memoryMoves}번, ${formatMemoryTime(memorySeconds)} 만에 모두 맞췄어요!`;
+    }
+  }
+
+  function startMemoryGame(pairs) {
+    const pairCount = Math.min(pairs, MEMORY_ALBUMS.length);
+    // 매번 완전히 새로 랜덤 셔플: 카드 선택 → 쌍 구성 → 배치 순서까지 모두 새로 섞어요.
+    const chosenAlbums = shuffleArray(MEMORY_ALBUMS).slice(0, pairCount);
+    memoryDeck = shuffleArray(shuffleArray([...chosenAlbums, ...chosenAlbums]));
+    memoryTotalPairs = pairCount;
+    memoryMatchedCount = 0;
+    memoryMoves = 0;
+    memoryFlipped = [];
+    memoryLocked = false;
+
+    const introEl = document.getElementById('memoryIntro');
+    const playEl = document.getElementById('memoryPlay');
+    const resultEl = document.getElementById('memoryResult');
+    if (introEl) introEl.style.display = 'none';
+    if (resultEl) resultEl.style.display = 'none';
+    if (playEl) playEl.style.display = 'block';
+
+    // 전체 보드가 정사각형이 되도록 열 개수를 카드 총 수의 제곱근으로 지정해요.
+    // (예: 16장 → 4×4, 36장 → 6×6)
+    const totalCards = pairCount * 2;
+    const cols = Math.round(Math.sqrt(totalCards));
+    const grid = document.getElementById('memoryGrid');
+    if (grid) {
+      grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+      grid.style.maxWidth = `${cols * 78 + (cols - 1) * 10}px`;
+    }
+
+    renderMemoryGrid();
+    updateMemoryStats();
+    startMemoryTimer();
+  }
+
+  // 카드게임 화면을 완전히 초기 상태(난이도 선택 화면)로 되돌려요.
+  // 타이머를 멈추고, 진행 중이던 판/기록은 모두 버려서
+  // 다음에 다시 들어왔을 때 시도/남은 짝/시간이 이전 값 그대로 남지 않게 해요.
+  function resetMemoryToIntro() {
+    stopMemoryTimer();
+    memoryFlipped = [];
+    memoryLocked = false;
+    memoryMoves = 0;
+    memoryMatchedCount = 0;
+    memorySeconds = 0;
+    const introEl = document.getElementById('memoryIntro');
+    const playEl = document.getElementById('memoryPlay');
+    const resultEl = document.getElementById('memoryResult');
+    if (introEl) introEl.style.display = 'block';
+    if (playEl) playEl.style.display = 'none';
+    if (resultEl) resultEl.style.display = 'none';
+  }
+
+  document.querySelectorAll('.memory-diff-btn').forEach(btn => {
+    btn.addEventListener('click', () => startMemoryGame(parseInt(btn.dataset.pairs, 10)));
+  });
+  document.getElementById('memoryBackToDiffBtn')?.addEventListener('click', resetMemoryToIntro);
+  document.getElementById('memoryRetryBtn')?.addEventListener('click', resetMemoryToIntro);
 
   // 게시판: 전체 / 자유게시판 / 질문게시판 탭 전환
   const boardTabButtons = document.querySelectorAll('.board-tab');
