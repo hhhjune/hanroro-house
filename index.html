@@ -2029,14 +2029,36 @@
   }
   .comment-section-standalone{
     margin-top:28px;
-    padding-top:20px;
+    padding-top:16px;
     border-top:1px dashed var(--rule-strong);
   }
-  .comment-section-title{
-    font-family:'Noto Sans KR', sans-serif;
-    font-size:15px;
-    margin:0 0 14px;
+  .comment-header-bar{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:2px;
   }
+  .comment-total-label{
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:700;
+    font-size:13.5px;
+    color:var(--ink);
+  }
+  .comment-sort-group{ display:flex; gap:10px; }
+  .comment-sort-btn{
+    background:none;
+    border:none;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:12px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    padding:0;
+  }
+  .comment-sort-btn.active{ color:var(--moss-deep); font-weight:700; }
+  .comment-sort-btn:hover{ color:var(--moss); }
 
   @media (max-width:640px){
     .board-table{ font-size:12.5px; }
@@ -2066,67 +2088,78 @@
   .comment-empty{
     font-size:12.5px;
     color:var(--ink-soft);
-    padding:8px 0;
+    padding:10px 4px;
   }
   .comment-item{
-    padding:4px 0;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    padding:7px 4px;
     border-bottom:1px solid var(--rule);
+    font-size:12.5px;
+    line-height:1.3;
   }
   .comment-item.reply{
-    border-bottom:none;
-    padding:4px 0;
+    padding-left:0;
   }
-  .comment-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:1px;
-    line-height:1.2;
+  .comment-reply-arrow{
+    flex:0 0 auto;
+    color:var(--ink-soft);
   }
   .comment-author{
-    font-size:12.5px;
+    flex:0 0 auto;
+    max-width:120px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
     font-weight:700;
-    color:var(--moss);
-    line-height:1.2;
+    color:var(--moss-deep);
+  }
+  .comment-body-row{
+    flex:1;
+    min-width:0;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
   }
   .comment-content{
-    font-size:13.5px;
+    flex:1;
+    min-width:0;
     color:var(--ink);
     white-space:pre-wrap;
-    line-height:1.35;
-    margin-bottom:1px;
+    overflow-wrap:break-word;
   }
   .comment-content.comment-deleted{
     color:var(--ink-soft);
     font-style:italic;
   }
+  .comment-meta-right{
+    flex:0 0 auto;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    color:var(--ink-soft);
+    font-size:11px;
+  }
   .comment-reply-btn{
-    display:block;
     background:none;
     border:none;
     color:var(--ink-soft);
-    font-size:11.5px;
-    line-height:1.2;
+    font-size:11px;
     cursor:pointer;
     padding:0;
-    margin-top:1px;
   }
   .comment-reply-btn:hover{ color:var(--moss); }
   .comment-delete-btn{
     background:none;
     border:none;
     color:var(--ink-soft);
-    font-size:11.5px;
-    line-height:1.2;
+    font-size:12px;
     cursor:pointer;
+    padding:0;
   }
   .comment-delete-btn:hover{ color:var(--berry); }
-  .comment-replies{
-    margin-top:2px;
-    padding-left:14px;
-    border-left:2px solid var(--rule-strong);
-  }
-  .comment-reply-form{ margin-top:4px; }
+  .comment-reply-form{ margin:4px 0 4px 20px; }
   .comment-form{
     display:flex;
     flex-direction:column;
@@ -3413,7 +3446,14 @@
     <img class="board-post-photo" id="boardDetailPhoto" style="display:none;">
 
     <div class="comment-section-standalone">
-      <h4 class="comment-section-title">댓글</h4>
+      <div class="comment-header-bar">
+        <span class="comment-total-label" id="commentTotalLabel">전체 댓글 0개</span>
+        <span class="comment-sort-group">
+          <button type="button" class="comment-sort-btn active" data-sort="asc">✓ 등록순</button>
+          <button type="button" class="comment-sort-btn" data-sort="desc">✓ 최신순</button>
+          <button type="button" class="comment-sort-btn" data-sort="thread">✓ 답글순</button>
+        </span>
+      </div>
       <div class="comment-list" id="boardDetailCommentList"></div>
       <div class="comment-form">
         <textarea class="comment-input" id="boardDetailCommentInput" rows="2" placeholder="댓글을 남겨보세요 (익명으로 표시돼요)"></textarea>
@@ -4766,11 +4806,13 @@
   // 목록 화면에서는 "댓글이 몇 개 있는지"만 숫자로 보여주고, 실제 댓글 내용은
   // 게시글을 눌러서 펼쳐야만 보이게 해요(디시인사이드처럼). 그래서 댓글을 전부
   // 구독하지 않고, 개수만 가볍게 집계해서 뱃지에 채워 넣어요.
+  // "삭제된 댓글입니다"로 표시되는 것들은 개수에서 빼요.
   function loadCommentCounts(container) {
     container.querySelectorAll('.comment-count-badge').forEach(async (badge) => {
       const postId = badge.dataset.countPostId;
       try {
-        const snap = await getCountFromServer(collection(db, 'boardPosts', postId, 'comments'));
+        const q = query(collection(db, 'boardPosts', postId, 'comments'), where('deleted', '==', false));
+        const snap = await getCountFromServer(q);
         const count = snap.data().count;
         badge.textContent = count > 0 ? `[${count}]` : '';
       } catch (err) {
@@ -4874,52 +4916,111 @@
     return roots;
   }
 
-  function buildCommentNodeHtml(node, postId, depth) {
+  let commentSortMode = 'asc'; // 'asc'(등록순) | 'desc'(최신순) | 'thread'(답글순)
+
+  // "삭제된 댓글입니다"로 표시되는 것들은 개수에 안 넣어요.
+  function countAllComments(nodes){
+    let n = 0;
+    nodes.forEach(node => {
+      if (!node.deleted) n += 1;
+      n += countAllComments(node.children);
+    });
+    return n;
+  }
+
+  function formatCommentDate(date){
+    const p = (n) => String(n).padStart(2, '0');
+    return `${p(date.getMonth() + 1)}.${p(date.getDate())} ${p(date.getHours())}:${p(date.getMinutes())}:${p(date.getSeconds())}`;
+  }
+
+  function buildCommentRowHtml(node, postId, depth) {
     const canDelete = !node.deleted && (isAdminUser || (myUid && node.authorUid === myUid));
-    const childrenHtml = node.children.length
-      ? `<div class="comment-replies">${node.children.map(child => buildCommentNodeHtml(child, postId, depth + 1)).join('')}</div>`
-      : '';
+    const dateStr = node.createdAt && node.createdAt.toDate ? formatCommentDate(node.createdAt.toDate()) : '';
+    const indentPad = depth * 18;
 
-    if (node.deleted) {
-      // 삭제된 댓글이어도 답글이 달려있을 수 있어서, 자리는 그대로 남겨두고
-      // 내용만 "삭제된 댓글입니다"로 바꿔서 보여줘요 (답글 구조는 안 깨져요).
-      return `
-        <div class="comment-item${depth > 0 ? ' reply' : ''}" data-comment-id="${node.id}">
-          <div class="comment-content comment-deleted">삭제된 댓글입니다.</div>
-          ${childrenHtml}
-        </div>
-      `;
-    }
+    const contentHtml = node.deleted
+      ? `<span class="comment-content comment-deleted">삭제된 댓글입니다.</span>`
+      : `<span class="comment-content">${node.content}</span>`;
 
-    return `
-      <div class="comment-item${depth > 0 ? ' reply' : ''}" data-comment-id="${node.id}">
-        <div class="comment-top">
-          <span class="comment-author">익명</span>
-          ${canDelete ? `<button class="comment-delete-btn" data-post-id="${postId}" data-comment-id="${node.id}">삭제</button>` : ''}
+    const rowHtml = `
+      <div class="comment-item${depth > 0 ? ' reply' : ''}" data-comment-id="${node.id}" style="padding-left:${indentPad}px;">
+        ${depth > 0 ? '<span class="comment-reply-arrow">└</span>' : ''}
+        <span class="comment-author">익명</span>
+        <div class="comment-body-row">
+          ${contentHtml}
+          <span class="comment-meta-right">
+            ${!node.deleted ? `<button type="button" class="comment-reply-btn" data-comment-id="${node.id}">답글</button>` : ''}
+            <span class="comment-date">${dateStr}</span>
+            ${canDelete ? `<button class="comment-delete-btn" data-post-id="${postId}" data-comment-id="${node.id}">✕</button>` : ''}
+          </span>
         </div>
-        <div class="comment-content">${node.content}</div>
-        <button type="button" class="comment-reply-btn" data-comment-id="${node.id}">답글</button>
-        <div class="comment-reply-form" data-comment-id="${node.id}" style="display:none;">
+      </div>
+      ${!node.deleted ? `
+        <div class="comment-reply-form" data-comment-id="${node.id}" style="display:none; margin-left:${indentPad + 18}px;">
           <textarea class="comment-reply-input" rows="2" placeholder="답글을 남겨보세요 (익명으로 표시돼요)"></textarea>
           <button type="button" class="comment-reply-submit-btn" data-post-id="${postId}" data-parent-id="${node.id}">등록</button>
         </div>
-        ${childrenHtml}
-      </div>
+      ` : ''}
     `;
+
+    // 답글은 등록 순서 그대로 부모 바로 아래에 이어 붙여요 (몇 단계든 재귀적으로).
+    const childrenHtml = node.children.map(child => buildCommentRowHtml(child, postId, depth + 1)).join('');
+    return rowHtml + childrenHtml;
+  }
+
+  // 원 댓글과 그 밑에 달린 답글까지 전부 "삭제됨" 상태면, 더 이상 남겨둘 이유가
+  // 없으니 그 스레드 전체를 Firestore에서 완전히 지워버려요.
+  function isEntirelyDeleted(node){
+    if (!node.deleted) return false;
+    return node.children.every(isEntirelyDeleted);
+  }
+  function collectIds(node, out){
+    out.push(node.id);
+    node.children.forEach(child => collectIds(child, out));
+  }
+  async function cleanupFullyDeletedThreads(postId, tree){
+    const idsToRemove = [];
+    tree.forEach(root => {
+      if (isEntirelyDeleted(root)) collectIds(root, idsToRemove);
+    });
+    if (idsToRemove.length === 0) return;
+    try {
+      await Promise.all(idsToRemove.map(id =>
+        deleteDoc(doc(db, 'boardPosts', postId, 'comments', id))
+      ));
+    } catch (err) {
+      // 정리에 실패해도 화면 표시에는 지장 없어서 조용히 넘어가요.
+      console.error('[댓글 정리] 완전 삭제 실패:', err);
+    }
   }
 
   function renderComments(postId) {
     const listEl = document.getElementById('boardDetailCommentList');
     if (!listEl || postId !== currentDetailPostId) return;
     const comments = commentsCache[postId] || [];
-    const tree = buildCommentTree(comments);
+    let tree = buildCommentTree(comments);
+
+    // 이번에 완전히 삭제된 스레드는 화면에서도 바로 빼고, 뒤에서 조용히 정리해요.
+    tree = tree.filter(root => !isEntirelyDeleted(root));
+    cleanupFullyDeletedThreads(postId, buildCommentTree(comments));
+
+    // "등록순"과 "답글순"은 우리 구조상 이미 답글이 원 댓글 바로 아래 묶여서
+    // 나오기 때문에 결과가 같아요. "최신순"만 최상위 댓글 순서를 뒤집어요
+    // (그 안의 답글들은 등록된 순서 그대로 유지돼요).
+    if (commentSortMode === 'desc') {
+      tree = tree.slice().reverse();
+    }
+
+    const totalCount = countAllComments(tree);
+    const totalLabelEl = document.getElementById('commentTotalLabel');
+    if (totalLabelEl) totalLabelEl.textContent = `전체 댓글 ${totalCount}개`;
 
     if (tree.length === 0) {
       listEl.innerHTML = '<div class="comment-empty">아직 댓글이 없어요.</div>';
       return;
     }
 
-    listEl.innerHTML = tree.map(node => buildCommentNodeHtml(node, postId, 0)).join('');
+    listEl.innerHTML = tree.map(node => buildCommentRowHtml(node, postId, 0)).join('');
 
     listEl.querySelectorAll('.comment-reply-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -4941,6 +5042,7 @@
             content,
             authorUid: myUid,
             replyTo: btn.dataset.parentId,
+            deleted: false,
             createdAt: serverTimestamp()
           });
           textarea.value = '';
@@ -5059,6 +5161,14 @@
 
   document.getElementById('boardDetailBackBtn').addEventListener('click', closeBoardPostDetail);
 
+  document.querySelectorAll('.comment-sort-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      commentSortMode = btn.dataset.sort;
+      document.querySelectorAll('.comment-sort-btn').forEach(b => b.classList.toggle('active', b === btn));
+      if (currentDetailPostId) renderComments(currentDetailPostId);
+    });
+  });
+
   document.getElementById('boardDetailCommentSubmitBtn').addEventListener('click', async () => {
     const textarea = document.getElementById('boardDetailCommentInput');
     const content = textarea.value.trim();
@@ -5071,6 +5181,7 @@
         content,
         authorUid: myUid,
         replyTo: null,
+        deleted: false,
         createdAt: serverTimestamp()
       });
       textarea.value = '';
