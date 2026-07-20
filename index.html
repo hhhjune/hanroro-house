@@ -2280,14 +2280,20 @@
     text-align:left;
     max-width:520px;
   }
-  .privacy-details summary{
-    cursor:pointer;
-    font-size:12.5px;
-    color:var(--ink-soft);
-    text-decoration:underline;
-    text-underline-offset:3px;
-    list-style:none;
+  .privacy-toggle-btn{
+  background:none;
+  border:none;
+  padding:0;
+  cursor:pointer;
+  font-family:'Noto Sans KR', sans-serif;
+  font-size:12.5px;
+  color:var(--ink-soft);
+  text-decoration:underline;
+  text-underline-offset:3px;
   }
+  .privacy-toggle-btn:hover{ color:var(--berry); }
+  }
+  
   .privacy-details summary::-webkit-details-marker{ display:none; }
   .privacy-details summary:hover{ color:var(--berry); }
   .privacy-content{
@@ -3254,22 +3260,27 @@
   <span class="handwrite">— 한로로 팬사이트 (제작 중) —</span>
   <p class="footer-draft-note">이 페이지는 아직 초안이에요. 아티스트 소개 · 디스코그래피 정보는 계속 다듬어질 예정입니다.</p>
 
-  <details class="privacy-details">
-
-  <details class="privacy-details">
-    <summary>이용안내 및 개인정보처리방침</summary>
-    <div class="privacy-content">
+  <div class="privacy-details">
+    <button type="button" class="privacy-toggle-btn" id="privacyToggleBtn">이용안내 및 개인정보처리방침</button>
+    <div class="privacy-content" id="privacyContent" style="display:none;">
       <p>이 사이트는 팬이 자발적으로 만든 비공식 팬사이트이며, 한로로 및 소속사와 관련이 없습니다.</p>
       <p><strong>회원가입·로그인이 없어요.</strong> 이메일, 전화번호, 실명 등 개인 식별 정보를 입력받거나 저장하지 않아요.</p>
       <p><strong>게시판·한 줄의 계절에 남기는 닉네임</strong>은 방문자가 매번 직접 입력하는 표시용 이름일 뿐, 실명 인증이나 계정과 연결되지 않아요.</p>
       <p><strong>"내 글 삭제" 기능</strong>을 위해 브라우저마다 자동으로 부여되는 익명 식별값을 사용해요. 이 값은 이름·이메일 등 개인정보와 연결되지 않고, 브라우저(기기)를 바꾸면 새로 발급돼요.</p>
       <p><strong>직접 첨부하는 사진</strong>은 작성한 글과 함께 저장되며, 작성자 본인이 언제든 삭제할 수 있어요.</p>
       <p><span id="adminToggleBtn" class="admin-toggle-btn admin-hidden-trigger">관리자 로그인</span>은 사이트 운영자 1인만 사용하며, 방문자 개인정보와는 무관해요. <span class="admin-status" id="adminStatus"></span></p>
-      <p>운영 방식이나 저장되는 데이터의 세부 내용은 사이트 개편에 따라 바뀔 수 있어요.</p>
+      <p>운영 방식이나 저장되는 데이터의 세부 내용은 사이트 개편에 따라 바뀔 수 있어요.</p>  
     </div>
-  </details>
+  </div>
+    
 </footer>
-
+<script>
+  // ---- 이용안내 및 개인정보처리방침 펼치기/접기 ----
+  document.getElementById('privacyToggleBtn')?.addEventListener('click', () => {
+    const contentEl = document.getElementById('privacyContent');
+    contentEl.style.display = contentEl.style.display === 'none' ? 'block' : 'none';
+  });
+  
 <script>
   // ---- 카카오톡 공유 ----
   // ⚠️ 실제로 동작하려면 Kakao Developers에서 발급받은 JavaScript 키로 교체해야 해요.
