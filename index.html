@@ -3995,11 +3995,30 @@
       mediaEl.appendChild(host);
     }
 
+    // [핵심 변경 1] youtube-nocookie 도메인 사용 + 최초 로딩 시 닥치고 음소거(mute=1) 설정
+    host.innerHTML = `
+      <iframe id="iframe_${hostId}" width="100%" height="100%" 
+        src="https://www.youtube-nocookie.com/embed/${song.videoId}?autoplay=1&mute=1&playsinline=1&rel=0&start=${song.start || 0}&enablejsapi=1" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen>
+      </iframe>
+    `;
+
+    // 기존 플레이어 인스턴스가 있다면 깔끔하게 파괴
+    if (worldcupPlayers[side] && typeof worldcupPlayers[side].destroy === 'function') {
+      try { worldcupPlayers[side].destroy(); } catch(e){}
+    }
+
+    // [핵심 변경 2] 유튜브 API가 준비되면, 영상이 켜지는 순간 소리를 즉시 켭니다.
     ensureYoutubeApi(() => {
-      worldcupPlayers[side] = new YT.Player(hostId, {
-        videoId: song.videoId,
-        playerVars: { autoplay: 1, playsinline: 1, rel: 0, start: song.start || 0 },
-        events: { onReady: (e) => e.target.playVideo() }
+      worldcupPlayers[side] = new YT.Player(`iframe_${hostId}`, {
+        events: {
+          onReady: (e) => {
+            e.target.unMute();   // 보너스 팁: 영상이 로드되자마자 음소거 해제!
+            e.target.playVideo(); // 혹시 멈춰있을지 모르니 강제 재생 명령
+          }
+        }
       });
     });
   }
