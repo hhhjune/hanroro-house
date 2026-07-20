@@ -363,9 +363,126 @@
   .quiz-section{
     max-width:640px;
     margin:0 auto;
-    padding:100px 24px 20px;
+    padding:100px 24px 60px;
     text-align:center;
   }
+
+  .game-screen{ display:none; }
+  .game-screen.active{ display:block; }
+
+  .game-index-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:30px;
+  }
+  .game-index-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    padding:32px 18px;
+    cursor:pointer;
+    text-align:center;
+    transition:transform 0.15s ease, border-color 0.15s ease;
+  }
+  .game-index-card:hover{ transform:translateY(-3px); border-color:var(--berry); }
+  .game-index-emoji{ font-size:32px; }
+  .game-index-title{
+    font-family:'Gowun Batang', serif;
+    font-size:17px;
+    color:var(--ink);
+  }
+  .game-index-desc{
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  @media (max-width:520px){
+    .game-index-grid{ grid-template-columns:1fr; }
+  }
+
+  .game-back-btn{
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:14px;
+    cursor:pointer;
+    padding:0;
+    margin-bottom:8px;
+  }
+  .game-back-btn:hover{ color:var(--berry); }
+
+  .guestbook-fill-btn{
+    display:block;
+    width:100%;
+    background:none;
+    border:1px dashed var(--rule-strong);
+    color:var(--moss-deep);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+    padding:9px 0;
+    margin:6px 0 14px;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  .guestbook-fill-btn:hover{ border-color:var(--moss); color:var(--moss); }
+
+  .guestbook-section{
+    margin-top:56px;
+    text-align:left;
+  }
+  .guestbook-write{
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    padding:18px;
+    margin:16px 0 24px;
+  }
+  .guestbook-write textarea{
+    width:100%;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:9px 12px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13.5px;
+    margin-bottom:10px;
+    box-sizing:border-box;
+    resize:vertical;
+  }
+  .guestbook-list{ display:flex; flex-direction:column; gap:10px; }
+  .guestbook-item{
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    padding:14px 16px;
+    position:relative;
+  }
+  .guestbook-item-top{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:6px;
+    flex-wrap:wrap;
+  }
+  .guestbook-author{ font-size:13px; font-weight:500; color:var(--ink); }
+  .guestbook-result-badge{
+    display:inline-block;
+    background:var(--berry);
+    color:#fff;
+    font-size:11.5px;
+    font-weight:700;
+    padding:2px 9px;
+    border-radius:100px;
+  }
+  .guestbook-date{ font-size:11px; color:var(--ink-soft); margin-left:auto; }
+  .guestbook-message{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; }
+  .guestbook-item .delete-btn{
+    position:absolute; top:14px; right:14px;
+    border:none; background:none; color:var(--ink-soft); cursor:pointer; font-size:12px;
+  }
+  .guestbook-item .delete-btn:hover{ color:var(--berry); }
+
   .quiz-box{
     margin-top:26px;
     background:var(--paper-fold);
@@ -1970,7 +2087,7 @@
     <a href="#board">게시판</a>
     <a href="#discography">디스코그래피</a>
     <a href="#calendar">캘린더</a>
-    <a href="#quiz">테스트</a>
+    <a href="#quiz">한로로 게임</a>
     <a href="#diary">한 줄의 계절</a>
   </nav>
 </header>
@@ -2282,43 +2399,111 @@
 
 <section id="quiz" class="page quiz-section">
   <div class="section-head">
-    <span class="eyebrow handwrite">🎧 10개의 질문으로 알아보는</span>
-    <h2>당신은 어떤 한로로일까요?</h2>
-    <p class="today-sub">당신의 마음과 가장 닮은 한로로의 노래를 찾아드립니다.</p>
+    <span class="eyebrow handwrite">놀면서 알아가는</span>
+    <h2>한로로 게임</h2>
+    <p class="today-sub">하고 싶은 게임을 골라보세요.</p>
   </div>
 
-  <div class="quiz-box" id="quizBox">
-
-    <div class="quiz-intro" id="quizIntro">
-      <p>10개의 짧은 질문에 답하면, 지금 당신과 가장 닮은 한로로의 노래 유형을 알려드려요.</p>
-      <button class="quiz-start-btn" id="quizStartBtn">테스트 시작하기 ▶</button>
+  <!-- 게임 목록 화면 -->
+  <div class="game-screen active" id="gameIndexScreen">
+    <div class="game-index-grid">
+      <button type="button" class="game-index-card" data-goto="gamePersonalityScreen">
+        <span class="game-index-emoji">🎧</span>
+        <span class="game-index-title">당신은 어떤 한로로일까요?</span>
+        <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
+      </button>
+      <button type="button" class="game-index-card" data-goto="gameTriviaScreen">
+        <span class="game-index-emoji">🧠</span>
+        <span class="game-index-title">한로로 퀴즈</span>
+        <span class="game-index-desc">20문항 · 얼마나 잘 아는지 테스트</span>
+      </button>
     </div>
+  </div>
 
-    <div class="quiz-question" id="quizQuestion" style="display:none;">
-      <div class="quiz-progress">
-        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
-        <span id="quizProgressLabel">1 / 10</span>
+  <!-- 게임1: 당신은 어떤 한로로일까요 -->
+  <div class="game-screen" id="gamePersonalityScreen">
+    <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
+
+    <div class="quiz-box" id="quizBox">
+
+      <div class="quiz-intro" id="quizIntro">
+        <p>10개의 짧은 질문에 답하면, 지금 당신과 가장 닮은 한로로의 노래 유형을 알려드려요.</p>
+        <button class="quiz-start-btn" id="quizStartBtn">테스트 시작하기 ▶</button>
       </div>
-      <h3 id="quizQuestionText"></h3>
-      <div class="quiz-options" id="quizOptions"></div>
-    </div>
 
-    <div class="quiz-result" id="quizResult" style="display:none;">
-      <img class="quiz-result-cover" id="quizResultCover" alt="추천곡 앨범 커버">
-      <span class="quiz-result-emoji" id="quizResultEmoji"></span>
-      <h3 id="quizResultName"></h3>
-      <p class="quiz-result-desc" id="quizResultDesc"></p>
-      <div class="quiz-result-keywords" id="quizResultKeywords"></div>
-      <div class="quiz-result-songs" id="quizResultSongs"></div>
-      <div class="share-btn-row">
-        <button type="button" class="save-image-btn" id="quizSaveImageBtn">📥 결과 이미지로 저장하기</button>
-        <button type="button" class="kakao-share-btn" id="quizKakaoShareBtn">💬 카카오톡으로 결과 공유하기</button>
+      <div class="quiz-question" id="quizQuestion" style="display:none;">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
+          <span id="quizProgressLabel">1 / 10</span>
+        </div>
+        <h3 id="quizQuestionText"></h3>
+        <div class="quiz-options" id="quizOptions"></div>
       </div>
-      <button class="quiz-retry-btn" id="quizRetryBtn">다시 테스트하기</button>
-    </div>
 
+      <div class="quiz-result" id="quizResult" style="display:none;">
+        <img class="quiz-result-cover" id="quizResultCover" alt="추천곡 앨범 커버">
+        <span class="quiz-result-emoji" id="quizResultEmoji"></span>
+        <h3 id="quizResultName"></h3>
+        <p class="quiz-result-desc" id="quizResultDesc"></p>
+        <div class="quiz-result-keywords" id="quizResultKeywords"></div>
+        <div class="quiz-result-songs" id="quizResultSongs"></div>
+        <div class="share-btn-row">
+          <button type="button" class="save-image-btn" id="quizSaveImageBtn">📥 결과 이미지로 저장하기</button>
+          <button type="button" class="kakao-share-btn" id="quizKakaoShareBtn">💬 카카오톡으로 결과 공유하기</button>
+        </div>
+        <button type="button" class="guestbook-fill-btn" id="personalityGuestbookBtn">📖 방명록에 결과 남기기</button>
+        <button class="quiz-retry-btn" id="quizRetryBtn">다시 테스트하기</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 게임2: 한로로 퀴즈 -->
+  <div class="game-screen" id="gameTriviaScreen">
+    <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
+
+    <div class="quiz-box" id="triviaBox">
+
+      <div class="quiz-intro" id="triviaIntro">
+        <p>총 20문제예요. 쉬운 문제부터 아주 어려운 문제까지 있어요 — 과연 몇 점이 나올까요?</p>
+        <button class="quiz-start-btn" id="triviaStartBtn">퀴즈 시작하기 ▶</button>
+      </div>
+
+      <div class="quiz-question" id="triviaQuestion" style="display:none;">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="triviaProgressFill"></div></div>
+          <span id="triviaProgressLabel">1 / 20</span>
+        </div>
+        <h3 id="triviaQuestionText"></h3>
+        <div class="quiz-options" id="triviaOptions"></div>
+      </div>
+
+      <div class="quiz-result" id="triviaResult" style="display:none;">
+        <span class="quiz-result-emoji" id="triviaResultEmoji"></span>
+        <h3 id="triviaResultScore"></h3>
+        <p class="quiz-result-desc" id="triviaResultLabel"></p>
+        <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록에 결과 남기기</button>
+        <button class="quiz-retry-btn" id="triviaRetryBtn">다시 풀어보기</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 방명록 -->
+  <div class="guestbook-section">
+    <h3 class="calendar-block-title">📖 방명록 — 내 게임 결과 자랑하기</h3>
+    <div class="guestbook-write">
+      <div class="board-write-row">
+        <input type="text" id="guestbookAuthorInput" placeholder="닉네임">
+        <input type="text" id="guestbookResultInput" placeholder="예: 거울형 / 한로로 퀴즈 18점">
+      </div>
+      <textarea id="guestbookMessageInput" rows="2" placeholder="한마디 남겨보세요"></textarea>
+      <button type="button" class="board-submit-btn" id="guestbookSubmitBtn">방명록에 남기기</button>
+    </div>
+    <div class="guestbook-list" id="guestbookList"></div>
   </div>
 </section>
+
 
 <section id="calendar" class="page calendar-section">
   <div class="section-head">
@@ -2716,6 +2901,18 @@
   // 새로고침 시 주소창의 해시를 보고 그 페이지를 열어줘요. 없으면 '오늘'이 기본.
   const initialPageId = (location.hash || '#today').slice(1);
   if (!showPage(initialPageId)) showPage('today');
+
+  // 한로로 게임: 목록 화면 ↔ 개별 게임 화면 전환
+  const gameScreens = document.querySelectorAll('.game-screen');
+  function showGameScreen(id){
+    gameScreens.forEach(s => s.classList.toggle('active', s.id === id));
+  }
+  document.querySelectorAll('.game-index-card').forEach(card => {
+    card.addEventListener('click', () => showGameScreen(card.dataset.goto));
+  });
+  document.querySelectorAll('.game-back-btn').forEach(btn => {
+    btn.addEventListener('click', () => showGameScreen('gameIndexScreen'));
+  });
 
   // 게시판: 전체 / 자유게시판 / 질문게시판 탭 전환
   const boardTabButtons = document.querySelectorAll('.board-tab');
@@ -4181,6 +4378,198 @@
   quizRetryBtn.addEventListener('click', () => {
     quizResultEl.style.display = 'none';
     quizIntro.style.display = 'block';
+  });
+
+  // ================= 한로로 퀴즈 (20문항) =================
+  const TRIVIA_QUESTIONS = [
+    { q: '한로로의 본명은?', options: ['한지영', '한지수', '한지원', '한지민'], answer: 1 },
+    { q: '한로로의 데뷔곡은?', options: ['거울', '입춘', '정류장', '자처'], answer: 1 },
+    { q: '한로로의 팬덤 이름은?', options: ['금붕어', '로켓단', '별빛', '로로단'], answer: 1 },
+    { q: '한로로의 MBTI는?', options: ['INFP', 'INFJ', 'ENFP', 'ISFJ'], answer: 1 },
+    { q: '한로로가 졸업한 대학교는?', options: ['홍익대학교', '건국대학교', '중앙대학교', '경희대학교'], answer: 1 },
+    { q: '2025년 한로로가 새롭게 데뷔한 분야는?', options: ['배우', '작가', 'DJ', '화가'], answer: 1 },
+    { q: '한로로의 첫 EP는?', options: ['집', '이상비행', '자몽살구클럽', '애증'], answer: 1 },
+    { q: '한로로가 음악을 시작하게 된 계기가 된 아티스트는?', options: ['검정치마', '초승', '새소년', '실리카겔'], answer: 1 },
+    { q: '한로로가 소속사에 처음 제출했던 데모곡 개수는?', options: ['1곡', '2곡', '3곡', '5곡'], answer: 1 },
+    { q: '데뷔 전 참솜 공연에서 부른 곡이 아닌 것은?', options: ['입춘', '비틀비틀 짝짜꿍', '거울', '둘 다 불렀다'], answer: 2 },
+    { q: '한로로가 가장 영향을 받은 뮤지션으로 언급한 사람은?', options: ['윤하', '이소라', '아이유', '김윤아'], answer: 1 },
+    { q: '한로로가 좋아하는 계절은?', options: ['봄', '여름', '가을', '겨울'], answer: 1 },
+    { q: '한로로가 가장 싫어하는 음식으로 언급한 것은?', options: ['오이', '피망과 파프리카', '가지', '브로콜리'], answer: 1 },
+    { q: '한로로가 가장 좋아하는 아이스크림은?', options: ['메로나', '구구콘', '월드콘', '죠스바'], answer: 1 },
+    { q: '한로로가 가장 좋아하는 배우는?', options: ['구교환', '박정민', '이제훈', '최우식'], answer: 0 },
+    { q: '한로로의 인생 영화는?', options: ['라라랜드', '릴리 슈슈의 모든 것', '어바웃 타임', '비긴 어게인'], answer: 2 },
+    { q: '한로로가 새로운 공간에 적응하는 데 걸린다고 말한 시간은?', options: ['20분', '30분', '40분', '1시간'], answer: 2 },
+    { q: '한로로가 가장 오래 사용한 물건은?', options: ['우쿨렐레', '노트북', '핸드폰', '기타'], answer: 1 },
+    { q: '한로로의 인생 목표는?', options: ['그래미 수상', '세계 투어', '80살까지 꾸준히 앨범 발매하기', '미국 진출'], answer: 2 },
+    { q: '한로로가 무인도에 가져가겠다고 답한 물건이 아닌 것은?', options: ['텐트', '라이터', '도라에몽', '우쿨렐레'], answer: 3 },
+  ];
+
+  const TRIVIA_SCORE_TIERS = [
+    { min: 0, max: 4, emoji: '🌱', label: '입춘을 이제 막 들은 새싹 로켓단' },
+    { min: 5, max: 8, emoji: '🎵', label: '플레이리스트에 한로로가 있는 리스너' },
+    { min: 9, max: 12, emoji: '🚏', label: '정류장에서 오래 머문 팬' },
+    { min: 13, max: 16, emoji: '✈️', label: '이상비행을 함께한 로켓단' },
+    { min: 17, max: 19, emoji: '🐠', label: '금붕어급 한로로 덕후' },
+    { min: 20, max: 20, emoji: '👑', label: '인간 한로로 백과사전' },
+  ];
+
+  const triviaIntro = document.getElementById('triviaIntro');
+  const triviaQuestionEl = document.getElementById('triviaQuestion');
+  const triviaResultEl = document.getElementById('triviaResult');
+  const triviaStartBtn = document.getElementById('triviaStartBtn');
+  const triviaProgressFill = document.getElementById('triviaProgressFill');
+  const triviaProgressLabel = document.getElementById('triviaProgressLabel');
+  const triviaQuestionText = document.getElementById('triviaQuestionText');
+  const triviaOptionsEl = document.getElementById('triviaOptions');
+  const triviaRetryBtn = document.getElementById('triviaRetryBtn');
+
+  let triviaStep = 0;
+  let triviaScore = 0;
+  let currentTriviaResult = null;
+
+  function startTrivia(){
+    triviaStep = 0;
+    triviaScore = 0;
+    triviaIntro.style.display = 'none';
+    triviaResultEl.style.display = 'none';
+    triviaQuestionEl.style.display = 'block';
+    renderTriviaQuestion();
+  }
+
+  function renderTriviaQuestion(){
+    const q = TRIVIA_QUESTIONS[triviaStep];
+    triviaProgressFill.style.width = `${(triviaStep / TRIVIA_QUESTIONS.length) * 100}%`;
+    triviaProgressLabel.textContent = `${triviaStep + 1} / ${TRIVIA_QUESTIONS.length}`;
+    triviaQuestionText.textContent = `Q${triviaStep + 1}. ${q.q}`;
+    triviaOptionsEl.innerHTML = q.options.map((opt, idx) => `
+      <button data-idx="${idx}">${opt}</button>
+    `).join('');
+
+    triviaOptionsEl.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.idx, 10);
+        if (idx === q.answer) triviaScore++;
+        triviaStep++;
+        if (triviaStep < TRIVIA_QUESTIONS.length) {
+          renderTriviaQuestion();
+        } else {
+          finishTrivia();
+        }
+      });
+    });
+  }
+
+  function finishTrivia(){
+    const tier = TRIVIA_SCORE_TIERS.find(t => triviaScore >= t.min && triviaScore <= t.max) || TRIVIA_SCORE_TIERS[0];
+    currentTriviaResult = { score: triviaScore, tier };
+
+    triviaQuestionEl.style.display = 'none';
+    triviaResultEl.style.display = 'block';
+
+    document.getElementById('triviaResultEmoji').textContent = tier.emoji;
+    document.getElementById('triviaResultScore').textContent = `${triviaScore} / 20점`;
+    document.getElementById('triviaResultLabel').textContent = tier.label;
+
+    triviaResultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  triviaStartBtn.addEventListener('click', startTrivia);
+  triviaRetryBtn.addEventListener('click', () => {
+    triviaResultEl.style.display = 'none';
+    triviaIntro.style.display = 'block';
+  });
+
+  // ================= 방명록 =================
+  const guestbookCol = collection(db, 'guestbookEntries');
+  const guestbookQuery = query(guestbookCol, orderBy('createdAt', 'desc'));
+  let currentGuestbookEntries = [];
+
+  onSnapshot(guestbookQuery, (snapshot) => {
+    currentGuestbookEntries = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderGuestbook();
+  }, (err) => {
+    console.error('방명록을 불러오지 못했습니다:', err);
+    document.getElementById('guestbookList').innerHTML =
+      '<div class="archive-empty">방명록을 불러오지 못했어요. Firestore 설정을 확인해 주세요.</div>';
+  });
+
+  function renderGuestbook(){
+    const listEl = document.getElementById('guestbookList');
+    if (currentGuestbookEntries.length === 0) {
+      listEl.innerHTML = '<div class="archive-empty">아직 방명록이 없어요. 게임 결과를 남겨보세요!</div>';
+      return;
+    }
+    listEl.innerHTML = currentGuestbookEntries.map(entry => {
+      const isMine = myUid && entry.authorUid === myUid;
+      const canDelete = isAdminUser || isMine;
+      const dateStr = entry.createdAt && entry.createdAt.toDate
+        ? entry.createdAt.toDate().toLocaleDateString('ko-KR')
+        : '';
+      return `
+        <div class="guestbook-item">
+          ${canDelete ? `<button class="delete-btn${isAdminUser && !isMine ? ' admin-delete' : ''}" data-id="${entry.id}">✕</button>` : ''}
+          <div class="guestbook-item-top">
+            <span class="guestbook-author">${entry.author || '익명'}</span>
+            ${entry.result ? `<span class="guestbook-result-badge">${entry.result}</span>` : ''}
+            <span class="guestbook-date">${dateStr}</span>
+          </div>
+          ${entry.message ? `<div class="guestbook-message">${entry.message}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+
+    listEl.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('이 방명록을 삭제할까요?')) return;
+        try {
+          await deleteDoc(doc(db, 'guestbookEntries', btn.dataset.id));
+        } catch (err) {
+          alert('삭제에 실패했어요.');
+          console.error(err);
+        }
+      });
+    });
+  }
+
+  const guestbookAuthorInput = document.getElementById('guestbookAuthorInput');
+  const guestbookResultInput = document.getElementById('guestbookResultInput');
+  const guestbookMessageInput = document.getElementById('guestbookMessageInput');
+  const guestbookSubmitBtn = document.getElementById('guestbookSubmitBtn');
+
+  guestbookSubmitBtn.addEventListener('click', async () => {
+    const author = guestbookAuthorInput.value.trim();
+    const result = guestbookResultInput.value.trim();
+    const message = guestbookMessageInput.value.trim();
+    if (!author) { guestbookAuthorInput.focus(); return; }
+    if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+
+    guestbookSubmitBtn.disabled = true;
+    try {
+      await addDoc(guestbookCol, {
+        author, authorUid: myUid, result, message,
+        createdAt: serverTimestamp()
+      });
+      guestbookResultInput.value = '';
+      guestbookMessageInput.value = '';
+    } catch (err) {
+      alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
+      console.error(err);
+    } finally {
+      guestbookSubmitBtn.disabled = false;
+    }
+  });
+
+  function fillGuestbookWithResult(resultText){
+    guestbookResultInput.value = resultText;
+    document.querySelector('.guestbook-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    guestbookMessageInput.focus();
+  }
+
+  document.getElementById('personalityGuestbookBtn').addEventListener('click', () => {
+    if (currentQuizType) fillGuestbookWithResult(currentQuizType.name);
+  });
+  document.getElementById('triviaGuestbookBtn').addEventListener('click', () => {
+    if (currentTriviaResult) fillGuestbookWithResult(`한로로 퀴즈 ${currentTriviaResult.score}점 (${currentTriviaResult.tier.label})`);
   });
 
   // ================= 한로로 캘린더 =================
