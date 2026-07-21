@@ -1199,6 +1199,14 @@
     color:var(--ink-soft);
     margin-bottom:3px;
   }
+  .upcoming-insta-link{
+    display:inline-block;
+    margin-top:4px;
+    font-size:12px;
+    color:var(--moss-deep);
+    text-decoration:none;
+  }
+  .upcoming-insta-link:hover{ text-decoration:underline; }
 
   /* 실제 달력 그리드 */
   .cal-grid-card{
@@ -1421,20 +1429,6 @@
     object-fit:cover;
     display:block;
   }
-  .setlist-share-badge{
-    position:absolute;
-    top:10px;
-    left:10px;
-    background:#FEE500;
-    color:#191600;
-    border:none;
-    font-family:'Noto Sans KR', sans-serif;
-    font-weight:700;
-    font-size:11px;
-    padding:4px 10px;
-    border-radius:100px;
-    cursor:pointer;
-  }
   .setlist-status-badge{
     position:absolute;
     top:10px;
@@ -1449,10 +1443,37 @@
   .setlist-status-badge.upcoming{ background:var(--berry); }
   .setlist-status-badge.past{ background:rgba(42,39,36,0.6); }
   .setlist-card-body{ padding:16px 18px; }
+  .setlist-card-title-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  .setlist-share-badge{
+    flex:0 0 auto;
+    background:#FEE500;
+    color:#191600;
+    border:none;
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:700;
+    font-size:11.5px;
+    padding:5px 12px;
+    border-radius:100px;
+    cursor:pointer;
+  }
   .setlist-card-title{
+    flex:1;
+    min-width:0;
     font-family:'Gowun Batang', serif;
     font-size:16px;
-    margin:0 0 6px;
+    margin:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .setlist-card.highlight{
+    box-shadow:0 0 0 3px var(--berry);
   }
   .setlist-card-venue{
     font-size:12px;
@@ -6484,14 +6505,16 @@
         ? `${formatSimpleDate(start)} ~ ${formatSimpleDate(end)}`
         : formatSimpleDate(start);
       return `
-        <div class="setlist-card">
+        <div class="setlist-card" data-title="${ev.title}">
           <div class="setlist-card-media">
             ${ev.poster ? `<img src="${ev.poster}" alt="${ev.title} 포스터">` : ''}
-            <button type="button" class="setlist-share-badge" data-idx="${idx}">💬 공유</button>
             <span class="setlist-status-badge ${isPast ? 'past' : 'upcoming'}">${isPast ? '지난 공연' : '현재 공연'}</span>
           </div>
           <div class="setlist-card-body">
-            <h3 class="setlist-card-title">${ev.title}</h3>
+            <div class="setlist-card-title-row">
+              <h3 class="setlist-card-title">${ev.title}</h3>
+              <button type="button" class="setlist-share-badge" data-idx="${idx}">공유</button>
+            </div>
             <div class="setlist-card-venue">${ev.venue}</div>
             <div class="setlist-card-date">${dateStr}</div>
             <div class="setlist-song-list">
@@ -6751,6 +6774,7 @@
                 <h4 class="upcoming-card-title">${occ.title}</h4>
                 <div class="upcoming-card-venue">📍 ${occ.venue}</div>
                 <div class="upcoming-card-date">📅 ${formatOccDate(occ)}</div>
+                ${occ.instagram ? `<a class="upcoming-insta-link" href="${occ.instagram}" target="_blank" rel="noopener">📷 공식 인스타</a>` : ''}
               </div>
             </div>
           `;
@@ -6830,12 +6854,25 @@
               <div class="past-card-title">${occ.title}</div>
               <div class="past-card-date">📅 ${formatOccDate(occ)}</div>
               <div class="past-card-links">
-                ${occ.setlist ? `<a class="past-setlist-btn" href="#setlists">🎼 셋리스트 보기</a>` : ''}
-                ${occ.instagram ? `<a class="past-insta-link" href="${occ.instagram}" target="_blank" rel="noopener">📷 인스타</a>` : ''}
+                ${occ.setlist ? `<a class="past-setlist-btn" href="#setlists" data-setlist-title="${occ.title}">🎼 셋리스트 보기</a>` : ''}
               </div>
             </div>
           </div>
         `).join('');
+        pastGridEl.querySelectorAll('.past-setlist-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            goToPage('setlists');
+            setTimeout(() => {
+              const targetCard = document.querySelector(`.setlist-card[data-title="${CSS.escape(btn.dataset.setlistTitle)}"]`);
+              if (targetCard) {
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                targetCard.classList.add('highlight');
+                setTimeout(() => targetCard.classList.remove('highlight'), 2000);
+              }
+            }, 150);
+          });
+        });
         if (pastMoreBtn) {
           pastMoreBtn.style.display = past.length > 6 ? 'inline-block' : 'none';
           pastMoreBtn.textContent = '더보기';
