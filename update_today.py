@@ -23,6 +23,7 @@ OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "today.json")
 YOUTUBE_CHANNEL_ID = "UCrDa_5OU-rhvXqWlPx5hgKQ"   # 한로로 HANRORO 공식 채널
 INSTAGRAM_USERNAME = "hanr0r0"
 TIKTOK_USERNAME = "hanroro_official"
+NAVER_BLOG_ID = "hanr0r0"
 
 MAX_ITEMS_PER_SOURCE = 10
 
@@ -268,25 +269,77 @@ def fetch_tiktok_latest():
         return []
 
 
+def fetch_naver_blog_latest():
+    """네이버 블로그의 RSS 피드로 최신 글 목록을 가져옵니다."""
+    import re as _re
+    import xml.etree.ElementTree as ET
+
+    url = f"https://rss.blog.naver.com/{NAVER_BLOG_ID}.xml"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    }
+
+    try:
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=15) as response:
+            raw = response.read()
+    except Exception as e:
+        print(f"[네이버 블로그] RSS 요청 실패: {e}")
+        return []
+
+    try:
+        # 네이버 RSS는 종종 EUC-KR로 내려오는 경우가 있어서 두 인코딩을 순서대로 시도해요.
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError:
+            text = raw.decode("euc-kr", errors="ignore")
+
+        root = ET.fromstring(text)
+        items = root.findall(".//item")
+        results = []
+        for item in items[:MAX_ITEMS_PER_SOURCE]:
+            title_el = item.find("title")
+            link_el = item.find("link")
+            date_el = item.find("pubDate")
+            title = (title_el.text or "").strip() if title_el is not None else "(제목 없음)"
+            link = (link_el.text or "").strip() if link_el is not None else f"https://blog.naver.com/{NAVER_BLOG_ID}"
+            date_str = ""
+            if date_el is not None and date_el.text:
+                # 예: "Mon, 20 Jul 2026 10:00:00 +0900" -> "2026.07.20"
+                m = _re.search(r"(\d{1,2}) (\w{3}) (\d{4})", date_el.text)
+                if m:
+                    months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+                    day, mon, year = m.group(1), m.group(2), m.group(3)
+                    if mon in months:
+                        date_str = f"{year}.{months.index(mon)+1:02d}.{int(day):02d}"
+            results.append({"date": date_str, "title": title, "link": link})
+        return results
+    except Exception as e:
+        print(f"[네이버 블로그] RSS 파싱 실패: {e}")
+        return []
+
+
 def main():
     print("--- '오늘, 한로로는' 데이터 수집 시작 ---")
 
     youtube_data = fetch_youtube_latest()
     instagram_data = fetch_instagram_latest()
     tiktok_data = fetch_tiktok_latest()
+    naverblog_data = fetch_naver_blog_latest()
 
     data = {
         "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "instagram": instagram_data,
         "youtube": youtube_data,
         "tiktok": tiktok_data,
+        "naverblog": naverblog_data,
     }
 
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print(f"today.json 생성 완료 → {OUTPUT_PATH}")
-    print(f"  instagram: {len(data['instagram'])}건 / youtube: {len(data['youtube'])}건 / tiktok: {len(data['tiktok'])}건")
+    print(f"  instagram: {len(data['instagram'])}건 / youtube: {len(data['youtube'])}건 / tiktok: {len(data['tiktok'])}건 / naverblog: {len(data['naverblog'])}건")
 
 
 if __name__ == "__main__":
