@@ -535,6 +535,19 @@
   }
 
   .guestbook-list{ display:flex; flex-direction:column; }
+  .guestbook-search-row{
+    margin-bottom:14px;
+  }
+  .guestbook-search-input{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid var(--rule-strong);
+    border-radius:2px;
+    padding:8px 12px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13.5px;
+    color:var(--ink);
+  }
   .guestbook-item{
     display:flex;
     align-items:flex-start;
@@ -3065,6 +3078,9 @@
         <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
         <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
       </div>
+      <div class="guestbook-search-row">
+        <input type="text" class="guestbook-search-input" placeholder="🔍 닉네임·내용으로 검색">
+      </div>
       <div class="guestbook-list" data-game="personality"></div>
     </div>
   </div>
@@ -3117,6 +3133,9 @@
         </div>
         <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
         <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
+      </div>
+      <div class="guestbook-search-row">
+        <input type="text" class="guestbook-search-input" placeholder="🔍 닉네임·내용으로 검색">
       </div>
       <div class="guestbook-list" data-game="trivia"></div>
     </div>
@@ -3179,6 +3198,9 @@
         </div>
         <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
         <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
+      </div>
+      <div class="guestbook-search-row">
+        <input type="text" class="guestbook-search-input" placeholder="🔍 닉네임·내용으로 검색">
       </div>
       <div class="guestbook-list" data-game="memory"></div>
     </div>
@@ -3263,6 +3285,9 @@
         </div>
         <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
         <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
+      </div>
+      <div class="guestbook-search-row">
+        <input type="text" class="guestbook-search-input" placeholder="🔍 닉네임·내용으로 검색">
       </div>
       <div class="guestbook-list" data-game="worldcup"></div>
     </div>
@@ -4363,6 +4388,23 @@
   let isAdminUser = false;
   let currentEntries = [];
 
+  // ---- 짧은 시간 안에 연속으로 글/댓글/방명록을 올리는 도배를 막는 쿨타임이에요.
+  // 브라우저(localStorage) 기준이라 완벽한 방어는 아니지만, 실수로 여러 번 눌리거나
+  // 캐주얼한 도배를 막는 데는 충분해요. 관리자로 로그인했을 땐 예외로 항상 통과돼요.
+  function checkRateLimit(actionKey, cooldownMs) {
+    if (isAdminUser) return true;
+    const storageKey = `hanroro-last-submit-${actionKey}`;
+    const now = Date.now();
+    const last = parseInt(localStorage.getItem(storageKey) || '0', 10);
+    const remain = cooldownMs - (now - last);
+    if (remain > 0) {
+      alert(`너무 빠르게 올리고 있어요. ${Math.ceil(remain / 1000)}초 후에 다시 시도해 주세요.`);
+      return false;
+    }
+    localStorage.setItem(storageKey, String(now));
+    return true;
+  }
+
   const adminToggleBtns = document.querySelectorAll('.admin-toggle-btn');
   const adminStatusEls = document.querySelectorAll('.admin-status');
 
@@ -4693,6 +4735,7 @@
       alert('연결 중이에요. 잠시 후 다시 눌러주세요.');
       return;
     }
+    if (!checkRateLimit('diary', 20000)) return;
 
     const moment = momentInput.value.trim();
     const song = songInput.value;
@@ -4841,6 +4884,7 @@
       if (!title) { titleInput.focus(); return; }
       if (!content) { contentInput.focus(); return; }
       if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+      if (!checkRateLimit('board', 20000)) return;
 
       submitBtn.disabled = true;
       try {
@@ -5141,6 +5185,7 @@
         const content = textarea.value.trim();
         if (!content) return;
         if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+        if (!checkRateLimit('comment', 8000)) return;
         btn.disabled = true;
         try {
           await addDoc(collection(db, 'boardPosts', btn.dataset.postId, 'comments'), {
@@ -5288,6 +5333,7 @@
     const content = textarea.value.trim();
     if (!content || !currentDetailPostId) return;
     if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+    if (!checkRateLimit('comment', 8000)) return;
     const btn = document.getElementById('boardDetailCommentSubmitBtn');
     btn.disabled = true;
     try {
@@ -5533,10 +5579,21 @@
   function renderGuestbook(gameKey){
     const listEl = document.querySelector(`.guestbook-list[data-game="${gameKey}"]`);
     if (!listEl) return;
-    const entries = guestbookStateByGame[gameKey]?.entries || [];
+    const allEntries = guestbookStateByGame[gameKey]?.entries || [];
+    const kw = (guestbookStateByGame[gameKey]?.searchQuery || '').trim().toLowerCase();
+    const entries = kw
+      ? allEntries.filter(entry =>
+          (entry.author || '').toLowerCase().includes(kw) ||
+          (entry.message || '').toLowerCase().includes(kw) ||
+          (entry.result || '').toLowerCase().includes(kw))
+      : allEntries;
 
-    if (entries.length === 0) {
+    if (allEntries.length === 0) {
       listEl.innerHTML = '<div class="archive-empty">아직 방명록이 없어요. 게임 결과를 남겨보세요!</div>';
+      return;
+    }
+    if (entries.length === 0) {
+      listEl.innerHTML = '<div class="archive-empty">검색 결과가 없어요.</div>';
       return;
     }
 
@@ -5582,9 +5639,17 @@
     const resultInput = screen.querySelector('.guestbook-result-input');
     const messageInput = screen.querySelector('.guestbook-message-input');
     const submitBtn = screen.querySelector('.guestbook-submit-btn');
+    const searchInput = screen.querySelector('.guestbook-search-input');
     if (!authorInput || !submitBtn) return;
 
-    guestbookStateByGame[gameKey] = { entries: [] };
+    guestbookStateByGame[gameKey] = { entries: [], searchQuery: '' };
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        guestbookStateByGame[gameKey].searchQuery = searchInput.value;
+        renderGuestbook(gameKey);
+      });
+    }
 
     const q = query(guestbookCol, where('game', '==', gameKey), orderBy('createdAt', 'desc'));
     onSnapshot(q, (snapshot) => {
@@ -5608,6 +5673,7 @@
       }
       if (!message && !result) { (messageInput || authorInput).focus(); return; }
       if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+      if (!checkRateLimit('guestbook', 15000)) return;
 
       submitBtn.disabled = true;
       try {
