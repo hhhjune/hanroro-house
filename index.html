@@ -279,22 +279,6 @@
     grid-template-columns:repeat(3, 1fr);
     gap:22px;
   }
-  .video-showcase-blog-link{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    width:100%;
-    aspect-ratio:16/9;
-    background:var(--paper-deep);
-    text-decoration:none;
-    padding:16px;
-    box-sizing:border-box;
-  }
-  .video-showcase-blog-link .video-showcase-title{
-    margin-top:0;
-    -webkit-line-clamp:4;
-  }
   .video-showcase-card{
     background:var(--paper-fold);
     border:1px solid var(--rule);
@@ -2960,9 +2944,10 @@
 
     <div class="video-showcase-card">
       <div class="video-showcase-label">📝 최신 블로그</div>
-      <a class="video-showcase-blog-link" id="latestBlogLink" href="https://blog.naver.com/hanr0r0" target="_blank" rel="noopener">
-        <div class="video-showcase-title" id="latestBlogTitle">불러오는 중…</div>
+      <a class="video-showcase-thumb-wrap" id="latestBlogLink" href="https://blog.naver.com/hanr0r0" target="_blank" rel="noopener">
+        <img class="video-showcase-thumb" src="images/today/naverblog_cover.jpg" alt="한로로 네이버 블로그">
       </a>
+      <div class="video-showcase-title" id="latestBlogTitle">불러오는 중…</div>
       <a class="video-showcase-footer-link" href="https://blog.naver.com/hanr0r0" target="_blank" rel="noopener">다음에서 보기: 📝 네이버 블로그</a>
     </div>
   </div>
@@ -3666,7 +3651,6 @@
 
   <!-- 전체: 자유+질문 글을 한데 모아 보여주는 화면 (글쓰기는 여기서는 할 수 없어요) -->
   <div class="board-panel active" data-panel="all">
-    <p class="board-panel-note">자유게시판·질문게시판에 올라온 글이 모두 모여요. 글을 쓰려면 자유게시판이나 질문게시판 탭으로 이동해주세요.</p>
     <table class="board-table">
       <thead>
         <tr>
@@ -4553,6 +4537,10 @@
     boardTabButtons.forEach(t => t.classList.toggle('active', t.dataset.tab === key));
     boardPanels.forEach(p => p.classList.toggle('active', p.dataset.panel === key));
     if (window.resetBoardSearchOnTabSwitch) window.resetBoardSearchOnTabSwitch();
+    // 자유/질문/정보 탭은 이미 그 안에 자기 글쓰기 버튼이 있어서, "전체" 탭일 때만
+    // 상단 글쓰기 버튼(게시판 종류 선택용)을 보여줘요 — 안 그러면 버튼이 두 개로 겹쳐 보여요.
+    if (boardWriteGlobalBtn) boardWriteGlobalBtn.style.display = key === 'all' ? '' : 'none';
+    if (key !== 'all' && boardTypePicker) boardTypePicker.style.display = 'none';
   }
   boardTabButtons.forEach(btn => {
     btn.addEventListener('click', () => showBoardTab(btn.dataset.tab));
