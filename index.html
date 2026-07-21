@@ -255,10 +255,45 @@
     font-size:14.5px;
     color:var(--ink-soft);
   }
+  .hero-tagline{
+    margin-top:14px;
+    font-family:'Gowun Batang', serif;
+    font-size:18px;
+    color:var(--berry);
+  }
+
+  @keyframes heroFadeIn{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .hero-fade-in{
+    opacity:0;
+    animation:heroFadeIn 0.7s ease forwards;
+  }
+  .hero-fade-in-delay-1{ animation-delay:0.12s; }
+  .hero-fade-in-delay-2{ animation-delay:0.24s; }
+  .hero-fade-in-delay-3{ animation-delay:0.36s; }
+
   .video-showcase-row{
     display:grid;
-    grid-template-columns:repeat(2, 1fr);
+    grid-template-columns:repeat(3, 1fr);
     gap:22px;
+  }
+  .video-showcase-blog-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    width:100%;
+    aspect-ratio:16/9;
+    background:var(--paper-deep);
+    text-decoration:none;
+    padding:16px;
+    box-sizing:border-box;
+  }
+  .video-showcase-blog-link .video-showcase-title{
+    margin-top:0;
+    -webkit-line-clamp:4;
   }
   .video-showcase-card{
     background:var(--paper-fold);
@@ -2896,9 +2931,10 @@
 
 <section id="today" class="page today-section active">
   <div class="section-head">
-    <span class="eyebrow handwrite">자동으로 업데이트되는</span>
-    <h2>오늘, 한로로는</h2>
-    <p class="today-sub">유튜브 · 틱톡의 가장 최근 영상을 모았어요.</p>
+    <span class="eyebrow handwrite hero-fade-in">자동으로 업데이트되는</span>
+    <h2 class="hero-fade-in hero-fade-in-delay-1">오늘, 한로로는</h2>
+    <p class="hero-tagline hero-fade-in hero-fade-in-delay-2">한로로 팬들이 모이는 따뜻한 공간</p>
+    <p class="today-sub hero-fade-in hero-fade-in-delay-3">유튜브 · 틱톡의 가장 최근 영상을 모았어요.</p>
   </div>
 
   <div class="video-showcase-row">
@@ -2920,6 +2956,14 @@
       </a>
       <div class="video-showcase-title" id="latestTiktokTitle">불러오는 중…</div>
       <a class="video-showcase-footer-link" href="https://www.tiktok.com/@hanroro_official" target="_blank" rel="noopener">다음에서 보기: 🎵 TikTok</a>
+    </div>
+
+    <div class="video-showcase-card">
+      <div class="video-showcase-label">📝 최신 블로그</div>
+      <a class="video-showcase-blog-link" id="latestBlogLink" href="https://blog.naver.com/hanr0r0" target="_blank" rel="noopener">
+        <div class="video-showcase-title" id="latestBlogTitle">불러오는 중…</div>
+      </a>
+      <a class="video-showcase-footer-link" href="https://blog.naver.com/hanr0r0" target="_blank" rel="noopener">다음에서 보기: 📝 네이버 블로그</a>
     </div>
   </div>
 
@@ -5755,10 +5799,11 @@
       .map(p => ({ type: 'board', boardKey: 'info', id: p.id, title: p.title, author: p.author }));
     if (infoMatches.length) groups.push({ label: 'ℹ️ 정보게시판', items: infoMatches });
 
-    const diaryMatches = currentEntries
-      .filter(e => (e.moment || '').toLowerCase().includes(kw) || (e.author || '').toLowerCase().includes(kw))
-      .map(e => ({ type: 'diary', id: e.id, title: e.moment || '(기록 없음)', author: e.author }));
-    if (diaryMatches.length) groups.push({ label: '📔 한 줄의 계절', items: diaryMatches });
+    const setlistMatches = CALENDAR_DATA
+      .filter(ev => ev.setlist && ev.setlist.length &&
+        (ev.title.toLowerCase().includes(kw) || ev.setlist.some(song => song.toLowerCase().includes(kw))))
+      .map(ev => ({ type: 'setlist', id: ev.title, title: ev.title, author: ev.venue }));
+    if (setlistMatches.length) groups.push({ label: '🎤 셋리스트', items: setlistMatches });
 
     if (groups.length === 0) {
       searchResultsEl.innerHTML = '<div class="search-no-result">검색 결과가 없어요.</div>';
@@ -5816,6 +5861,16 @@
       setTimeout(() => {
         const card = Array.from(document.querySelectorAll('.entry-moment')).find(el => el.textContent === btn.dataset.title)?.closest('.entry-card');
         card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 150);
+    } else if (type === 'setlist') {
+      goToPage('setlists');
+      setTimeout(() => {
+        const card = document.querySelector(`.setlist-card[data-title="${CSS.escape(btn.dataset.title)}"]`);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.add('highlight');
+          setTimeout(() => card.classList.remove('highlight'), 2000);
+        }
       }, 150);
     }
   });
@@ -6100,6 +6155,18 @@
     }
   }
 
+  function renderLatestBlog(items){
+    const linkEl = document.getElementById('latestBlogLink');
+    const titleEl = document.getElementById('latestBlogTitle');
+    if (!items || items.length === 0) {
+      titleEl.textContent = '최신 글을 불러오지 못했어요.';
+      return;
+    }
+    const latest = items[0];
+    linkEl.href = latest.link;
+    titleEl.textContent = latest.title;
+  }
+
   document.querySelectorAll('.today-more').forEach(btn => {
     btn.addEventListener('click', () => {
       const list = document.getElementById(btn.dataset.target);
@@ -6120,6 +6187,7 @@
 
       renderLatestYoutube(data.youtube);
       renderLatestTiktok(data.tiktok);
+      renderLatestBlog(data.naverblog);
 
       const updatedEl = document.getElementById('todayUpdatedAt');
       if(updatedEl && data.updated_at){
@@ -6130,6 +6198,7 @@
       // today.json이 아직 없거나(최초 배포 전) 읽기에 실패한 경우
       document.getElementById('latestYoutubeTitle').textContent = '최신 영상을 불러오지 못했어요.';
       document.getElementById('latestTiktokTitle').textContent = '최신 영상을 불러오지 못했어요.';
+      document.getElementById('latestBlogTitle').textContent = '최신 글을 불러오지 못했어요.';
       const updatedEl = document.getElementById('todayUpdatedAt');
       if(updatedEl) updatedEl.textContent = 'today.json을 아직 찾을 수 없어요. update_today.py 실행 결과가 배포됐는지 확인해 주세요.';
     }
