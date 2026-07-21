@@ -1904,6 +1904,7 @@
 
   .board-tabs{
     display:flex;
+    align-items:center;
     gap:2px;
     margin:24px 0 20px;
     border-bottom:1px solid var(--rule-strong);
@@ -1925,6 +1926,46 @@
     font-weight:700;
     border-bottom-color:var(--moss);
   }
+  .board-write-global-btn{
+    margin-left:auto;
+    background:var(--berry);
+    color:#fff;
+    border:none;
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:700;
+    font-size:12.5px;
+    padding:7px 14px;
+    border-radius:2px;
+    cursor:pointer;
+    margin-bottom:-1px;
+  }
+  .board-write-global-btn:hover{ opacity:0.9; }
+
+  .board-type-picker{
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:16px;
+    margin-bottom:18px;
+    text-align:center;
+  }
+  .board-type-picker-label{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+  .board-type-picker-row{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .board-type-choice-btn{
+    background:#fff;
+    border:1px solid var(--rule-strong);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+    padding:8px 16px;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  .board-type-choice-btn:hover{ border-color:var(--moss); color:var(--moss); }
 
   .board-search-row{
     display:flex;
@@ -2039,15 +2080,15 @@
     background:var(--paper-fold);
     border:1px solid var(--rule);
     border-radius:2px;
-    padding:20px;
-    margin:20px 0 34px;
+    padding:12px;
+    margin:12px 0 20px;
   }
   .board-write-row{
     display:flex;
-    gap:10px;
-    margin-bottom:10px;
+    gap:8px;
+    margin-bottom:8px;
   }
-  .board-write-row .board-author-input{ flex:0 0 120px; }
+  .board-write-row .board-author-input{ flex:0 0 100px; }
   .admin-locked-input{
     background:rgba(95,111,82,0.08);
     color:var(--moss-deep);
@@ -2059,21 +2100,21 @@
     background:#fff;
     border:1px solid var(--rule);
     border-radius:2px;
-    padding:10px 12px;
+    padding:6px 9px;
     font-family:'Noto Sans KR', sans-serif;
-    font-size:14px;
+    font-size:12.5px;
     color:var(--ink);
     box-sizing:border-box;
   }
-  .board-write textarea{ resize:vertical; margin-bottom:12px; }
-  .board-photo-field{ margin-bottom:14px; }
+  .board-write textarea{ resize:vertical; margin-bottom:8px; }
+  .board-photo-field{ margin-bottom:8px; }
   .board-submit-btn{
     background:var(--berry);
     color:#fff;
     border:none;
     font-family:'Noto Sans KR', sans-serif;
-    font-size:15px;
-    padding:9px 24px;
+    font-size:12.5px;
+    padding:6px 16px;
     border-radius:2px;
     cursor:pointer;
     transition:opacity 0.2s ease;
@@ -2787,11 +2828,26 @@
     .past-card-date{ font-size:10.5px; }
     .past-more-btn{ font-size:11.5px; padding:5px 12px; }
 
-    .board-section .section-head h2{ font-size:24px; }
-    .board-table{ font-size:12px; }
-    .board-tab{ font-size:13px; padding:8px 12px; }
-    .board-post-content{ font-size:13px; }
-    .comment-content{ font-size:12.5px; }
+    .board-section .section-head h2{ font-size:22px; }
+    .board-section .today-sub{ font-size:12px; }
+    .board-tabs{ flex-wrap:wrap; gap:4px 8px; margin:16px 0 14px; }
+    .board-table{ font-size:11px; }
+    .board-table thead th{ padding:6px 6px; font-size:11px; }
+    .board-row td{ padding:6px 6px; }
+    .board-tab{ font-size:12px; padding:6px 8px; }
+    .board-write-global-btn{ font-size:11px; padding:5px 10px; }
+    .board-type-picker{ padding:10px; }
+    .board-type-picker-label{ font-size:12px; }
+    .board-type-choice-btn{ font-size:11.5px; padding:6px 12px; }
+    .board-search-row select, .board-search-row input, .board-search-row button{ font-size:12px; }
+    .board-write{ padding:8px; margin:8px 0 14px; }
+    .board-write input, .board-write textarea{ font-size:12px; padding:5px 8px; }
+    .board-write-row .board-author-input{ flex:0 0 78px; }
+    .board-post-content{ font-size:12px; }
+    .board-post-detail .board-detail-title{ font-size:16px; }
+    .comment-content{ font-size:11.5px; }
+    .comment-author{ font-size:11px; }
+    .comment-date{ font-size:10px; }
     .comment-replies{ padding-left:10px; }
 
     .diary-page .field-group label{ font-size:13px; }
@@ -2799,6 +2855,16 @@
     .entry-author{ font-size:13px; }
 
     .kakao-share-btn, .save-image-btn, .board-submit-btn{ font-size:12px; }
+
+    .past-grid, .setlist-grid{
+      display:flex;
+      overflow-x:auto;
+      gap:12px;
+      -webkit-overflow-scrolling:touch;
+      padding-bottom:6px;
+    }
+    .past-grid .past-card{ flex:0 0 72vw; }
+    .setlist-grid .setlist-card{ flex:0 0 82vw; }
   }
 </style>
 <!-- 카카오톡 공유 기능용 SDK. 아래 KAKAO_JS_KEY를 발급받은 실제 키로 교체해야 동작해요. -->
@@ -3533,6 +3599,16 @@
     <button type="button" class="board-tab" data-tab="free">자유게시판</button>
     <button type="button" class="board-tab" data-tab="question">질문게시판</button>
     <button type="button" class="board-tab" data-tab="info">정보게시판</button>
+    <button type="button" class="board-write-global-btn" id="boardWriteGlobalBtn">✏️ 글쓰기</button>
+  </div>
+
+  <div class="board-type-picker" id="boardTypePicker" style="display:none;">
+    <p class="board-type-picker-label">어느 게시판에 쓰시겠어요?</p>
+    <div class="board-type-picker-row">
+      <button type="button" class="board-type-choice-btn" data-target="free">자유게시판</button>
+      <button type="button" class="board-type-choice-btn" data-target="question">질문게시판</button>
+      <button type="button" class="board-type-choice-btn" data-target="info">정보게시판</button>
+    </div>
   </div>
 
   <div class="board-search-row">
@@ -3571,7 +3647,7 @@
         <input type="text" class="board-author-input" placeholder="닉네임">
         <input type="text" class="board-title-input" placeholder="제목">
       </div>
-      <textarea class="board-content-input" rows="4" placeholder="내용을 적어주세요"></textarea>
+      <textarea class="board-content-input" rows="3" placeholder="내용을 적어주세요"></textarea>
       <div class="board-photo-field">
         <input type="file" class="board-photo-input" accept="image/*" id="freeBoardPhotoInput" multiple>
         <label for="freeBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기 (최대 5장)</label>
@@ -3604,7 +3680,7 @@
         <input type="text" class="board-author-input" placeholder="닉네임">
         <input type="text" class="board-title-input" placeholder="제목">
       </div>
-      <textarea class="board-content-input" rows="4" placeholder="내용을 적어주세요"></textarea>
+      <textarea class="board-content-input" rows="3" placeholder="내용을 적어주세요"></textarea>
       <div class="board-photo-field">
         <input type="file" class="board-photo-input" accept="image/*" id="questionBoardPhotoInput" multiple>
         <label for="questionBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기 (최대 5장)</label>
@@ -3637,7 +3713,7 @@
         <input type="text" class="board-author-input" placeholder="닉네임">
         <input type="text" class="board-title-input" placeholder="제목">
       </div>
-      <textarea class="board-content-input" rows="4" placeholder="내용을 적어주세요"></textarea>
+      <textarea class="board-content-input" rows="3" placeholder="내용을 적어주세요"></textarea>
       <div class="board-photo-field">
         <input type="file" class="board-photo-input" accept="image/*" id="infoBoardPhotoInput" multiple>
         <label for="infoBoardPhotoInput" class="photo-upload-btn">📷 사진 추가하기 (최대 5장)</label>
@@ -4436,6 +4512,29 @@
   }
   boardTabButtons.forEach(btn => {
     btn.addEventListener('click', () => showBoardTab(btn.dataset.tab));
+  });
+
+  // "전체" 화면에서 바로 보이는 글쓰기 버튼 → 어느 게시판에 쓸지 먼저 고르게 해요
+  const boardWriteGlobalBtn = document.getElementById('boardWriteGlobalBtn');
+  const boardTypePicker = document.getElementById('boardTypePicker');
+  boardWriteGlobalBtn?.addEventListener('click', () => {
+    boardTypePicker.style.display = boardTypePicker.style.display === 'none' ? 'block' : 'none';
+  });
+  document.querySelectorAll('.board-type-choice-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      boardTypePicker.style.display = 'none';
+      showBoardTab(btn.dataset.target);
+      // 그 게시판으로 넘어간 다음, 글쓰기 폼도 바로 펼쳐줘요.
+      setTimeout(() => {
+        const panel = document.querySelector(`.board-panel[data-panel="${btn.dataset.target}"]`);
+        const toggleBtn = panel?.querySelector('.board-write-toggle-btn');
+        const writeForm = panel?.querySelector('.board-write');
+        if (toggleBtn && writeForm && writeForm.style.display !== 'block') {
+          toggleBtn.click();
+        }
+        panel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    });
   });
 
   // 디스코그래피 가로 스크롤 화살표
