@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>한로로 HANRORO 팬사이트</title>
-<meta name="description" content="한로로(HANRORO) 팬 소통 사이트 — 디스코그래피, 공연 캘린더, 게시판, 방명록과 함께 한로로 성격테스트·퀴즈·이상형 월드컵 등 다양한 게임을 즐겨보세요.">
+<title>아티스트 한로로 소개 사이트</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -889,6 +888,20 @@
     margin:0 auto 16px;
     border:1px solid var(--rule);
   }
+  .worldcup-preview-toggle-btn{
+    display:block;
+    width:100%;
+    margin-top:16px;
+    background:none;
+    border:1px dashed var(--rule-strong);
+    color:var(--ink-soft);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+    padding:10px;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  .worldcup-preview-toggle-btn:hover{ border-color:var(--berry); color:var(--berry); }
   .worldcup-stats{
     margin-top:28px;
     padding-top:20px;
@@ -946,11 +959,72 @@
   }
   @media (max-width:520px){
     .worldcup-pair{ gap:10px; }
-    .worldcup-pick-card{ max-width:140px; }
-    .worldcup-play-btn{ width:44px; height:44px; font-size:15px; }
-    .worldcup-pick-title{ font-size:12.5px; }
-    .worldcup-stats-name{ flex-basis:80px; font-size:11.5px; }
-    .worldcup-stats-pct{ flex-basis:64px; font-size:11px; }
+    .worldcup-pick-card{ max-width:44vw; }
+    .worldcup-play-btn{ width:40px; height:40px; font-size:14px; }
+    .worldcup-pick-title{ font-size:11.5px; }
+    .worldcup-stats-name{ flex-basis:70px; font-size:11px; }
+    .worldcup-stats-pct{ flex-basis:56px; font-size:10.5px; }
+    .worldcup-preview-toggle-btn{ font-size:12px; padding:8px; }
+    .memory-rank-submit{ flex-direction:column; max-width:none; }
+    .memory-rank-submit input{ font-size:12px; }
+    .memory-leaderboard-record{ font-size:10.5px; }
+  }
+  .memory-rank-submit{
+    display:flex;
+    gap:8px;
+    max-width:360px;
+    margin:16px auto 0;
+  }
+  .memory-rank-submit input{
+    flex:1;
+    border:1px solid var(--rule-strong);
+    border-radius:2px;
+    padding:8px 10px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+  }
+  .memory-rank-submitted{
+    margin:16px auto 0;
+    color:var(--moss-deep);
+    font-size:13px;
+    font-weight:700;
+  }
+  .memory-leaderboard{
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1px dashed var(--rule-strong);
+    text-align:left;
+    max-width:400px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .memory-leaderboard-list{ display:flex; flex-direction:column; gap:6px; }
+  .memory-leaderboard-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    padding:4px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  .memory-leaderboard-row:last-child{ border-bottom:none; }
+  .memory-leaderboard-rank{
+    flex:0 0 20px;
+    font-family:'Gowun Batang', serif;
+    color:var(--berry);
+    text-align:center;
+  }
+  .memory-leaderboard-name{
+    flex:1;
+    font-weight:700;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .memory-leaderboard-record{
+    flex:0 0 auto;
+    color:var(--ink-soft);
+    font-size:11.5px;
   }
   .memory-intro p{
     font-size:15px;
@@ -2051,6 +2125,7 @@
 
   .pinned-badge{
     display:inline-block;
+    flex:0 0 auto;
     font-size:11px;
     font-weight:700;
     padding:2px 8px;
@@ -2171,9 +2246,19 @@
   .board-row td{
     padding:8px 10px;
     color:var(--ink);
+  }
+  .board-row .board-col-num,
+  .board-row .board-col-author,
+  .board-row .board-col-date{
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+  }
+  .board-title-cell-inner{
+    display:flex;
+    align-items:center;
+    gap:2px;
+    min-width:0;
   }
   .board-row .board-col-num,
   .board-row .board-col-author,
@@ -2191,18 +2276,21 @@
     color:var(--ink);
     cursor:pointer;
     text-align:left;
-    max-width:100%;
+    flex:1 1 auto;
+    min-width:0;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
   }
   .board-title-btn:hover{ color:var(--moss); text-decoration:underline; }
   .comment-count-badge{
+    flex:0 0 auto;
     font-family:'Noto Sans KR', sans-serif;
     font-size:12px;
     font-weight:700;
     color:var(--berry);
     margin-left:4px;
+    white-space:nowrap;
   }
   .comment-count-badge:empty{ display:none; }
 
@@ -3430,10 +3518,22 @@
         <span class="quiz-result-emoji">🎉</span>
         <h3>모두 맞췄어요!</h3>
         <p class="quiz-result-desc" id="memoryResultDesc"></p>
+
+        <div class="memory-rank-submit" id="memoryRankSubmit">
+          <input type="text" id="memoryRankNicknameInput" placeholder="닉네임을 입력하면 순위에 등록돼요 (필수)">
+          <button type="button" class="board-submit-btn" id="memoryRankSubmitBtn">🏆 순위에 등록하기</button>
+        </div>
+        <p class="memory-rank-submitted" id="memoryRankSubmitted" style="display:none;">✅ 순위에 등록됐어요!</p>
+
         <div class="share-btn-row">
           <button type="button" class="guestbook-fill-btn" id="memoryGuestbookBtn">📖 방명록에 남기기</button>
         </div>
         <button class="quiz-retry-btn" id="memoryRetryBtn">다시 도전하기</button>
+
+        <div class="memory-leaderboard">
+          <h4 class="worldcup-stats-title">🏆 최고 기록 순위</h4>
+          <div class="memory-leaderboard-list" id="memoryLeaderboardList"></div>
+        </div>
       </div>
 
     </div>
@@ -3467,6 +3567,13 @@
         </span>
         <span class="game-index-arrow">›</span>
       </button>
+    </div>
+
+    <button type="button" class="worldcup-preview-toggle-btn" id="worldcupPreviewToggleBtn">📊 지금까지 결과 미리보기</button>
+    <div class="worldcup-stats" id="worldcupHubStats" style="display:none;">
+      <h4 class="worldcup-stats-title">📊 실시간 최애곡 통계</h4>
+      <p class="worldcup-stats-total" id="worldcupHubStatsTotal"></p>
+      <div class="worldcup-stats-list" id="worldcupHubStatsList"></div>
     </div>
   </div>
 
@@ -4033,6 +4140,15 @@
     });
   });
 
+  // 이상형 월드컵: 게임 시작 전에도 지금까지 결과(퍼센트)를 미리 볼 수 있어요.
+  document.getElementById('worldcupPreviewToggleBtn')?.addEventListener('click', () => {
+    const panel = document.getElementById('worldcupHubStats');
+    const btn = document.getElementById('worldcupPreviewToggleBtn');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? '📊 지금까지 결과 미리보기' : '📊 미리보기 접기';
+  });
+
   // 게임 화면 안의 "게임 | 방명록" 서브탭
   document.querySelectorAll('.game-screen').forEach(screen => {
     const subtabs = screen.querySelectorAll('.game-subtab');
@@ -4191,6 +4307,8 @@
     if (descEl) {
       descEl.textContent = `${memoryTotalPairs}쌍을 시도 ${memoryMoves}번, ${formatMemoryTime(memoryElapsedMs)} 만에 모두 맞췄어요!`;
     }
+    // 순위 등록은 Firebase가 필요해서, 모듈 스크립트 쪽에 만들어둔 함수를 불러다 써요.
+    if (window.prepareMemoryRankSubmit) window.prepareMemoryRankSubmit(memoryTotalPairs, memoryMoves, memoryElapsedMs);
   }
 
   function showMemoryCountdown(seconds, onDone) {
@@ -5278,8 +5396,10 @@
       <tr class="board-row${post.pinned ? ' pinned-row' : ''}">
         <td class="board-col-num">${post.pinned ? '📌' : rowNum}</td>
         <td class="board-col-title">
-          ${pinnedBadge}<button type="button" class="board-title-btn" data-post-id="${post.id}" data-board-key="${boardKey}">${badge}${post.title || '(제목 없음)'}</button>
-          <span class="comment-count-badge" data-count-post-id="${post.id}"></span>
+          <div class="board-title-cell-inner">
+            ${pinnedBadge}<button type="button" class="board-title-btn" data-post-id="${post.id}" data-board-key="${boardKey}">${badge}${post.title || '(제목 없음)'}</button>
+            <span class="comment-count-badge" data-count-post-id="${post.id}"></span>
+          </div>
         </td>
         <td class="board-col-author">${post.author || '익명'}</td>
         <td class="board-col-date">${dateStr}</td>
@@ -6001,6 +6121,83 @@
   setupGuestbook('personality');
   setupGuestbook('trivia');
   setupGuestbook('memory');
+
+  // ================= 카드 맞추기: 순위 등록 (닉네임 필수, 자동 저장) =================
+  const memoryLeaderboardCol = collection(db, 'memoryLeaderboard');
+  const memoryLeaderboardQuery = query(memoryLeaderboardCol, orderBy('elapsedMs', 'asc'));
+  let latestMemoryResult = null; // { pairs, moves, elapsedMs }
+
+  onSnapshot(memoryLeaderboardQuery, (snapshot) => {
+    const entries = snapshot.docs.map(d => ({ id: d.id, ...d.data() })).slice(0, 10);
+    renderMemoryLeaderboard(entries);
+  }, (err) => {
+    console.error('[카드 맞추기 순위] 불러오기 실패:', err);
+  });
+
+  function formatMs(ms){
+    const totalMs = Math.max(0, Math.floor(ms));
+    const m = String(Math.floor(totalMs / 60000)).padStart(2, '0');
+    const s = String(Math.floor((totalMs % 60000) / 1000)).padStart(2, '0');
+    const msPart = String(totalMs % 1000).padStart(3, '0');
+    return `${m}:${s}.${msPart}`;
+  }
+
+  function renderMemoryLeaderboard(entries){
+    const listEl = document.getElementById('memoryLeaderboardList');
+    if (!listEl) return;
+    if (entries.length === 0) {
+      listEl.innerHTML = '<div class="archive-empty">아직 등록된 기록이 없어요. 첫 순위에 올라보세요!</div>';
+      return;
+    }
+    listEl.innerHTML = entries.map((e, idx) => `
+      <div class="memory-leaderboard-row">
+        <span class="memory-leaderboard-rank">${idx + 1}</span>
+        <span class="memory-leaderboard-name">${e.author || '익명'}</span>
+        <span class="memory-leaderboard-record">${e.pairs}쌍 · 시도 ${e.moves}번 · ${formatMs(e.elapsedMs)}</span>
+      </div>
+    `).join('');
+  }
+
+  const memoryRankNicknameInput = document.getElementById('memoryRankNicknameInput');
+  const memoryRankSubmitBtn = document.getElementById('memoryRankSubmitBtn');
+  const memoryRankSubmit = document.getElementById('memoryRankSubmit');
+  const memoryRankSubmitted = document.getElementById('memoryRankSubmitted');
+
+  memoryRankSubmitBtn?.addEventListener('click', async () => {
+    const nickname = memoryRankNicknameInput.value.trim();
+    if (!nickname) { memoryRankNicknameInput.focus(); return; }
+    if (!latestMemoryResult) return;
+    if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+
+    memoryRankSubmitBtn.disabled = true;
+    try {
+      await addDoc(memoryLeaderboardCol, {
+        author: nickname,
+        authorUid: myUid,
+        pairs: latestMemoryResult.pairs,
+        moves: latestMemoryResult.moves,
+        elapsedMs: latestMemoryResult.elapsedMs,
+        createdAt: serverTimestamp()
+      });
+      memoryRankSubmit.style.display = 'none';
+      memoryRankSubmitted.style.display = 'block';
+    } catch (err) {
+      alert('순위 등록에 실패했어요. 잠시 후 다시 시도해 주세요.');
+      console.error(err);
+    } finally {
+      memoryRankSubmitBtn.disabled = false;
+    }
+  });
+
+  // 플레인 스크립트(게임 로직)에서 게임이 끝날 때마다 이 함수를 불러서, 순위 등록
+  // 폼을 다시 활성화하고 이번 기록값을 기억해둬요.
+  window.prepareMemoryRankSubmit = function(pairs, moves, elapsedMs){
+    latestMemoryResult = { pairs, moves, elapsedMs };
+    if (memoryRankNicknameInput) memoryRankNicknameInput.value = '';
+    if (memoryRankSubmit) memoryRankSubmit.style.display = 'flex';
+    if (memoryRankSubmitted) memoryRankSubmitted.style.display = 'none';
+  };
+
   setupGuestbook('worldcup');
 
   // ================= 이상형 월드컵 실시간 통계 =================
@@ -6016,33 +6213,39 @@
   });
 
   function renderWorldcupStats(data){
-    const totalEl = document.getElementById('worldcupStatsTotal');
-    const listEl = document.getElementById('worldcupStatsList');
-    if (!totalEl || !listEl) return;
-
     const counts = data.counts || {};
     const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
-    totalEl.textContent = total > 0 ? `지금까지 총 ${total.toLocaleString('ko-KR')}명이 참여했어요` : '아직 결과가 없어요. 첫 번째로 참여해보세요!';
-
     const ranked = Object.entries(counts)
       .map(([title, count]) => ({ title, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10); // 상위 10곡만 보여줘요
 
-    listEl.innerHTML = ranked.map((row, idx) => {
-      const pct = total > 0 ? Math.round((row.count / total) * 100) : 0;
-      const isMine = currentWorldcupWinnerTitle === row.title;
-      return `
-        <div class="worldcup-stats-row${isMine ? ' mine' : ''}">
-          <span class="worldcup-stats-rank">${idx + 1}</span>
-          <span class="worldcup-stats-name">${row.title}</span>
-          <div class="worldcup-stats-bar-wrap">
-            <div class="worldcup-stats-bar" style="width:${pct}%"></div>
+    // 결과 화면 안의 통계 + 게임 시작 전(허브) 미리보기 통계, 둘 다 같은 데이터로 채워요.
+    [
+      { totalId: 'worldcupStatsTotal', listId: 'worldcupStatsList' },
+      { totalId: 'worldcupHubStatsTotal', listId: 'worldcupHubStatsList' },
+    ].forEach(({ totalId, listId }) => {
+      const totalEl = document.getElementById(totalId);
+      const listEl = document.getElementById(listId);
+      if (!totalEl || !listEl) return;
+
+      totalEl.textContent = total > 0 ? `지금까지 총 ${total.toLocaleString('ko-KR')}명이 참여했어요` : '아직 결과가 없어요. 첫 번째로 참여해보세요!';
+
+      listEl.innerHTML = ranked.map((row, idx) => {
+        const pct = total > 0 ? Math.round((row.count / total) * 100) : 0;
+        const isMine = currentWorldcupWinnerTitle === row.title;
+        return `
+          <div class="worldcup-stats-row${isMine ? ' mine' : ''}">
+            <span class="worldcup-stats-rank">${idx + 1}</span>
+            <span class="worldcup-stats-name">${row.title}</span>
+            <div class="worldcup-stats-bar-wrap">
+              <div class="worldcup-stats-bar" style="width:${pct}%"></div>
+            </div>
+            <span class="worldcup-stats-pct">${pct}% (${row.count})</span>
           </div>
-          <span class="worldcup-stats-pct">${pct}% (${row.count})</span>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    });
   }
 
   let currentWorldcupWinnerTitle = null;
