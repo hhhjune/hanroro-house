@@ -3401,6 +3401,13 @@
       <div class="quiz-intro" id="quizIntro">
         <p>10개의 짧은 질문에 답하면, 지금 당신과 가장 닮은 한로로의 노래 유형을 알려드려요.</p>
         <button class="quiz-start-btn" id="quizStartBtn">테스트 시작하기 ▶</button>
+
+        <button type="button" class="worldcup-preview-toggle-btn" id="quizPreviewToggleBtn">📊 지금까지 결과 미리보기</button>
+        <div class="worldcup-stats" id="quizHubStats" style="display:none;">
+          <h4 class="worldcup-stats-title">📊 실시간 유형별 통계</h4>
+          <p class="worldcup-stats-total" id="quizHubStatsTotal"></p>
+          <div class="worldcup-stats-list" id="quizHubStatsList"></div>
+        </div>
       </div>
 
       <div class="quiz-question" id="quizQuestion" style="display:none;">
@@ -3425,6 +3432,12 @@
           <button type="button" class="guestbook-fill-btn" id="personalityGuestbookBtn">📖 방명록에 남기기</button>
         </div>
         <button class="quiz-retry-btn" id="quizRetryBtn">다시 테스트하기</button>
+
+        <div class="worldcup-stats" id="quizStats">
+          <h4 class="worldcup-stats-title">📊 실시간 유형별 통계</h4>
+          <p class="worldcup-stats-total" id="quizStatsTotal"></p>
+          <div class="worldcup-stats-list" id="quizStatsList"></div>
+        </div>
       </div>
 
     </div>
@@ -3461,6 +3474,13 @@
       <div class="quiz-intro" id="triviaIntro">
         <p>총 20문제예요. 쉬운 문제부터 아주 어려운 문제까지 있어요 — 과연 몇 점이 나올까요?</p>
         <button class="quiz-start-btn" id="triviaStartBtn">퀴즈 시작하기 ▶</button>
+
+        <button type="button" class="worldcup-preview-toggle-btn" id="triviaPreviewToggleBtn">📊 지금까지 결과 미리보기</button>
+        <div class="worldcup-stats" id="triviaHubStats" style="display:none;">
+          <h4 class="worldcup-stats-title">📊 실시간 점수 분포</h4>
+          <p class="worldcup-stats-total" id="triviaHubStatsTotal"></p>
+          <div class="worldcup-stats-list" id="triviaHubStatsList"></div>
+        </div>
       </div>
 
       <div class="quiz-question" id="triviaQuestion" style="display:none;">
@@ -3481,6 +3501,12 @@
           <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록에 남기기</button>
         </div>
         <button class="quiz-retry-btn" id="triviaRetryBtn">다시 풀어보기</button>
+
+        <div class="worldcup-stats" id="triviaStats">
+          <h4 class="worldcup-stats-title">📊 실시간 점수 분포</h4>
+          <p class="worldcup-stats-total" id="triviaStatsTotal"></p>
+          <div class="worldcup-stats-list" id="triviaStatsList"></div>
+        </div>
       </div>
 
     </div>
@@ -6360,6 +6386,129 @@
     }
   };
 
+  // ================= 성향테스트 / 한로로 퀴즈 실시간 통계 (닉네임 비공개, 집계만) =================
+  const quizStatsPersonalityRef = doc(db, 'quizStats', 'personality');
+  const quizStatsTriviaRef = doc(db, 'quizStats', 'trivia');
+
+  // 처음 열었을 때 문서가 아직 없으면(=아직 아무도 통계를 안 남겼으면), 보기 좋으라고
+  // 45명이 참여한 것처럼 임의로 나눠서 초기값을 한 번만 심어둬요. 그 다음부터는
+  // 실제로 사람들이 결과를 볼 때마다 여기에 실시간으로 더해져요.
+  (async () => {
+    try {
+      const snap = await getDocFromServerSafe(quizStatsPersonalityRef);
+      if (!snap || !snap.exists()) {
+        await setDoc(quizStatsPersonalityRef, {
+          counts: {
+            '입춘형': 7, '거울형': 6, '하루살이형': 5, '정류장형': 5, '생존법형': 4,
+            '자몽살구클럽형': 4, '먹이사슬형': 4, '오후형': 3, '너와 나형': 4, '사랑하게 될 거야형': 3
+          }
+        });
+      }
+    } catch (err) { /* 이미 있거나 권한 문제면 조용히 넘어가요 */ }
+
+    try {
+      const snap = await getDocFromServerSafe(quizStatsTriviaRef);
+      if (!snap || !snap.exists()) {
+        await setDoc(quizStatsTriviaRef, {
+          counts: { '20': 1, '18': 3, '17': 4, '15': 6, '13': 5, '11': 7, '9': 6, '7': 5, '5': 4, '3': 2, '1': 2 }
+        });
+      }
+    } catch (err) { /* 이미 있거나 권한 문제면 조용히 넘어가요 */ }
+  })();
+
+  async function getDocFromServerSafe(ref){
+    return new Promise((resolve) => {
+      const unsub = onSnapshot(ref, (snap) => { unsub(); resolve(snap); }, () => resolve(null));
+    });
+  }
+
+  onSnapshot(quizStatsPersonalityRef, (snap) => {
+    renderNamedStats(snap.exists() ? snap.data() : {}, 'quizStatsTotal', 'quizStatsList', '유형');
+    renderNamedStats(snap.exists() ? snap.data() : {}, 'quizHubStatsTotal', 'quizHubStatsList', '유형');
+  }, (err) => console.error('[성향테스트 통계] 불러오기 실패:', err));
+
+  onSnapshot(quizStatsTriviaRef, (snap) => {
+    renderScoreStats(snap.exists() ? snap.data() : {}, 'triviaStatsTotal', 'triviaStatsList');
+    renderScoreStats(snap.exists() ? snap.data() : {}, 'triviaHubStatsTotal', 'triviaHubStatsList');
+  }, (err) => console.error('[한로로 퀴즈 통계] 불러오기 실패:', err));
+
+  // 닉네임 없이, "어떤 유형이 몇 %"만 보여줘요.
+  function renderNamedStats(data, totalId, listId){
+    const totalEl = document.getElementById(totalId);
+    const listEl = document.getElementById(listId);
+    if (!totalEl || !listEl) return;
+    const counts = data.counts || {};
+    const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
+    totalEl.textContent = total > 0 ? `지금까지 총 ${total.toLocaleString('ko-KR')}명이 참여했어요` : '아직 결과가 없어요. 첫 번째로 참여해보세요!';
+
+    const ranked = Object.entries(counts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
+    listEl.innerHTML = ranked.map((row) => {
+      const pct = total > 0 ? Math.round((row.count / total) * 100) : 0;
+      return `
+        <div class="worldcup-stats-row">
+          <span class="worldcup-stats-name">${row.name}</span>
+          <div class="worldcup-stats-bar-wrap"><div class="worldcup-stats-bar" style="width:${pct}%"></div></div>
+          <span class="worldcup-stats-pct">${pct}% (${row.count}명)</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // 점수(0~20점)별로 몇 명인지, 닉네임 없이 보여줘요.
+  function renderScoreStats(data, totalId, listId){
+    const totalEl = document.getElementById(totalId);
+    const listEl = document.getElementById(listId);
+    if (!totalEl || !listEl) return;
+    const counts = data.counts || {};
+    const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
+    totalEl.textContent = total > 0 ? `지금까지 총 ${total.toLocaleString('ko-KR')}명이 참여했어요` : '아직 결과가 없어요. 첫 번째로 참여해보세요!';
+
+    const ranked = Object.entries(counts)
+      .map(([score, count]) => ({ score: parseInt(score, 10), count }))
+      .sort((a, b) => b.score - a.score);
+    listEl.innerHTML = ranked.map((row) => {
+      const pct = total > 0 ? Math.round((row.count / total) * 100) : 0;
+      return `
+        <div class="worldcup-stats-row">
+          <span class="worldcup-stats-name">${row.score}점</span>
+          <div class="worldcup-stats-bar-wrap"><div class="worldcup-stats-bar" style="width:${pct}%"></div></div>
+          <span class="worldcup-stats-pct">${pct}% (${row.count}명)</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.recordQuizResult = async function(typeName){
+    try {
+      await setDoc(quizStatsPersonalityRef, { counts: { [typeName]: increment(1) } }, { merge: true });
+    } catch (err) {
+      console.error('[성향테스트 통계] 기록 실패:', err);
+    }
+  };
+
+  window.recordTriviaResult = async function(score){
+    try {
+      await setDoc(quizStatsTriviaRef, { counts: { [String(score)]: increment(1) } }, { merge: true });
+    } catch (err) {
+      console.error('[한로로 퀴즈 통계] 기록 실패:', err);
+    }
+  };
+
+  document.getElementById('quizPreviewToggleBtn')?.addEventListener('click', () => {
+    const panel = document.getElementById('quizHubStats');
+    const btn = document.getElementById('quizPreviewToggleBtn');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? '📊 지금까지 결과 미리보기' : '📊 미리보기 접기';
+  });
+  document.getElementById('triviaPreviewToggleBtn')?.addEventListener('click', () => {
+    const panel = document.getElementById('triviaHubStats');
+    const btn = document.getElementById('triviaPreviewToggleBtn');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? '📊 지금까지 결과 미리보기' : '📊 미리보기 접기';
+  });
+
 
   // "📖 방명록에 결과 남기기" 버튼: 같은 게임 화면 안에서 방명록 탭으로 바꾸고, 결과값을 미리 채워줘요.
   function fillGuestbookWithResult(gameKey, resultText){
@@ -6670,6 +6819,7 @@
       type.songs.map(s => `<a class="mv-link" href="${s.link}" target="_blank" rel="noopener">▶ ${s.title}</a>`).join('');
 
     quizResultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (window.recordQuizResult) window.recordQuizResult(type.name);
   }
 
   document.getElementById('quizKakaoShareBtn').addEventListener('click', () => {
@@ -6884,6 +7034,7 @@
     document.getElementById('triviaResultLabel').textContent = tier.label;
 
     triviaResultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (window.recordTriviaResult) window.recordTriviaResult(triviaScore);
   }
 
   document.getElementById('triviaKakaoShareBtn').addEventListener('click', () => {
