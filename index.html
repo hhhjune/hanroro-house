@@ -1883,6 +1883,11 @@
     margin-bottom:10px;
   }
   .board-write-row .board-author-input{ flex:0 0 120px; }
+  .admin-locked-input{
+    background:rgba(95,111,82,0.08);
+    color:var(--moss-deep);
+    cursor:not-allowed;
+  }
   .board-write-row .board-title-input{ flex:1; }
   .board-write input, .board-write textarea{
     width:100%;
@@ -4343,12 +4348,39 @@
   const ADMIN_EMAIL = "hanroro_house@gmail.com"; // README 안내대로 만든 관리자 계정 이메일로 교체
   const ADMIN_UID = "WLwNaEfV39cEJtfRNiZJaBiA5fi2"; // Firebase 콘솔 Authentication > Users에서 복사
 
+  // 일반 방문자는 "관리자" 닉네임(및 그 변형)을 쓸 수 없어요. 관리자로 로그인한 사람만 예외예요.
+  // 띄어쓰기를 끼워 넣거나("관 리 자") 끝에 숫자를 붙이는("관리자1") 식의 우회도 함께 막아요.
+  const RESERVED_ADMIN_NICKNAMES = ['관리자', '운영자', 'admin'];
+  function isReservedAdminNickname(name) {
+    const normalized = (name || '')
+      .replace(/[\s\u3000]+/g, '')
+      .replace(/[0-9]+$/, '')
+      .toLowerCase();
+    return RESERVED_ADMIN_NICKNAMES.includes(normalized);
+  }
+
   let myUid = null;
   let isAdminUser = false;
   let currentEntries = [];
 
   const adminToggleBtns = document.querySelectorAll('.admin-toggle-btn');
   const adminStatusEls = document.querySelectorAll('.admin-status');
+
+  // 관리자로 로그인하면 닉네임을 직접 입력할 필요 없이 "관리자"로 자동 배정되고,
+  // 입력창은 잠겨서 다른 이름으로 바꿀 수 없어요 — 게임 결과가 조작되지 않는 것과 같은 방식이에요.
+  function applyAdminNicknameLock() {
+    document.querySelectorAll('.board-author-input, .guestbook-author-input, #authorInput').forEach(input => {
+      if (isAdminUser) {
+        input.value = '관리자';
+        input.readOnly = true;
+        input.classList.add('admin-locked-input');
+      } else if (input.readOnly) {
+        input.value = '';
+        input.readOnly = false;
+        input.classList.remove('admin-locked-input');
+      }
+    });
+  }
 
   function updateAdminUI() {
     adminToggleBtns.forEach(btn => {
@@ -4363,6 +4395,7 @@
     adminStatusEls.forEach(el => {
       el.textContent = isAdminUser ? '관리자로 로그인되어 있어요 — 모든 글을 지울 수 있어요' : '';
     });
+    applyAdminNicknameLock();
   }
 
   onAuthStateChanged(auth, (user) => {
@@ -4651,6 +4684,11 @@
       authorInput.style.borderBottomColor = 'var(--berry)';
       return;
     }
+    if (isReservedAdminNickname(author) && !isAdminUser) {
+      alert('"관리자" 닉네임은 관리자 로그인을 한 경우에만 사용할 수 있어요.');
+      authorInput.focus();
+      return;
+    }
     if (!myUid) {
       alert('연결 중이에요. 잠시 후 다시 눌러주세요.');
       return;
@@ -4699,9 +4737,6 @@
   });
 
   // ---------- 게시판 (자유게시판 / 질문게시판) ----------
-  // 일반 방문자는 이 닉네임들을 쓸 수 없어요. 관리자로 로그인한 사람만 예외예요.
-  const RESERVED_ADMIN_NICKNAMES = ['관리자', '운영자', 'admin'];
-
   const boardCol = collection(db, 'boardPosts');
   const boardState = {}; // boardKey -> { posts, photos, unsubscribe }
 
@@ -4798,7 +4833,7 @@
 
       if (!author) { authorInput.focus(); return; }
       // '관리자' 닉네임은 실제로 관리자 로그인을 한 사람만 쓸 수 있어요.
-      if (RESERVED_ADMIN_NICKNAMES.includes(author.toLowerCase()) && !isAdminUser) {
+      if (isReservedAdminNickname(author) && !isAdminUser) {
         alert('"관리자" 닉네임은 관리자 로그인을 한 경우에만 사용할 수 있어요.');
         authorInput.focus();
         return;
@@ -5566,6 +5601,11 @@
       const result = resultInput ? resultInput.value.trim() : '';
       const message = messageInput ? messageInput.value.trim() : '';
       if (!author) { authorInput.focus(); return; }
+      if (isReservedAdminNickname(author) && !isAdminUser) {
+        alert('"관리자" 닉네임은 관리자 로그인을 한 경우에만 사용할 수 있어요.');
+        authorInput.focus();
+        return;
+      }
       if (!message && !result) { (messageInput || authorInput).focus(); return; }
       if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
 
