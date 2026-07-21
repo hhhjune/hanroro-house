@@ -1372,7 +1372,122 @@
   }
   .past-card-body{ padding:12px 14px; }
   .past-card-title{ font-size:13.5px; font-weight:500; margin-bottom:4px; }
-  .past-card-date{ font-size:11.5px; color:var(--ink-soft); }
+  .past-card-date{ font-size:11.5px; color:var(--ink-soft); margin-bottom:8px; }
+  .past-card-links{ display:flex; gap:8px; flex-wrap:wrap; }
+  .past-setlist-btn{
+    background:none;
+    border:1px solid var(--rule-strong);
+    color:var(--ink-soft);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:11.5px;
+    padding:4px 10px;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  .past-setlist-btn:hover{ border-color:var(--berry); color:var(--berry); }
+  .past-insta-link{
+    font-size:11.5px;
+    color:var(--moss-deep);
+    text-decoration:none;
+    align-self:center;
+  }
+  .past-insta-link:hover{ text-decoration:underline; }
+
+  .setlist-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(20,18,15,0.6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:200;
+  }
+  .setlist-modal{
+    position:relative;
+    background:var(--paper);
+    border-radius:4px;
+    max-width:480px;
+    width:100%;
+    max-height:88vh;
+    overflow-y:auto;
+    padding:24px 20px 20px;
+  }
+  .setlist-close-btn{
+    position:absolute;
+    top:12px;
+    right:12px;
+    background:none;
+    border:none;
+    font-size:18px;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .setlist-close-btn:hover{ color:var(--berry); }
+  .setlist-poster{
+    display:block;
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    border-radius:2px;
+    margin-bottom:14px;
+  }
+  .setlist-info h3{
+    font-family:'Gowun Batang', serif;
+    font-size:17px;
+    margin:0 0 6px;
+  }
+  .setlist-info p{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+    line-height:1.6;
+  }
+  .setlist-heading{
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:14px;
+    margin:0 0 10px;
+  }
+  .setlist-song-row{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:10px;
+    margin-bottom:14px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .setlist-song-card{
+    flex:0 0 auto;
+    width:84px;
+    text-align:center;
+  }
+  .setlist-song-num{
+    font-family:'Gowun Batang', serif;
+    font-size:11px;
+    color:var(--berry);
+    margin-bottom:3px;
+  }
+  .setlist-song-thumb{
+    width:84px;
+    height:84px;
+    object-fit:cover;
+    border-radius:2px;
+    border:1px solid var(--rule);
+    display:block;
+    margin-bottom:5px;
+    background:var(--paper-deep);
+  }
+  .setlist-song-title{
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.3;
+    overflow-wrap:break-word;
+  }
+  @media (max-width:520px){
+    .setlist-modal{ padding:20px 14px 16px; }
+    .setlist-song-card{ width:72px; }
+    .setlist-song-thumb{ width:72px; height:72px; }
+  }
 
   @media (max-width:900px){
     .calendar-dashboard{
@@ -3060,7 +3175,7 @@
         <div class="quiz-result-songs" id="quizResultSongs"></div>
         <div class="share-btn-row">
           <button type="button" class="save-image-btn" id="quizSaveImageBtn">📥 결과 이미지로 저장하기</button>
-          <button type="button" class="kakao-share-btn" id="quizKakaoShareBtn">💬 카카오톡으로 결과 공유하기</button>
+          <button type="button" class="kakao-share-btn" id="quizKakaoShareBtn">💬 공유</button>
           <button type="button" class="guestbook-fill-btn" id="personalityGuestbookBtn">📖 방명록에 남기기</button>
         </div>
         <button class="quiz-retry-btn" id="quizRetryBtn">다시 테스트하기</button>
@@ -3116,7 +3231,7 @@
         <h3 id="triviaResultScore"></h3>
         <p class="quiz-result-desc" id="triviaResultLabel"></p>
         <div class="share-btn-row">
-          <button type="button" class="kakao-share-btn" id="triviaKakaoShareBtn">💬 카카오톡으로 결과 공유하기</button>
+          <button type="button" class="kakao-share-btn" id="triviaKakaoShareBtn">💬 공유</button>
           <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록에 남기기</button>
         </div>
         <button class="quiz-retry-btn" id="triviaRetryBtn">다시 풀어보기</button>
@@ -3262,7 +3377,7 @@
         <h3 id="worldcupResultText"></h3>
         <div class="share-btn-row">
           <button type="button" class="save-image-btn" id="worldcupCopyLinkBtn">🔗 공유하기(주소 복사)</button>
-          <button type="button" class="kakao-share-btn" id="worldcupKakaoBtn">💙 카카오톡 공유</button>
+          <button type="button" class="kakao-share-btn" id="worldcupKakaoBtn">💙 공유</button>
           <button type="button" class="guestbook-fill-btn" id="worldcupGuestbookBtn">📖 방명록에 남기기</button>
         </div>
         <button type="button" class="quiz-retry-btn" id="worldcupRetryBtn">🔁 다시 하기</button>
@@ -3355,6 +3470,24 @@
 
   <p class="today-note">※ 정확한 날짜·장소·예매 오픈 여부는 공식 SNS와 예매처 공지를 통해 다시 한 번 확인해 주세요.</p>
 </section>
+
+<!-- 셋리스트 보기 오버레이 -->
+<div class="setlist-overlay" id="setlistOverlay" style="display:none;">
+  <div class="setlist-modal">
+    <button type="button" class="setlist-close-btn" id="setlistCloseBtn">✕</button>
+    <img class="setlist-poster" id="setlistPoster" alt="">
+    <div class="setlist-info">
+      <h3 id="setlistTitle"></h3>
+      <p id="setlistMeta"></p>
+    </div>
+    <h4 class="setlist-heading">Setlist</h4>
+    <div class="setlist-song-row" id="setlistSongRow"></div>
+    <div class="share-btn-row">
+      <button type="button" class="save-image-btn" id="setlistCopyLinkBtn">🔗 공유하기(주소 복사)</button>
+      <button type="button" class="kakao-share-btn" id="setlistKakaoBtn">💬 공유</button>
+    </div>
+  </div>
+</div>
 
 
 
@@ -6304,6 +6437,78 @@
 
   // ================= 한로로 캘린더 =================
   // date: 'YYYY-MM-DD', 기간 일정은 dateEnd도 함께 적어주세요. venue/ticket/map은 확인되는 대로 채워주세요.
+  // 셋리스트에 쓰인 표기가 이상형 월드컵 곡 데이터의 정식 표기와 살짝 다른 경우들을
+  // 여기서 정리해요 (예: "집"↔"ㅈㅣㅂ", "게임 오버?"↔"게임 오버 (Game Over)").
+  // 실제 이미지 파일명은 images/whoyoufavorite/ 안의 정식 표기를 그대로 따라가요.
+  const SETLIST_TITLE_ALIASES = {
+    '집': 'ㅈㅣㅂ',
+    '게임 오버?': '게임 오버 (Game Over)',
+    '게임오버 ?': '게임 오버 (Game Over)',
+    '너와 나': '너와 나 (You and I)',
+  };
+  function getSetlistSongImage(title){
+    const canonical = SETLIST_TITLE_ALIASES[title] || title;
+    return `images/whoyoufavorite/${canonical}.jpeg`;
+  }
+
+  let currentSetlistOcc = null;
+
+  function openSetlistView(occ){
+    currentSetlistOcc = occ;
+    const overlay = document.getElementById('setlistOverlay');
+    document.getElementById('setlistPoster').src = occ.poster || '';
+    document.getElementById('setlistTitle').textContent = occ.title;
+    const d = new Date(occ.date);
+    const dateStr = `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
+    document.getElementById('setlistMeta').textContent = `📍 ${occ.venue}  ·  📅 ${dateStr}`;
+
+    const rowEl = document.getElementById('setlistSongRow');
+    rowEl.innerHTML = (occ.setlist || []).map((song, idx) => `
+      <div class="setlist-song-card">
+        <div class="setlist-song-num">${String(idx + 1).padStart(2, '0')}</div>
+        <img class="setlist-song-thumb" src="${encodeURI(getSetlistSongImage(song))}" alt="${song}">
+        <div class="setlist-song-title">${song}</div>
+      </div>
+    `).join('');
+
+    overlay.style.display = 'flex';
+  }
+
+  function closeSetlistView(){
+    document.getElementById('setlistOverlay').style.display = 'none';
+    currentSetlistOcc = null;
+  }
+
+  document.getElementById('setlistCloseBtn').addEventListener('click', closeSetlistView);
+  document.getElementById('setlistOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'setlistOverlay') closeSetlistView();
+  });
+
+  document.getElementById('setlistCopyLinkBtn').addEventListener('click', async () => {
+    const url = location.origin + location.pathname + '#calendar';
+    try {
+      await navigator.clipboard.writeText(url);
+      alert('링크를 복사했어요! 원하는 곳에 붙여넣기 해보세요.');
+    } catch (err) {
+      prompt('아래 주소를 복사해서 공유해 보세요.', url);
+    }
+  });
+
+  document.getElementById('setlistKakaoBtn').addEventListener('click', () => {
+    if (!currentSetlistOcc) return;
+    const occ = currentSetlistOcc;
+    const d = new Date(occ.date);
+    const dateStr = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+    const posterUrl = occ.poster ? new URL(occ.poster, location.href).href : '';
+    shareToKakao(
+      `🎤 ${occ.title}`,
+      `${dateStr} · ${occ.venue} · Setlist ${occ.setlist ? occ.setlist.length : 0}곡`,
+      '#calendar',
+      posterUrl,
+      '셋리스트 보기'
+    );
+  });
+
   const CALENDAR_DATA = [
     {
       date: '2026-07-19',
@@ -6311,7 +6516,8 @@
       venue: '일산 킨텍스',
       category: '페스티벌',
       instagram: 'https://www.instagram.com/soundberry_festa/',
-      poster: 'images/calendar/soundberry.jpg'
+      poster: 'images/calendar/soundberry.jpg',
+      setlist: ['도망','재','집','먹이사슬','용의자','1111','금붕어','게임 오버?','하루살이','입춘','0+0','시간을 달리네','사랑하게 될 거야','너와 나','보수공사']
     },
     {
       date: '2026-08-06',
@@ -6340,6 +6546,89 @@
       category: '페스티벌',
       instagram: 'https://www.instagram.com/busanrockfest/',
       poster: 'images/calendar/busanrock.jpg'
+    },
+
+    // ---- 아래는 이미 지나간 공연들이에요. 포스터는 images/calendar/ 안에
+    // 여기 적힌 파일명 그대로(.jpeg) 올려주시면 자동으로 붙어요. ----
+    {
+      date: '2026-06-20',
+      title: '제35회 서울가요대상',
+      venue: '인스파이어 아레나',
+      category: '시상식',
+      poster: 'images/calendar/seoulmusicawards35.jpeg',
+      setlist: ['입춘','0+0','금붕어']
+    },
+    {
+      date: '2026-05-24',
+      title: 'The 18th Seoul Jazz Festival 2026',
+      venue: '올림픽공원 (KSPO)',
+      category: '페스티벌',
+      poster: 'images/calendar/seouljazz2026.jpeg',
+      setlist: ['입춘','0+0','시간을 달리네','갈림길','귀가','집','재','도망','하루살이','1111','정류장','당신의 밤은 나의 밤과 같습니까','생존법','화해','너와 나','비틀비틀 짝짜꿍','게임 오버?','사랑하게 될 거야']
+    },
+    {
+      date: '2026-05-23',
+      title: '2026 연세대학교 아카라카',
+      venue: '연세대학교 노천극장',
+      category: '축제',
+      poster: 'images/calendar/yonsei_akaraka.jpeg',
+      setlist: ['집','먹이사슬','비틀비틀 짝짜꿍','입춘','사랑하게 될 거야','0+0']
+    },
+    {
+      date: '2026-05-21',
+      title: '2026 세종연회 : Hidden PIECE',
+      venue: '세종대학교',
+      category: '축제',
+      poster: 'images/calendar/sejong_yeonhoe.jpeg',
+      setlist: ['비틀비틀 짝짜꿍','집','먹이사슬','입춘','0+0','사랑하게 될 거야','게임 오버?']
+    },
+    {
+      date: '2026-05-20',
+      title: '2026 고려대학교 석탑대동제 KULIMAX',
+      venue: '고려대학교',
+      category: '축제',
+      poster: 'images/calendar/korea_kulimax.jpeg',
+      setlist: ['게임 오버?','비틀비틀 짝짜꿍','금붕어','집','먹이사슬','입춘','시간을 달리네','사랑하게 될 거야','0+0']
+    },
+    {
+      date: '2026-05-17',
+      title: "2026 LEE SEUNG YOON CONCERT '밖'",
+      venue: '킨텍스',
+      category: '콘서트 게스트',
+      poster: 'images/calendar/leeseungyoon_bak.jpeg',
+      setlist: ['용의자','1111','집','먹이사슬','게임 오버?','금붕어','비틀비틀 짝짜꿍','입춘','0+0','사랑하게 될 거야']
+    },
+    {
+      date: '2026-04-24',
+      title: 'T1 Home Ground',
+      venue: '인스파이어 아레나',
+      category: '행사',
+      poster: 'images/calendar/t1_homeground.jpeg',
+      setlist: ['해초','먹이사슬','집','게임 오버?','입춘','0+0','사랑하게 될 거야']
+    },
+    {
+      date: '2026-04-19',
+      title: '2026 그린캠프페스티벌',
+      venue: '지산 포레스트 리조트',
+      category: '페스티벌',
+      poster: 'images/calendar/greencamp2026.jpeg',
+      setlist: ['도망','재','ㅈㅣㅂ','먹이사슬','용의자','1111','내일에서 온 티켓','해초','이상비행','금붕어','게임 오버?','하루살이','입춘','0+0','시간을 달리네','사랑하게 될 거야','생존법','비틀비틀 짝짜꿍','보수공사','먹이사슬']
+    },
+    {
+      date: '2026-04-03',
+      title: 'EBS <스페이스 공감>',
+      venue: 'LG아트센터 서울 U+스테이지',
+      category: '방송',
+      poster: 'images/calendar/ebs_spacegonggam.jpeg',
+      setlist: ['먹이사슬','집','입춘','0+0','시간을 달리네','게임 오버?','사랑하게 될 거야']
+    },
+    {
+      date: '2026-03-21',
+      title: 'THE GLOW 2026',
+      venue: '킨텍스 제2전시장',
+      category: '페스티벌',
+      poster: 'images/calendar/theglow2026.jpeg',
+      setlist: ['내일에서 온 티켓','금붕어','비틀비틀 짝짜꿍','거울','도망','입춘','하루살이','귀가','집','먹이사슬','용의자','시간을 달리네','0+0','사랑하게 될 거야','보수공사']
     },
   ];
 
@@ -6496,14 +6785,21 @@
         if (pastMoreBtn) pastMoreBtn.style.display = 'none';
       } else {
         pastGridEl.innerHTML = past.map((occ, idx) => `
-          <a class="past-card${idx >= 6 ? ' hidden' : ''}" href="${occ.instagram || '#'}" target="_blank" rel="noopener">
+          <div class="past-card${idx >= 6 ? ' hidden' : ''}">
             ${occ.poster ? `<img src="${occ.poster}" alt="${occ.title} 포스터">` : ''}
             <div class="past-card-body">
               <div class="past-card-title">${occ.title}</div>
               <div class="past-card-date">📅 ${formatOccDate(occ)}</div>
+              <div class="past-card-links">
+                ${occ.setlist ? `<button type="button" class="past-setlist-btn" data-idx="${idx}">🎼 셋리스트 보기</button>` : ''}
+                ${occ.instagram ? `<a class="past-insta-link" href="${occ.instagram}" target="_blank" rel="noopener">📷 인스타</a>` : ''}
+              </div>
             </div>
-          </a>
+          </div>
         `).join('');
+        pastGridEl.querySelectorAll('.past-setlist-btn').forEach(btn => {
+          btn.addEventListener('click', () => openSetlistView(past[parseInt(btn.dataset.idx, 10)]));
+        });
         if (pastMoreBtn) {
           pastMoreBtn.style.display = past.length > 6 ? 'inline-block' : 'none';
           pastMoreBtn.textContent = '더보기';
