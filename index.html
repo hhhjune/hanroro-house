@@ -1022,6 +1022,20 @@
     font-family:'Noto Sans KR', sans-serif;
     font-size:12px;
   }
+  .memory-admin-reset-btn{
+    display:block;
+    width:100%;
+    margin-top:8px;
+    background:none;
+    border:1px solid var(--berry);
+    color:var(--berry);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:11.5px;
+    padding:6px;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  .memory-admin-reset-btn:hover{ background:var(--berry); color:#fff; }
   .memory-leaderboard-list{ display:flex; flex-direction:column; gap:6px; }
   .memory-leaderboard-row{
     display:flex;
@@ -3554,6 +3568,12 @@
           <button type="button" class="memory-diff-btn" data-pairs="8">쉬움 · 4×4 (16장)</button>
           <button type="button" class="memory-diff-btn" data-pairs="18">어려움 · 6×6 (36장, 전체)</button>
         </div>
+
+        <button type="button" class="worldcup-preview-toggle-btn" id="memoryPreviewToggleBtn">🏆 순위 미리보기</button>
+        <div class="memory-leaderboard" id="memoryHubLeaderboard" style="display:none;">
+          <h4 class="worldcup-stats-title">🏆 어려움(6×6) 최고 기록 순위</h4>
+          <div class="memory-leaderboard-list" id="memoryHubLeaderboardList"></div>
+        </div>
       </div>
 
       <div class="memory-play" id="memoryPlay" style="display:none;">
@@ -3600,6 +3620,7 @@
               <input type="text" id="memoryAdminAddTime" placeholder="시간 (예: 01:46.488)">
               <button type="button" class="board-submit-btn" id="memoryAdminAddBtn">추가</button>
             </div>
+            <button type="button" class="memory-admin-reset-btn" id="memoryAdminResetBtn">🗑️ 순위 전체 초기화 (되돌릴 수 없어요)</button>
           </div>
         </div>
       </div>
@@ -6218,20 +6239,29 @@
   }
 
   function renderMemoryLeaderboard(entries){
-    const listEl = document.getElementById('memoryLeaderboardList');
-    if (!listEl) return;
-    if (entries.length === 0) {
-      listEl.innerHTML = '<div class="archive-empty">아직 어려움(6×6) 기록이 없어요. 첫 순위에 올라보세요!</div>';
-      return;
-    }
-    listEl.innerHTML = entries.map((e, idx) => `
-      <div class="memory-leaderboard-row">
-        <span class="memory-leaderboard-rank">${idx + 1}</span>
-        <span class="memory-leaderboard-name">${e.author || '익명'}</span>
-        <span class="memory-leaderboard-record">시도 ${e.moves}번 · ${formatMs(e.elapsedMs)}</span>
-      </div>
-    `).join('');
+    const html = entries.length === 0
+      ? '<div class="archive-empty">아직 어려움(6×6) 기록이 없어요. 첫 순위에 올라보세요!</div>'
+      : entries.map((e, idx) => `
+          <div class="memory-leaderboard-row">
+            <span class="memory-leaderboard-rank">${idx + 1}</span>
+            <span class="memory-leaderboard-name">${e.author || '익명'}</span>
+            <span class="memory-leaderboard-record">시도 ${e.moves}번 · ${formatMs(e.elapsedMs)}</span>
+          </div>
+        `).join('');
+
+    ['memoryLeaderboardList', 'memoryHubLeaderboardList'].forEach(id => {
+      const listEl = document.getElementById(id);
+      if (listEl) listEl.innerHTML = html;
+    });
   }
+
+  document.getElementById('memoryPreviewToggleBtn')?.addEventListener('click', () => {
+    const panel = document.getElementById('memoryHubLeaderboard');
+    const btn = document.getElementById('memoryPreviewToggleBtn');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? '🏆 순위 미리보기' : '🏆 미리보기 접기';
+  });
 
   const memoryRankNicknameInput = document.getElementById('memoryRankNicknameInput');
   const memoryRankSubmitBtn = document.getElementById('memoryRankSubmitBtn');
@@ -6319,6 +6349,28 @@
       console.error(err);
     } finally {
       memoryAdminAddBtn.disabled = false;
+    }
+  });
+
+  // 관리자 전용: 지금부터 새로 쌓이는 기록만으로 순위를 다시 시작하고 싶을 때,
+  // 지금까지 있던 기록을 전부 지워요. 되돌릴 수 없어서 두 번 확인해요.
+  document.getElementById('memoryAdminResetBtn')?.addEventListener('click', async () => {
+    if (!confirm('지금까지 쌓인 순위 기록을 전부 지울까요? 이 작업은 되돌릴 수 없어요.')) return;
+    if (!confirm('정말로 전부 삭제할까요? 다시 한 번 확인할게요.')) return;
+
+    const btn = document.getElementById('memoryAdminResetBtn');
+    btn.disabled = true;
+    try {
+      const snap = await new Promise((resolve, reject) => {
+        const unsub = onSnapshot(memoryLeaderboardCol, (s) => { unsub(); resolve(s); }, reject);
+      });
+      await Promise.all(snap.docs.map(d => deleteDoc(doc(db, 'memoryLeaderboard', d.id))));
+      alert(`${snap.docs.length}개의 기록을 지웠어요. 이제부터 새로 쌓이는 기록만 순위에 올라가요.`);
+    } catch (err) {
+      alert('초기화에 실패했어요. 잠시 후 다시 시도해 주세요.');
+      console.error(err);
+    } finally {
+      btn.disabled = false;
     }
   });
 
