@@ -1098,26 +1098,28 @@
   }
   .memory-diff-row{
     display:flex;
-    flex-wrap:wrap;
+    flex-wrap:nowrap;
     justify-content:center;
-    gap:10px;
+    gap:8px;
   }
   .memory-diff-btn{
-    background:#fff;
-    border:1px solid var(--rule-strong);
-    color:var(--ink);
+    flex:1;
+    max-width:160px;
+    background:var(--berry);
+    border:none;
+    color:#fff;
     font-family:'Noto Sans KR', sans-serif;
-    font-size:14px;
-    padding:12px 20px;
+    font-weight:700;
+    font-size:12.5px;
+    padding:8px 10px;
     border-radius:2px;
     cursor:pointer;
-    transition:border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    transition:opacity 0.2s ease;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
-  .memory-diff-btn:hover{
-    border-color:var(--berry);
-    color:var(--berry);
-    background:rgba(156,74,92,0.05);
-  }
+  .memory-diff-btn:hover{ opacity:0.85; }
   .memory-stats{
     display:flex;
     flex-wrap:wrap;
@@ -1440,6 +1442,7 @@
   .cal-grid-day.is-today.has-event:hover{ background:var(--moss-deep); }
 
   .upcoming-card.highlight,
+  .entry-card.highlight,
   .upcoming-list-item.highlight{
     box-shadow:0 0 0 3px var(--berry);
   }
@@ -2790,6 +2793,49 @@
   }
   .autosave-indicator.show{opacity:0.85;}
 
+  .diary-date-jump-row{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin:0 0 8px;
+  }
+  .diary-date-jump-row input[type="date"]{
+    border:1px solid var(--rule-strong);
+    border-radius:2px;
+    padding:7px 10px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:12.5px;
+    color:var(--ink);
+    background:#fff;
+  }
+  .diary-date-jump-row button{
+    background:none;
+    border:1px solid var(--rule-strong);
+    color:var(--ink-soft);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:12.5px;
+    padding:7px 12px;
+    border-radius:2px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .diary-date-jump-row button:hover{ border-color:var(--berry); color:var(--berry); }
+
+  .diary-write-toggle-btn{
+    display:block;
+    margin:0 auto 24px;
+    background:var(--berry);
+    color:#fff;
+    border:none;
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    padding:10px 22px;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  .diary-write-toggle-btn:hover{ opacity:0.85; }
+
   .diary-archive-wrap{
     position:relative;
     margin:20px 0 48px;
@@ -3591,8 +3637,8 @@
       <div class="memory-intro" id="memoryIntro">
         <p>같은 앨범 커버 두 장을 찾아 짝을 맞추는 카드 게임이에요.<br>난이도를 골라 시작해보세요.</p>
         <div class="memory-diff-row">
-          <button type="button" class="memory-diff-btn" data-pairs="8">쉬움 · 4×4 (16장)</button>
-          <button type="button" class="memory-diff-btn" data-pairs="18">어려움 · 6×6 (36장, 전체)</button>
+          <button type="button" class="memory-diff-btn" data-pairs="8">쉬움 4×4</button>
+          <button type="button" class="memory-diff-btn" data-pairs="18">어려움 6×6</button>
         </div>
 
         <button type="button" class="worldcup-preview-toggle-btn" id="memoryPreviewToggleBtn">🏆 순위 미리보기</button>
@@ -4025,13 +4071,20 @@
     <p class="diary-sub">오늘 하루도 당신만의 계절이 지나갔을 거예요.<br>한로로의 노래처럼, 오늘을 한 줄로 남겨보세요.</p>
   </div>
 
+  <div class="diary-date-jump-row">
+    <input type="date" id="diaryDateJumpInput">
+    <button type="button" id="diaryDateJumpBtn">📅 그 날짜 기록 찾기</button>
+  </div>
+
   <div class="diary-archive-wrap">
     <button type="button" class="road-arrow road-arrow-left" id="diaryPrev" aria-label="이전 기록">‹</button>
     <div class="diary-archive" id="diaryArchive"></div>
     <button type="button" class="road-arrow road-arrow-right" id="diaryNext" aria-label="다음 기록">›</button>
   </div>
 
-  <div class="diary-page">
+  <button type="button" class="diary-write-toggle-btn" id="diaryWriteToggleBtn">✏️ 오늘의 한 줄 쓰기</button>
+
+  <div class="diary-page" id="diaryPage" style="display:none;">
     <div class="diary-date" id="diaryToday"></div>
 
     <div class="field-group">
@@ -4831,6 +4884,31 @@
     });
   }
 
+  // "✏️ 오늘의 한 줄 쓰기" 버튼을 눌러야만 작성 폼이 펼쳐지게 해요 (모바일에서 폼이
+  // 너무 부담스럽게 커 보이던 문제 해결).
+  const diaryWriteToggleBtn = document.getElementById('diaryWriteToggleBtn');
+  const diaryPageEl = document.getElementById('diaryPage');
+  diaryWriteToggleBtn?.addEventListener('click', () => {
+    const isOpen = diaryPageEl.style.display !== 'none';
+    diaryPageEl.style.display = isOpen ? 'none' : 'block';
+    diaryWriteToggleBtn.textContent = isOpen ? '✏️ 오늘의 한 줄 쓰기' : '접기';
+    if (!isOpen) diaryPageEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // 날짜를 골라서 그 날 남긴 기록으로 바로 찾아가는 기능
+  document.getElementById('diaryDateJumpBtn')?.addEventListener('click', () => {
+    const val = document.getElementById('diaryDateJumpInput').value; // "2026-07-21" 형식
+    if (!val) return;
+    const [yy, mm, dd] = val.split('-');
+    const target = `${yy}. ${mm}. ${dd}`; // 저장된 entry.date 형식과 맞춰요
+    const cards = Array.from(document.querySelectorAll('.entry-card'));
+    const match = cards.find(card => card.querySelector('.entry-date')?.textContent.trim() === target);
+    if (!match) { alert('그 날짜에 남긴 기록을 못 찾았어요.'); return; }
+    match.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    match.classList.add('highlight');
+    setTimeout(() => match.classList.remove('highlight'), 2000);
+  });
+
   // 다가오는 공연 카드 가로 스크롤 화살표
   const upcomingCardsRowEl = document.getElementById('upcomingCardsRow');
   const upcomingPrevBtn = document.getElementById('upcomingPrev');
@@ -5299,6 +5377,10 @@
       selectedPhotoDataUrl = null;
       photoInput.value = '';
       photoPreviewWrap.style.display = 'none';
+
+      // 저장 다 됐으면 폼을 접어서 다시 목록/보관함이 보이게 해요.
+      if (diaryPageEl) diaryPageEl.style.display = 'none';
+      if (diaryWriteToggleBtn) diaryWriteToggleBtn.textContent = '✏️ 오늘의 한 줄 쓰기';
     } catch (err) {
       alert('저장에 실패했어요. 잠시 후 다시 시도해 주세요.');
       console.error(err);
