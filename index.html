@@ -1395,6 +1395,14 @@
     background:var(--berry);
   }
   .cal-grid-day.is-today.has-event::after{ background:#fff; }
+  .cal-grid-day.has-event{ cursor:pointer; }
+  .cal-grid-day.has-event:hover{ background:var(--paper-fold); }
+  .cal-grid-day.is-today.has-event:hover{ background:var(--moss-deep); }
+
+  .upcoming-card.highlight,
+  .upcoming-list-item.highlight{
+    box-shadow:0 0 0 3px var(--berry);
+  }
 
   /* D-day 카운트다운 */
   .dday-card{
@@ -3740,7 +3748,7 @@
           <button type="button" id="calYearNext" aria-label="다음 해">»</button>
         </div>
         <div class="cal-grid-weekdays">
-          <span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span>
+          <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
         </div>
         <div class="cal-grid-days" id="calGridDays"></div>
       </div>
@@ -7367,7 +7375,7 @@
             ? 'D-DAY'
             : `D-${daysBetween(today, occ.occStart)}`;
           return `
-            <div class="upcoming-card">
+            <div class="upcoming-card" data-title="${occ.title}" data-date="${occ.date}">
               <div class="upcoming-card-img-wrap">
                 ${occ.poster ? `<img src="${occ.poster}" alt="${occ.title} 포스터">` : ''}
                 <span class="upcoming-dday-badge">${dday}</span>
@@ -7435,7 +7443,7 @@
             ? 'D-DAY'
             : `D-${daysBetween(today, occ.occStart)}`;
           return `
-            <li class="upcoming-list-item">
+            <li class="upcoming-list-item" data-title="${occ.title}" data-date="${occ.date}">
               <div>
                 <div class="upcoming-list-title">${occ.title}</div>
                 <div class="upcoming-list-date">${formatOccDate(occ)}</div>
@@ -7456,7 +7464,7 @@
         if (pastMoreBtn) pastMoreBtn.style.display = 'none';
       } else {
         pastGridEl.innerHTML = past.map((occ, idx) => `
-          <div class="past-card${idx >= 6 ? ' hidden' : ''}">
+          <div class="past-card${idx >= 6 ? ' hidden' : ''}" data-title="${occ.title}">
             ${occ.poster ? `<img src="${occ.poster}" alt="${occ.title} 포스터">` : ''}
             <div class="past-card-body">
               <div class="past-card-title">${occ.title}</div>
@@ -7522,8 +7530,8 @@
 
     const firstOfMonth = new Date(calState.year, calState.month, 1);
     const lastOfMonth = new Date(calState.year, calState.month + 1, 0);
-    // 월요일 시작 기준으로 앞쪽 빈 칸 수 계산 (일요일=0 → 6칸 밀림)
-    const leadingBlanks = (firstOfMonth.getDay() + 6) % 7;
+    // 일요일 시작 기준으로 앞쪽 빈 칸 수 계산 (일요일=0 → 그대로 씀)
+    const leadingBlanks = firstOfMonth.getDay();
 
     const cells = [];
     for (let i = 0; i < leadingBlanks; i++) cells.push(null);
@@ -7534,9 +7542,34 @@
       if (day === null) return '<span class="cal-grid-day empty"></span>';
       const cellDate = new Date(calState.year, calState.month, day);
       const isToday = sameDay(cellDate, today);
+      const dateKey = `${calState.year}-${String(calState.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const hasEvent = eventDaySet.has(`${calState.year}-${calState.month}-${day}`);
-      return `<span class="cal-grid-day${isToday ? ' is-today' : ''}${hasEvent ? ' has-event' : ''}">${day}</span>`;
+      return `<span class="cal-grid-day${isToday ? ' is-today' : ''}${hasEvent ? ' has-event' : ''}"${hasEvent ? ` data-date="${dateKey}"` : ''}>${day}</span>`;
     }).join('');
+
+    // 일정이 있는 날짜를 누르면, 그 날의 공연이 있는 "다가오는 공연"/"다가오는 일정"으로
+    // 화면을 옮겨줘요(지난 공연이면 지난 공연 쪽으로).
+    daysEl.querySelectorAll('.cal-grid-day.has-event').forEach(cell => {
+      cell.addEventListener('click', () => {
+        const dateKey = cell.dataset.date;
+        const match = occurrences.find(occ => dateKey >= occ.date && dateKey <= (occ.dateEnd || occ.date));
+        if (!match) return;
+
+        const cardTarget = document.querySelector(`.upcoming-card[data-title="${CSS.escape(match.title)}"][data-date="${match.date}"]`);
+        const listTarget = document.querySelector(`.upcoming-list-item[data-title="${CSS.escape(match.title)}"][data-date="${match.date}"]`);
+        const target = cardTarget || listTarget;
+
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.classList.add('highlight');
+          setTimeout(() => target.classList.remove('highlight'), 2000);
+        } else {
+          // 지난 공연이면 셋리스트 쪽 카드로 이동해봐요.
+          const pastTarget = document.querySelector(`.past-card[data-title="${CSS.escape(match.title)}"]`);
+          pastTarget?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
   }
 
   document.getElementById('calMonthPrev')?.addEventListener('click', () => {
