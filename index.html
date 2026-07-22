@@ -820,6 +820,83 @@
     text-align:center;
     box-shadow:none;
   }
+  .rorosi-box{
+    margin-top:26px;
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:36px 30px;
+    text-align:center;
+    box-shadow:none;
+  }
+  .rorosi-intro p{
+    font-size:14px;
+    color:var(--ink-soft);
+    line-height:1.7;
+    margin:14px 0;
+  }
+  .rorosi-howto{
+    text-align:left;
+    max-width:340px;
+    margin:16px auto 22px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    line-height:1.9;
+    padding-left:20px;
+  }
+  .rorosi-countdown{
+    padding:60px 0;
+  }
+  .rorosi-countdown-number{
+    display:block;
+    font-family:'Gowun Batang', serif;
+    font-size:72px;
+    font-weight:700;
+    color:var(--berry);
+    line-height:1;
+    margin-bottom:14px;
+  }
+  .rorosi-countdown p{
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .rorosi-clock{
+    font-family:'Gowun Batang', serif;
+    font-size:40px;
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:1px;
+    margin:30px 0 34px;
+    font-variant-numeric:tabular-nums;
+  }
+  .rorosi-press-btn{
+    background:var(--berry);
+    color:#fff;
+    border:none;
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:700;
+    font-size:20px;
+    padding:20px 48px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:transform 0.1s ease, opacity 0.2s ease;
+  }
+  .rorosi-press-btn:hover{ opacity:0.9; }
+  .rorosi-press-btn:active{ transform:scale(0.96); }
+  .rorosi-result-time{
+    font-family:'Gowun Batang', serif;
+    font-size:28px;
+    font-weight:700;
+    color:var(--berry);
+    margin:10px 0;
+    font-variant-numeric:tabular-nums;
+  }
+  @media (max-width:520px){
+    .rorosi-clock{ font-size:28px; }
+    .rorosi-press-btn{ font-size:16px; padding:16px 36px; }
+    .rorosi-countdown-number{ font-size:56px; }
+    .rorosi-result-time{ font-size:22px; }
+  }
   .worldcup-round-label{
     font-family:'Gowun Batang', serif;
     font-size:18px;
@@ -3477,6 +3554,14 @@
         </span>
         <span class="game-index-arrow">›</span>
       </button>
+      <button type="button" class="game-index-row" data-goto="gameRorosiScreen">
+        <span class="game-index-icon">🌸</span>
+        <span class="game-index-text">
+          <span class="game-index-title">로로시 게임</span>
+          <span class="game-index-desc">가상 시계 11:11:00.000에 정확히 맞춰 누르기</span>
+        </span>
+        <span class="game-index-arrow">›</span>
+      </button>
     </div>
   </div>
 
@@ -3809,6 +3894,92 @@
       <div class="guestbook-list" data-game="worldcup"></div>
     </div>
   </div>
+
+  <!-- 게임5: 로로시 게임 -->
+  <div class="game-screen" id="gameRorosiScreen" data-game="rorosi">
+    <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
+
+    <div class="game-subtabs">
+      <button type="button" class="game-subtab active" data-subtab="play">게임</button>
+      <button type="button" class="game-subtab" data-subtab="guestbook">방명록</button>
+    </div>
+
+    <div class="game-subpanel active" data-subpanel="play">
+    <div class="rorosi-box" id="rorosiBox">
+
+      <div class="rorosi-intro" id="rorosiIntro">
+        <span class="quiz-result-emoji">🌸</span>
+        <h3>로로시 게임 소개</h3>
+        <p>11시 11분은 언제든 다시 찾아옵니다.<br>잠시 후 시작되는 '로로시'에 맞춰, 정확히 11:11:00에 버튼을 눌러보세요.</p>
+        <ol class="rorosi-howto">
+          <li>게임 시작 버튼을 누르면</li>
+          <li>10초 카운트다운 후</li>
+          <li>가상의 시간이 11:10:50.000부터 밀리초 단위로 흐르기 시작해요</li>
+          <li>언제든 "🌸 로로시!" 버튼을 눌러 11:11:00.000에 최대한 맞춰보세요</li>
+        </ol>
+        <button class="quiz-start-btn" id="rorosiStartBtn">게임 시작하기 ▶</button>
+
+        <button type="button" class="worldcup-preview-toggle-btn" id="rorosiPreviewToggleBtn">🏆 오늘의 랭킹 미리보기</button>
+        <div class="memory-leaderboard" id="rorosiHubLeaderboard" style="display:none;">
+          <h4 class="worldcup-stats-title">🏆 오늘의 TOP10</h4>
+          <div class="memory-leaderboard-list" id="rorosiHubLeaderboardList"></div>
+        </div>
+      </div>
+
+      <div class="rorosi-countdown" id="rorosiCountdown" style="display:none;">
+        <span class="rorosi-countdown-number" id="rorosiCountdownNumber">10</span>
+        <p>곧 로로시가 시작돼요...</p>
+      </div>
+
+      <div class="rorosi-play" id="rorosiPlay" style="display:none;">
+        <div class="rorosi-clock" id="rorosiClock">11:10:50.000</div>
+        <button type="button" class="rorosi-press-btn" id="rorosiPressBtn">🌸 로로시!</button>
+      </div>
+
+      <div class="rorosi-result" id="rorosiResult" style="display:none;">
+        <span class="quiz-result-emoji" id="rorosiResultEmoji">🎯</span>
+        <h3 id="rorosiResultTitle"></h3>
+        <div class="rorosi-result-time" id="rorosiResultTime"></div>
+        <p class="quiz-result-desc" id="rorosiResultDiff"></p>
+
+        <div class="share-btn-row">
+          <button type="button" class="save-image-btn" id="rorosiCopyLinkBtn">📋 링크 복사</button>
+          <button type="button" class="kakao-share-btn" id="rorosiKakaoBtn">💬 공유</button>
+          <button type="button" class="guestbook-fill-btn" id="rorosiGuestbookBtn">📖 방명록에 남기기</button>
+        </div>
+        <button type="button" class="quiz-retry-btn" id="rorosiRetryBtn">🔄 다시 하기</button>
+
+        <div class="memory-rank-submit" id="rorosiRankSubmit">
+          <input type="text" id="rorosiRankNicknameInput" placeholder="닉네임을 입력하면 오늘의 랭킹에 등록돼요 (필수)">
+          <button type="button" class="board-submit-btn" id="rorosiRankSubmitBtn">🏆 오늘의 랭킹에 등록하기</button>
+        </div>
+        <p class="memory-rank-submitted" id="rorosiRankSubmitted" style="display:none;">✅ 오늘의 랭킹에 등록됐어요!</p>
+
+        <div class="memory-leaderboard">
+          <h4 class="worldcup-stats-title">🏆 오늘의 TOP10</h4>
+          <div class="memory-leaderboard-list" id="rorosiLeaderboardList"></div>
+        </div>
+      </div>
+
+    </div>
+    </div>
+
+    <div class="game-subpanel" data-subpanel="guestbook">
+      <div class="guestbook-write">
+        <div class="board-write-row">
+          <input type="text" class="guestbook-author-input" placeholder="닉네임">
+          <input type="text" class="guestbook-result-input" placeholder="게임 결과를 먼저 완료해주세요" readonly>
+        </div>
+        <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
+        <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
+      </div>
+      <div class="guestbook-search-row">
+        <input type="text" class="guestbook-search-input" placeholder="🔍 닉네임·내용으로 검색">
+      </div>
+      <div class="guestbook-list" data-game="rorosi"></div>
+    </div>
+  </div>
+
 </section>
 
 
@@ -4815,6 +4986,134 @@
       new URL(currentWorldcupWinner.img, location.href).href,
       '나도 해보기'
     );
+  });
+
+  // ================= 로로시 게임 =================
+  // 가상의 하루 중 시각을 밀리초로 계산해요.
+  const ROROSI_START_MS = (11 * 3600 + 10 * 60 + 50) * 1000; // 11:10:50.000
+  const ROROSI_TARGET_MS = (11 * 3600 + 11 * 60 + 0) * 1000;  // 11:11:00.000
+
+  const ROROSI_TIERS = [
+    { max: 0.005, emoji: '👑', label: '로로시의 신' },
+    { max: 0.010, emoji: '✨', label: '로로시의 전설' },
+    { max: 0.030, emoji: '🌸', label: '로로시 마스터' },
+    { max: 0.050, emoji: '🎯', label: 'PERFECT' },
+    { max: 0.100, emoji: '💛', label: '로로시 고수' },
+    { max: 0.300, emoji: '😊', label: '거의 성공' },
+    { max: 0.500, emoji: '🙂', label: '조금만 더!' },
+    { max: Infinity, emoji: '🌙', label: '다음 로로시에 다시 도전!' },
+  ];
+
+  let rorosiTickInterval = null;
+  let rorosiRealStartPerf = null;
+  let rorosiResultData = null;
+
+  function formatRorosiClock(msOfDay) {
+    const clamped = Math.max(0, msOfDay);
+    const h = Math.floor(clamped / 3600000);
+    const m = Math.floor((clamped % 3600000) / 60000);
+    const s = Math.floor((clamped % 60000) / 1000);
+    const ms = Math.floor(clamped % 1000);
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(ms).padStart(3, '0')}`;
+  }
+
+  function startRorosiGame() {
+    document.getElementById('rorosiIntro').style.display = 'none';
+    document.getElementById('rorosiResult').style.display = 'none';
+    const countdownEl = document.getElementById('rorosiCountdown');
+    const numberEl = document.getElementById('rorosiCountdownNumber');
+    countdownEl.style.display = 'block';
+
+    let n = 10;
+    numberEl.textContent = n;
+    const interval = setInterval(() => {
+      n--;
+      if (n > 0) {
+        numberEl.textContent = n;
+      } else {
+        clearInterval(interval);
+        countdownEl.style.display = 'none';
+        beginRorosiClock();
+      }
+    }, 1000);
+  }
+
+  function beginRorosiClock() {
+    document.getElementById('rorosiPlay').style.display = 'block';
+    rorosiRealStartPerf = performance.now();
+    const clockEl = document.getElementById('rorosiClock');
+    clockEl.textContent = formatRorosiClock(ROROSI_START_MS);
+
+    rorosiTickInterval = setInterval(() => {
+      const elapsed = performance.now() - rorosiRealStartPerf;
+      clockEl.textContent = formatRorosiClock(ROROSI_START_MS + elapsed);
+    }, 31); // 밀리초가 부드럽게 흐르는 것처럼 보이게, 30fps 정도로 갱신해요.
+  }
+
+  function pressRorosi() {
+    if (rorosiRealStartPerf === null) return;
+    const elapsed = performance.now() - rorosiRealStartPerf;
+    const virtualMs = ROROSI_START_MS + elapsed;
+    clearInterval(rorosiTickInterval);
+    rorosiTickInterval = null;
+    rorosiRealStartPerf = null;
+
+    const diffMs = virtualMs - ROROSI_TARGET_MS; // 양수=늦음, 음수=빠름
+    const absDiffSec = Math.abs(diffMs) / 1000;
+    const tier = ROROSI_TIERS.find(t => absDiffSec <= t.max);
+
+    document.getElementById('rorosiPlay').style.display = 'none';
+    document.getElementById('rorosiResult').style.display = 'block';
+    document.getElementById('rorosiResultEmoji').textContent = tier.emoji;
+    document.getElementById('rorosiResultTitle').textContent = tier.label;
+    document.getElementById('rorosiResultTime').textContent = formatRorosiClock(virtualMs);
+
+    const diffLabel = diffMs === 0
+      ? '정확히 맞췄어요!'
+      : diffMs > 0
+        ? `${absDiffSec.toFixed(3)}초 늦었어요.`
+        : `${absDiffSec.toFixed(3)}초 빨랐어요.`;
+    document.getElementById('rorosiResultDiff').textContent = diffLabel;
+
+    rorosiResultData = { virtualMs, diffMs, absDiffSec, tier };
+    if (window.prepareRorosiRankSubmit) window.prepareRorosiRankSubmit(absDiffSec, tier.label, tier.emoji);
+  }
+
+  document.getElementById('rorosiStartBtn')?.addEventListener('click', startRorosiGame);
+  document.getElementById('rorosiPressBtn')?.addEventListener('click', pressRorosi);
+  document.getElementById('rorosiRetryBtn')?.addEventListener('click', () => {
+    document.getElementById('rorosiResult').style.display = 'none';
+    document.getElementById('rorosiIntro').style.display = 'block';
+  });
+
+  document.getElementById('rorosiCopyLinkBtn')?.addEventListener('click', async () => {
+    const url = location.origin + location.pathname + '#quiz';
+    try {
+      await navigator.clipboard.writeText(url);
+      alert('링크를 복사했어요! 원하는 곳에 붙여넣기 해보세요.');
+    } catch (err) {
+      prompt('아래 주소를 복사해서 공유해 보세요.', url);
+    }
+  });
+
+  document.getElementById('rorosiKakaoBtn')?.addEventListener('click', () => {
+    if (!rorosiResultData) return;
+    const { tier, absDiffSec } = rorosiResultData;
+    shareToKakao(
+      `🌸 나는 '${tier.label}'을 달성했어요!`,
+      `기록 ${absDiffSec.toFixed(3)}초 차이 — 당신도 도전해보세요!`,
+      '#quiz',
+      new URL('images/icons/icon-512.png', location.href).href,
+      '나도 해보기'
+    );
+  });
+
+  document.getElementById('rorosiPreviewToggleBtn')?.addEventListener('click', () => {
+    const panel = document.getElementById('rorosiHubLeaderboard');
+    const btn = document.getElementById('rorosiPreviewToggleBtn');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? '🏆 오늘의 랭킹 미리보기' : '🏆 미리보기 접기';
   });
 
   // 게시판: 전체 / 자유게시판 / 질문게시판 탭 전환
@@ -6490,6 +6789,92 @@
   onAuthStateChanged(auth, () => { refreshMemoryAdminAddVisibility(); });
 
   setupGuestbook('worldcup');
+  setupGuestbook('rorosi');
+
+  // ================= 로로시 게임: 오늘의 TOP10 (닉네임 필수, 매일 초기화) =================
+  // 날짜(KST)가 바뀌면 자동으로 새 하루치 랭킹만 보여요. 어제 기록은 안 지워지고
+  // 그냥 오늘 목록에 안 보일 뿐이에요(원하시면 나중에 "역대 최고 기록"도 따로 만들 수 있어요).
+  function getKstDateKey(){
+    const kstString = new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
+    const d = new Date(kstString);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${dd}`;
+  }
+
+  const rorosiLeaderboardCol = collection(db, 'rorosiLeaderboard');
+  let latestRorosiResult = null; // { absDiffSec, tierLabel, tierEmoji }
+
+  const rorosiTodayQuery = query(
+    rorosiLeaderboardCol,
+    where('dateKey', '==', getKstDateKey()),
+    orderBy('absDiffSec', 'asc')
+  );
+
+  onSnapshot(rorosiTodayQuery, (snapshot) => {
+    const entries = snapshot.docs.map(d => ({ id: d.id, ...d.data() })).slice(0, 10);
+    renderRorosiLeaderboard(entries);
+  }, (err) => console.error('[로로시 오늘의 랭킹] 불러오기 실패:', err));
+
+  function renderRorosiLeaderboard(entries){
+    const html = entries.length === 0
+      ? '<div class="archive-empty">오늘은 아직 기록이 없어요. 첫 랭킹에 올라보세요!</div>'
+      : entries.map((e, idx) => `
+          <div class="memory-leaderboard-row">
+            <span class="memory-leaderboard-rank">${idx + 1}</span>
+            <span class="memory-leaderboard-name">${e.author || '익명'}</span>
+            <span class="memory-leaderboard-record">${e.tierEmoji || ''} ${e.tierLabel || ''} · ${Number(e.absDiffSec).toFixed(3)}초 차이</span>
+          </div>
+        `).join('');
+
+    ['rorosiLeaderboardList', 'rorosiHubLeaderboardList'].forEach(id => {
+      const listEl = document.getElementById(id);
+      if (listEl) listEl.innerHTML = html;
+    });
+  }
+
+  document.getElementById('rorosiRankSubmitBtn')?.addEventListener('click', async () => {
+    const nicknameInput = document.getElementById('rorosiRankNicknameInput');
+    const nickname = nicknameInput.value.trim();
+    if (!nickname) { nicknameInput.focus(); return; }
+    if (!latestRorosiResult) return;
+    if (!myUid) { alert('연결 중이에요. 잠시 후 다시 눌러주세요.'); return; }
+
+    const btn = document.getElementById('rorosiRankSubmitBtn');
+    btn.disabled = true;
+    try {
+      await addDoc(rorosiLeaderboardCol, {
+        author: nickname,
+        authorUid: myUid,
+        dateKey: getKstDateKey(),
+        absDiffSec: latestRorosiResult.absDiffSec,
+        tierLabel: latestRorosiResult.tierLabel,
+        tierEmoji: latestRorosiResult.tierEmoji,
+        createdAt: serverTimestamp()
+      });
+      document.getElementById('rorosiRankSubmit').style.display = 'none';
+      document.getElementById('rorosiRankSubmitted').style.display = 'block';
+    } catch (err) {
+      alert('랭킹 등록에 실패했어요. 잠시 후 다시 시도해 주세요.');
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // 플레인 스크립트(게임 로직)가 게임이 끝날 때마다 이 함수를 불러서, 랭킹 등록 폼을
+  // 다시 활성화하고 이번 기록값을 기억해둬요.
+  window.prepareRorosiRankSubmit = function(absDiffSec, tierLabel, tierEmoji){
+    latestRorosiResult = { absDiffSec, tierLabel, tierEmoji };
+    const nicknameInput = document.getElementById('rorosiRankNicknameInput');
+    const submitWrap = document.getElementById('rorosiRankSubmit');
+    const submittedEl = document.getElementById('rorosiRankSubmitted');
+    if (nicknameInput) nicknameInput.value = '';
+    if (submitWrap) submitWrap.style.display = 'flex';
+    if (submittedEl) submittedEl.style.display = 'none';
+  };
+
 
   // ================= 이상형 월드컵 실시간 통계 =================
   // 문서 하나(worldcupStats/songs)에 곡별 득표수를 map으로 모아둬요.
@@ -6704,6 +7089,9 @@
   });
   document.getElementById('worldcupGuestbookBtn')?.addEventListener('click', () => {
     if (currentWorldcupWinner) fillGuestbookWithResult('worldcup', `최애곡 - ${currentWorldcupWinner.title}`);
+  });
+  document.getElementById('rorosiGuestbookBtn')?.addEventListener('click', () => {
+    if (rorosiResultData) fillGuestbookWithResult('rorosi', `${rorosiResultData.tier.emoji} ${rorosiResultData.tier.label} · ${rorosiResultData.absDiffSec.toFixed(3)}초 차이`);
   });
 </script>
 
