@@ -3237,6 +3237,20 @@
 
     .kakao-share-btn, .save-image-btn, .board-submit-btn{ font-size:12px; }
 
+    .share-btn-row{ flex-wrap:nowrap; gap:6px; }
+    .share-btn-row .kakao-share-btn,
+    .share-btn-row .guestbook-fill-btn,
+    .share-btn-row .quiz-retry-btn{
+      flex:1 1 0;
+      min-width:0;
+      font-size:11.5px;
+      padding:8px 6px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      text-align:center;
+    }
+
     .past-grid, .setlist-grid{
       display:flex;
       overflow-x:auto;
@@ -3685,8 +3699,8 @@
         <div class="quiz-result-songs" id="quizResultSongs"></div>
         <div class="share-btn-row">
           <button type="button" class="kakao-share-btn" id="quizKakaoShareBtn">💬 공유</button>
-          <button type="button" class="guestbook-fill-btn" id="personalityGuestbookBtn">📖 방명록에 남기기</button>
-          <button class="quiz-retry-btn" id="quizRetryBtn">다시 테스트하기</button>
+          <button type="button" class="guestbook-fill-btn" id="personalityGuestbookBtn">📖 방명록 작성</button>
+          <button class="quiz-retry-btn" id="quizRetryBtn">다시 하기</button>
         </div>
 
         <div class="worldcup-stats" id="quizStats">
@@ -3754,8 +3768,8 @@
         <p class="quiz-result-desc" id="triviaResultLabel"></p>
         <div class="share-btn-row">
           <button type="button" class="kakao-share-btn" id="triviaKakaoShareBtn">💬 공유</button>
-          <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록에 남기기</button>
-          <button class="quiz-retry-btn" id="triviaRetryBtn">다시 풀어보기</button>
+          <button type="button" class="guestbook-fill-btn" id="triviaGuestbookBtn">📖 방명록 작성</button>
+          <button class="quiz-retry-btn" id="triviaRetryBtn">다시 풀기</button>
         </div>
 
         <div class="worldcup-stats" id="triviaStats">
@@ -3805,17 +3819,8 @@
 
         <button type="button" class="worldcup-preview-toggle-btn" id="memoryPreviewToggleBtn">🏆 순위 미리보기</button>
         <div class="memory-leaderboard" id="memoryHubLeaderboard" style="display:none;">
-          <div class="memory-leaderboard-split">
-            <div class="memory-leaderboard-col">
-              <h4 class="worldcup-stats-title">🏆 쉬움(4×4) 순위</h4>
-              <div class="memory-leaderboard-list" id="memoryHubLeaderboardListEasy"></div>
-            </div>
-            <div class="memory-leaderboard-divider">|</div>
-            <div class="memory-leaderboard-col">
-              <h4 class="worldcup-stats-title">🏆 어려움(6×6) 순위</h4>
-              <div class="memory-leaderboard-list" id="memoryHubLeaderboardList"></div>
-            </div>
-          </div>
+          <h4 class="worldcup-stats-title">🏆 어려움(6×6) 최고 기록 순위</h4>
+          <div class="memory-leaderboard-list" id="memoryHubLeaderboardList"></div>
         </div>
       </div>
 
@@ -3848,22 +3853,13 @@
 
         <div class="share-btn-row">
           <button type="button" class="kakao-share-btn" id="memoryKakaoBtn">💬 공유</button>
-          <button type="button" class="guestbook-fill-btn" id="memoryGuestbookBtn">📖 방명록에 남기기</button>
+          <button type="button" class="guestbook-fill-btn" id="memoryGuestbookBtn">📖 방명록 작성</button>
+          <button class="quiz-retry-btn" id="memoryRetryBtn">다시 하기</button>
         </div>
-        <button class="quiz-retry-btn" id="memoryRetryBtn">다시 도전하기</button>
 
         <div class="memory-leaderboard">
-          <div class="memory-leaderboard-split">
-            <div class="memory-leaderboard-col">
-              <h4 class="worldcup-stats-title">🏆 쉬움(4×4) 순위</h4>
-              <div class="memory-leaderboard-list" id="memoryLeaderboardListEasy"></div>
-            </div>
-            <div class="memory-leaderboard-divider">|</div>
-            <div class="memory-leaderboard-col">
-              <h4 class="worldcup-stats-title">🏆 어려움(6×6) 순위</h4>
-              <div class="memory-leaderboard-list" id="memoryLeaderboardList"></div>
-            </div>
-          </div>
+          <h4 class="worldcup-stats-title">🏆 어려움(6×6) 최고 기록 순위</h4>
+          <div class="memory-leaderboard-list" id="memoryLeaderboardList"></div>
 
           <div class="memory-admin-add" id="memoryAdminAdd" style="display:none;">
             <p class="memory-admin-add-label">🔧 관리자 전용 — 예전 기록 직접 추가</p>
@@ -3964,9 +3960,9 @@
         <h3 id="worldcupResultText"></h3>
         <div class="share-btn-row">
           <button type="button" class="kakao-share-btn" id="worldcupKakaoBtn">💙 공유</button>
-          <button type="button" class="guestbook-fill-btn" id="worldcupGuestbookBtn">📖 방명록에 남기기</button>
+          <button type="button" class="guestbook-fill-btn" id="worldcupGuestbookBtn">📖 방명록 작성</button>
+          <button type="button" class="quiz-retry-btn" id="worldcupRetryBtn">🔁 다시 하기</button>
         </div>
-        <button type="button" class="quiz-retry-btn" id="worldcupRetryBtn">🔁 다시 하기</button>
 
         <div class="worldcup-stats" id="worldcupStats">
           <h4 class="worldcup-stats-title">📊 실시간 최애곡 통계</h4>
@@ -4043,9 +4039,9 @@
 
         <div class="share-btn-row">
           <button type="button" class="kakao-share-btn" id="rorosiKakaoBtn">💬 공유</button>
-          <button type="button" class="guestbook-fill-btn" id="rorosiGuestbookBtn">📖 방명록에 남기기</button>
+          <button type="button" class="guestbook-fill-btn" id="rorosiGuestbookBtn">📖 방명록 작성</button>
+          <button type="button" class="quiz-retry-btn" id="rorosiRetryBtn">🔄 다시 하기</button>
         </div>
-        <button type="button" class="quiz-retry-btn" id="rorosiRetryBtn">🔄 다시 하기</button>
 
         <div class="memory-rank-submit" id="rorosiRankSubmit">
           <input type="text" id="rorosiRankNicknameInput" placeholder="닉네임을 입력하면 오늘의 랭킹에 등록돼요 (필수)">
@@ -6807,7 +6803,6 @@
     });
   }
 
-  subscribeMemoryLeaderboard(8, ['memoryLeaderboardListEasy', 'memoryHubLeaderboardListEasy'], '아직 쉬움(4×4) 기록이 없어요. 첫 순위에 올라보세요!');
   subscribeMemoryLeaderboard(18, ['memoryLeaderboardList', 'memoryHubLeaderboardList'], '아직 어려움(6×6) 기록이 없어요. 첫 순위에 올라보세요!');
 
   document.getElementById('memoryPreviewToggleBtn')?.addEventListener('click', () => {
