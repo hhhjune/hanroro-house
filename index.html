@@ -5885,6 +5885,13 @@
       btn.addEventListener('click', () => {
         openBoardPostDetail(btn.dataset.postId, btn.dataset.boardKey);
       });
+      // <span>으로 바꿨으니 키보드(엔터/스페이스)로도 눌리게 직접 챙겨줘요.
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openBoardPostDetail(btn.dataset.postId, btn.dataset.boardKey);
+        }
+      });
     });
   }
 
@@ -5906,7 +5913,7 @@
         <td class="board-col-num">${post.pinned ? '📌' : rowNum}</td>
         <td class="board-col-title">
           <div class="board-title-cell-inner">
-            ${pinnedBadge}<button type="button" class="board-title-btn" data-post-id="${post.id}" data-board-key="${boardKey}">${badge}${post.title || '(제목 없음)'}</button>
+            ${pinnedBadge}<span class="board-title-btn" role="button" tabindex="0" data-post-id="${post.id}" data-board-key="${boardKey}">${badge}${post.title || '(제목 없음)'}</span>
             <span class="comment-count-badge">${post.commentCount > 0 ? `[${post.commentCount}]` : ''}</span>
           </div>
         </td>
