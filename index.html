@@ -2387,6 +2387,7 @@
   }
   .board-table .board-col-num{ width:56px; }
   .board-table .board-col-author{ width:110px; }
+  .board-table .board-col-views{ width:70px; }
   .board-table .board-col-date{ width:96px; }
   .board-table .board-col-title{ text-align:left; }
 
@@ -2401,6 +2402,7 @@
   }
   .board-row .board-col-num,
   .board-row .board-col-author,
+  .board-row .board-col-views,
   .board-row .board-col-date{
     white-space:nowrap;
     overflow:hidden;
@@ -2412,15 +2414,9 @@
     gap:2px;
     min-width:0;
   }
-  .board-view-count{
-    display:block;
-    font-size:10.5px;
-    color:var(--ink-soft);
-    opacity:0.75;
-    margin-top:2px;
-  }
   .board-row .board-col-num,
   .board-row .board-col-author,
+  .board-row .board-col-views,
   .board-row .board-col-date{
     text-align:center;
     color:var(--ink-soft);
@@ -4102,11 +4098,12 @@
           <th class="board-col-num">번호</th>
           <th class="board-col-title">제목</th>
           <th class="board-col-author">글쓴이</th>
+          <th class="board-col-views">조회수</th>
           <th class="board-col-date">날짜</th>
         </tr>
       </thead>
       <tbody class="board-list" data-list="all">
-        <tr><td colspan="4" class="archive-empty">불러오는 중…</td></tr>
+        <tr><td colspan="5" class="archive-empty">불러오는 중…</td></tr>
       </tbody>
     </table>
   </div>
@@ -4135,11 +4132,12 @@
           <th class="board-col-num">번호</th>
           <th class="board-col-title">제목</th>
           <th class="board-col-author">글쓴이</th>
+          <th class="board-col-views">조회수</th>
           <th class="board-col-date">날짜</th>
         </tr>
       </thead>
       <tbody class="board-list" data-list="free">
-        <tr><td colspan="4" class="archive-empty">불러오는 중…</td></tr>
+        <tr><td colspan="5" class="archive-empty">불러오는 중…</td></tr>
       </tbody>
     </table>
   </div>
@@ -4168,11 +4166,12 @@
           <th class="board-col-num">번호</th>
           <th class="board-col-title">제목</th>
           <th class="board-col-author">글쓴이</th>
+          <th class="board-col-views">조회수</th>
           <th class="board-col-date">날짜</th>
         </tr>
       </thead>
       <tbody class="board-list" data-list="question">
-        <tr><td colspan="4" class="archive-empty">불러오는 중…</td></tr>
+        <tr><td colspan="5" class="archive-empty">불러오는 중…</td></tr>
       </tbody>
     </table>
   </div>
@@ -4201,11 +4200,12 @@
           <th class="board-col-num">번호</th>
           <th class="board-col-title">제목</th>
           <th class="board-col-author">글쓴이</th>
+          <th class="board-col-views">조회수</th>
           <th class="board-col-date">날짜</th>
         </tr>
       </thead>
       <tbody class="board-list" data-list="info">
-        <tr><td colspan="4" class="archive-empty">불러오는 중…</td></tr>
+        <tr><td colspan="5" class="archive-empty">불러오는 중…</td></tr>
       </tbody>
     </table>
   </div>
@@ -5019,7 +5019,7 @@
     const numberEl = document.getElementById('rorosiCountdownNumber');
     countdownEl.style.display = 'block';
 
-    let n = 3;
+    let n = 10;
     numberEl.textContent = n;
     const interval = setInterval(() => {
       n--;
@@ -5759,7 +5759,7 @@
       renderBoardList(boardKey);
     }, (err) => {
       console.error(`[${boardKey}] 게시글을 불러오지 못했습니다:`, err);
-      listEl.innerHTML = '<tr><td colspan="4" class="archive-empty">게시글을 불러오지 못했어요. Firestore 설정을 확인해 주세요.</td></tr>';
+      listEl.innerHTML = '<tr><td colspan="5" class="archive-empty">게시글을 불러오지 못했어요. Firestore 설정을 확인해 주세요.</td></tr>';
     });
     boardState[boardKey].unsubscribe = unsubscribe;
 
@@ -5826,7 +5826,7 @@
     const posts = sortWithPinned(boardState[boardKey].posts);
 
     if (posts.length === 0) {
-      listEl.innerHTML = '<tr><td colspan="4" class="archive-empty">아직 게시글이 없어요. 첫 글을 남겨보세요.</td></tr>';
+      listEl.innerHTML = '<tr><td colspan="5" class="archive-empty">아직 게시글이 없어요. 첫 글을 남겨보세요.</td></tr>';
     } else {
       const total = posts.length;
       listEl.innerHTML = posts.map((post, idx) =>
@@ -5884,7 +5884,8 @@
           </div>
         </td>
         <td class="board-col-author">${post.author || '익명'}</td>
-        <td class="board-col-date">${dateStr}<span class="board-view-count">👁 ${(post.views || 0).toLocaleString('ko-KR')}</span></td>
+        <td class="board-col-views">${(post.views || 0).toLocaleString('ko-KR')}</td>
+        <td class="board-col-date">${dateStr}</td>
       </tr>
     `;
   }
@@ -6285,7 +6286,7 @@
     });
 
     if (combined.length === 0) {
-      listEl.innerHTML = '<tr><td colspan="4" class="archive-empty">아직 게시글이 없어요.</td></tr>';
+      listEl.innerHTML = '<tr><td colspan="5" class="archive-empty">아직 게시글이 없어요.</td></tr>';
       return;
     }
 
@@ -6347,7 +6348,7 @@
     });
 
     if (filtered.length === 0) {
-      listEl.innerHTML = '<tr><td colspan="4" class="archive-empty">검색 결과가 없어요.</td></tr>';
+      listEl.innerHTML = '<tr><td colspan="5" class="archive-empty">검색 결과가 없어요.</td></tr>';
       return;
     }
 
