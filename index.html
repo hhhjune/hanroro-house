@@ -1443,10 +1443,10 @@
 
   .upcoming-card.highlight,
   .entry-card.highlight,
-  .upcoming-list-item.highlight{
+  .upcoming-list-item.highlight,
+  .past-card.highlight{
     box-shadow:0 0 0 3px var(--berry);
   }
-
   /* D-day 카운트다운 */
   .dday-card{
     background:var(--paper-fold);
@@ -7725,8 +7725,21 @@
           setTimeout(() => target.classList.remove('highlight'), 2000);
         } else {
           // 지난 공연이면 셋리스트 쪽 카드로 이동해봐요.
+          // "더보기"를 아직 안 눌러서 카드가 숨겨져 있을 수 있으니, 그럴 땐 먼저 자동으로 펼쳐줘요.
           const pastTarget = document.querySelector(`.past-card[data-title="${CSS.escape(match.title)}"]`);
-          pastTarget?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (pastTarget) {
+            if (pastTarget.classList.contains('hidden')) {
+              const moreBtn = document.getElementById('pastMoreBtn');
+              if (moreBtn && moreBtn.textContent.trim() === '더보기') {
+                moreBtn.click();
+              } else {
+                pastTarget.classList.remove('hidden');
+              }
+            }
+            pastTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            pastTarget.classList.add('highlight');
+            setTimeout(() => pastTarget.classList.remove('highlight'), 2000);
+          }
         }
       });
     });
