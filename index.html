@@ -3939,7 +3939,7 @@
         <p>11시 11분은 언제든 다시 찾아옵니다.<br>잠시 후 시작되는 '로로시'에 맞춰, 정확히 11:11:00에 버튼을 눌러보세요.</p>
         <ol class="rorosi-howto">
           <li>게임 시작 버튼을 누르면</li>
-          <li>10초 카운트다운 후</li>
+          <li>3초 카운트다운 후</li>
           <li>가상의 시간이 11:10:50.000부터 밀리초 단위로 흐르기 시작해요</li>
           <li>언제든 "🌸 로로시!" 버튼을 눌러 11:11:00.000에 최대한 맞춰보세요</li>
         </ol>
@@ -3954,7 +3954,7 @@
 
       <div class="rorosi-countdown" id="rorosiCountdown" style="display:none;">
         <span class="rorosi-countdown-number" id="rorosiCountdownNumber">10</span>
-        <p>곧 로로시가 시작돼요...</p>
+        <p>곧 로로시가 시작돼요... 11시 11분 00초에 정확히 눌러주세요..</p>
       </div>
 
       <div class="rorosi-play" id="rorosiPlay" style="display:none;">
@@ -5048,7 +5048,7 @@
     const numberEl = document.getElementById('rorosiCountdownNumber');
     countdownEl.style.display = 'block';
 
-    let n = 10;
+    let n = 3;
     numberEl.textContent = n;
     const interval = setInterval(() => {
       n--;
