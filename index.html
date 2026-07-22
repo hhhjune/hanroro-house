@@ -3188,11 +3188,11 @@
   </div>
   <nav class="site-gnb" id="siteGnb">
     <a href="#today">오늘, 한로로는</a>
-    <a href="#board">게시판</a>
     <a href="#quiz">한로로 게임</a>
-    <a href="#discography">디스코그래피</a>
-    <a href="#calendar">캘린더</a>
+    <a href="#board">게시판</a>
     <a href="#setlists">셋리스트</a>
+    <a href="#calendar">캘린더</a>
+    <a href="#discography">디스코그래피</a>
     <a href="#diary">한 줄의 계절</a>
   </nav>
 </header>
@@ -3654,7 +3654,7 @@
         <p>총 20문제예요. 쉬운 문제부터 아주 어려운 문제까지 있어요 — 과연 몇 점이 나올까요?</p>
         <button class="quiz-start-btn" id="triviaStartBtn">퀴즈 시작하기 ▶</button>
 
-        <button type="button" class="worldcup-preview-toggle-btn" id="triviaPreviewToggleBtn">📊 지금까지 결과 미리보기</button>
+        <button type="button" class="worldcup-preview-toggle-btn" id="triviaPreviewToggleBtn">📊 점수 분포 보기</button>
         <div class="worldcup-stats" id="triviaHubStats" style="display:none;">
           <h4 class="worldcup-stats-title">📊 실시간 점수 분포</h4>
           <p class="worldcup-stats-total" id="triviaHubStatsTotal"></p>
@@ -3863,7 +3863,6 @@
         <img class="worldcup-result-img" id="worldcupResultImg" alt="">
         <h3 id="worldcupResultText"></h3>
         <div class="share-btn-row">
-          <button type="button" class="save-image-btn" id="worldcupCopyLinkBtn">🔗 공유하기(주소 복사)</button>
           <button type="button" class="kakao-share-btn" id="worldcupKakaoBtn">💙 공유</button>
           <button type="button" class="guestbook-fill-btn" id="worldcupGuestbookBtn">📖 방명록에 남기기</button>
         </div>
@@ -3928,7 +3927,7 @@
 
       <div class="rorosi-countdown" id="rorosiCountdown" style="display:none;">
         <span class="rorosi-countdown-number" id="rorosiCountdownNumber">10</span>
-        <p>곧 로로시가 시작됩니다. 11시 11분 00초에 정확히 눌러주세요...</p>
+        <p>곧 로로시가 시작돼요...</p>
       </div>
 
       <div class="rorosi-play" id="rorosiPlay" style="display:none;">
@@ -3943,7 +3942,6 @@
         <p class="quiz-result-desc" id="rorosiResultDiff"></p>
 
         <div class="share-btn-row">
-          <button type="button" class="save-image-btn" id="rorosiCopyLinkBtn">📋 링크 복사</button>
           <button type="button" class="kakao-share-btn" id="rorosiKakaoBtn">💬 공유</button>
           <button type="button" class="guestbook-fill-btn" id="rorosiGuestbookBtn">📖 방명록에 남기기</button>
         </div>
@@ -4967,16 +4965,6 @@
 
   document.getElementById('worldcupRetryBtn').addEventListener('click', startWorldcup);
 
-  document.getElementById('worldcupCopyLinkBtn').addEventListener('click', async () => {
-    const url = location.origin + location.pathname + '#quiz';
-    try {
-      await navigator.clipboard.writeText(url);
-      alert('링크를 복사했어요! 원하는 곳에 붙여넣기 해보세요.');
-    } catch (err) {
-      prompt('아래 주소를 복사해서 공유해 보세요.', url);
-    }
-  });
-
   document.getElementById('worldcupKakaoBtn').addEventListener('click', () => {
     if (!currentWorldcupWinner) return;
     shareToKakao(
@@ -5024,7 +5012,7 @@
     const numberEl = document.getElementById('rorosiCountdownNumber');
     countdownEl.style.display = 'block';
 
-    let n = 3;
+    let n = 10;
     numberEl.textContent = n;
     const interval = setInterval(() => {
       n--;
@@ -5084,16 +5072,6 @@
   document.getElementById('rorosiRetryBtn')?.addEventListener('click', () => {
     document.getElementById('rorosiResult').style.display = 'none';
     document.getElementById('rorosiIntro').style.display = 'block';
-  });
-
-  document.getElementById('rorosiCopyLinkBtn')?.addEventListener('click', async () => {
-    const url = location.origin + location.pathname + '#quiz';
-    try {
-      await navigator.clipboard.writeText(url);
-      alert('링크를 복사했어요! 원하는 곳에 붙여넣기 해보세요.');
-    } catch (err) {
-      prompt('아래 주소를 복사해서 공유해 보세요.', url);
-    }
   });
 
   document.getElementById('rorosiKakaoBtn')?.addEventListener('click', () => {
@@ -7059,7 +7037,7 @@
     const btn = document.getElementById('triviaPreviewToggleBtn');
     const isOpen = panel.style.display !== 'none';
     panel.style.display = isOpen ? 'none' : 'block';
-    btn.textContent = isOpen ? '📊 지금까지 결과 미리보기' : '📊 미리보기 접기';
+    btn.textContent = isOpen ? '📊 점수 분포 보기' : '📊 분포 접기';
   });
 
 
