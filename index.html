@@ -6840,8 +6840,10 @@
       });
       const posts = allPostsSnap.docs;
       let done = 0;
+      let quotaExceeded = false;
 
       for (const postDoc of posts) {
+        if (quotaExceeded) break;
         statusEl.textContent = `진행 중… (${done + 1}/${posts.length})`;
         try {
           const commentsQ = query(collection(db, 'boardPosts', postDoc.id, 'comments'), where('deleted', '==', false));
@@ -6852,11 +6854,20 @@
           }
         } catch (err) {
           console.error(`[댓글수 재집계] ${postDoc.id} 실패:`, err);
+          // "resource-exhausted"(할당량 초과)면 계속 두드려봐야 소용없으니 바로 멈춰요.
+          if (err.code === 'resource-exhausted') {
+            quotaExceeded = true;
+            statusEl.textContent = `⚠️ Firestore 오늘치 할당량이 다 찼어요. (${done}/${posts.length}개까지만 완료) 내일 다시 시도해 주세요.`;
+            break;
+          }
         }
         done++;
+        await new Promise(r => setTimeout(r, 150)); // 요청 사이에 살짝 텀을 둬서 순간적으로 몰리지 않게 해요.
       }
 
-      statusEl.textContent = `✅ 완료! 게시글 ${posts.length}개의 댓글수를 다시 세었어요.`;
+      if (!quotaExceeded) {
+        statusEl.textContent = `✅ 완료! 게시글 ${posts.length}개의 댓글수를 다시 세었어요.`;
+      }
     } catch (err) {
       alert('재집계에 실패했어요. 잠시 후 다시 시도해 주세요.');
       console.error(err);
