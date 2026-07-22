@@ -5851,13 +5851,44 @@
   // 게시글을 눌러서 펼쳐야만 보이게 해요(디시인사이드처럼). 그래서 댓글을 전부
   // 구독하지 않고, 개수만 가볍게 집계해서 뱃지에 채워 넣어요.
   // "삭제된 댓글입니다"로 표시되는 것들은 개수에서 빼요.
-  function loadCommentCounts(container) {
-    container.querySelectorAll('.comment-count-badge').forEach(async (badge) => {
-      const postId = badge.dataset.countPostId;
+  // 같은 게시글의 댓글수를 "전체/자유/질문/정보" 탭이 겹쳐서 렌더링될 때마다
+  // 매번 새로 물어보면, 게시글이 많아질수록 순식간에 똑같은 요청이 수십 번씩
+  // 겹쳐서 나가버려요. 그래서 한 번 물어본 값은 잠깐 동안 재사용하고, 이미
+  // 요청이 나간(응답 대기 중인) 건은 또 새로 안 보내고 그 요청을 같이 기다려요.
+  const commentCountCache = {};      // postId -> count
+  const commentCountInFlight = {};   // postId -> Promise
+  const COMMENT_COUNT_CACHE_MS = 15000; // 15초 정도는 다시 안 물어봐도 충분해요.
+  let commentCountCacheTime = {};    // postId -> 캐시된 시각(ms)
+
+  async function fetchCommentCount(postId){
+    const now = Date.now();
+    if (commentCountCache[postId] !== undefined && (now - (commentCountCacheTime[postId] || 0)) < COMMENT_COUNT_CACHE_MS) {
+      return commentCountCache[postId];
+    }
+    if (commentCountInFlight[postId]) {
+      return commentCountInFlight[postId];
+    }
+    const p = (async () => {
       try {
         const q = query(collection(db, 'boardPosts', postId, 'comments'), where('deleted', '==', false));
         const snap = await getCountFromServer(q);
         const count = snap.data().count;
+        commentCountCache[postId] = count;
+        commentCountCacheTime[postId] = Date.now();
+        return count;
+      } finally {
+        delete commentCountInFlight[postId];
+      }
+    })();
+    commentCountInFlight[postId] = p;
+    return p;
+  }
+
+  function loadCommentCounts(container) {
+    container.querySelectorAll('.comment-count-badge').forEach(async (badge) => {
+      const postId = badge.dataset.countPostId;
+      try {
+        const count = await fetchCommentCount(postId);
         badge.textContent = count > 0 ? `[${count}]` : '';
       } catch (err) {
         // 집계 실패해도 목록 자체는 정상적으로 보이도록 조용히 넘어가요.
@@ -5940,8 +5971,11 @@
     currentCommentUnsub = onSnapshot(q, (snapshot) => {
       commentsCache[postId] = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       renderComments(postId);
+      const liveCount = commentsCache[postId].filter(c => !c.deleted).length;
+      commentCountCache[postId] = liveCount;
+      commentCountCacheTime[postId] = Date.now();
       const badge = document.querySelector(`.comment-count-badge[data-count-post-id="${postId}"]`);
-      if (badge) badge.textContent = commentsCache[postId].length > 0 ? `[${commentsCache[postId].length}]` : '';
+      if (badge) badge.textContent = liveCount > 0 ? `[${liveCount}]` : '';
     }, (err) => {
       console.error(`[comments:${postId}] 불러오기 실패:`, err);
     });
