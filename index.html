@@ -3522,14 +3522,6 @@
   <!-- 게임 목록 화면 -->
   <div class="game-screen active" id="gameIndexScreen">
     <div class="game-index-list">
-      <button type="button" class="game-index-row" data-goto="gamePersonalityScreen">
-        <span class="game-index-icon">🎧</span>
-        <span class="game-index-text">
-          <span class="game-index-title">당신은 어떤 한로로일까요?</span>
-          <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
-        </span>
-        <span class="game-index-arrow">›</span>
-      </button>
       <button type="button" class="game-index-row" data-goto="gameTriviaScreen">
         <span class="game-index-icon">🧠</span>
         <span class="game-index-text">
@@ -3538,11 +3530,11 @@
         </span>
         <span class="game-index-arrow">›</span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gameMemoryScreen">
-        <span class="game-index-icon">🃏</span>
+      <button type="button" class="game-index-row" data-goto="gameRorosiScreen">
+        <span class="game-index-icon">🌸</span>
         <span class="game-index-text">
-          <span class="game-index-title">앨범 커버 짝 맞추기</span>
-          <span class="game-index-desc">카드 뒤집기 · 같은 앨범 커버 찾기</span>
+          <span class="game-index-title">로로시 게임</span>
+          <span class="game-index-desc">가상 시계 11:11:00.000에 정확히 맞춰 누르기</span>
         </span>
         <span class="game-index-arrow">›</span>
       </button>
@@ -3554,11 +3546,19 @@
         </span>
         <span class="game-index-arrow">›</span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gameRorosiScreen">
-        <span class="game-index-icon">🌸</span>
+      <button type="button" class="game-index-row" data-goto="gameMemoryScreen">
+        <span class="game-index-icon">🃏</span>
         <span class="game-index-text">
-          <span class="game-index-title">로로시 게임</span>
-          <span class="game-index-desc">가상 시계 11:11:00.000에 정확히 맞춰 누르기</span>
+          <span class="game-index-title">앨범 커버 짝 맞추기</span>
+          <span class="game-index-desc">카드 뒤집기 · 같은 앨범 커버 찾기</span>
+        </span>
+        <span class="game-index-arrow">›</span>
+      </button>
+      <button type="button" class="game-index-row" data-goto="gamePersonalityScreen">
+        <span class="game-index-icon">🎧</span>
+        <span class="game-index-text">
+          <span class="game-index-title">당신은 어떤 한로로일까요?</span>
+          <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
         </span>
         <span class="game-index-arrow">›</span>
       </button>
@@ -5024,7 +5024,7 @@
     const numberEl = document.getElementById('rorosiCountdownNumber');
     countdownEl.style.display = 'block';
 
-    let n = 3;
+    let n = 10;
     numberEl.textContent = n;
     const interval = setInterval(() => {
       n--;
