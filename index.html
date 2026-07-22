@@ -2412,6 +2412,13 @@
     gap:2px;
     min-width:0;
   }
+  .board-view-count{
+    display:block;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    opacity:0.75;
+    margin-top:2px;
+  }
   .board-row .board-col-num,
   .board-row .board-col-author,
   .board-row .board-col-date{
@@ -5782,6 +5789,7 @@
           title,
           content,
           photos: boardState[boardKey].photos,
+          views: 0,
           createdAt: serverTimestamp()
         });
         titleInput.value = '';
@@ -5876,7 +5884,7 @@
           </div>
         </td>
         <td class="board-col-author">${post.author || '익명'}</td>
-        <td class="board-col-date">${dateStr}</td>
+        <td class="board-col-date">${dateStr}<span class="board-view-count">👁 ${(post.views || 0).toLocaleString('ko-KR')}</span></td>
       </tr>
     `;
   }
@@ -6138,8 +6146,25 @@
     document.getElementById('boardDetailBadge').textContent = badgeLabel;
     document.getElementById('boardDetailBadge').className = `board-badge ${boardKey}`;
     document.getElementById('boardDetailTitle').textContent = post.title || '(제목 없음)';
-    document.getElementById('boardDetailMeta').textContent = `${post.author || '익명'} · ${dateStr}`;
+    document.getElementById('boardDetailMeta').textContent = `${post.author || '익명'} · ${dateStr} · 조회 ${(post.views || 0).toLocaleString('ko-KR')}`;
     document.getElementById('boardDetailContent').textContent = post.content || '';
+
+    // 조회수: 이미 값이 있으면 그냥 1 늘리고, 아직 없는(기존) 글이면 50~200 사이
+    // 임의의 값으로 한 번 채워준 다음 시작해요. 같은 사람이 여러 번 눌러도 그냥
+    // 방문할 때마다 늘어나는 단순한 방식이에요(중복 방지 없음).
+    (async () => {
+      try {
+        const postRef = doc(db, 'boardPosts', postId);
+        if (typeof post.views !== 'number') {
+          const seed = Math.floor(Math.random() * 151) + 50; // 50~200
+          await updateDoc(postRef, { views: seed + 1 });
+        } else {
+          await updateDoc(postRef, { views: increment(1) });
+        }
+      } catch (err) {
+        console.error('[조회수] 갱신 실패:', err);
+      }
+    })();
 
     const photosEl = document.getElementById('boardDetailPhotos');
     // 예전 글은 photo(단일 사진) 필드로 저장돼 있을 수 있어서 함께 지원해요.
