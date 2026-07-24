@@ -1754,12 +1754,13 @@
   .video-player-modal{
     position:fixed;
     top:0; left:0; right:0; bottom:0;
-    background:rgba(0,0,0,0.8);
+    background:rgba(0,0,0,0.85);
     z-index:2000;
     display:flex;
     align-items:center;
     justify-content:center;
     padding:20px;
+    overflow-y:auto;
   }
   .video-player-modal-inner{
     position:relative;
@@ -1769,8 +1770,10 @@
   .video-player-modal-frame{
     position:relative;
     width:100%;
-    aspect-ratio:16/9;
+    height:0;
+    padding-top:56.25%; /* 16:9 비율 — aspect-ratio 속성보다 어느 브라우저에서나 확실하게 동작해요 */
     background:#000;
+    overflow:hidden;
   }
   .video-player-modal-frame iframe{
     position:absolute;
@@ -1780,12 +1783,18 @@
   }
   .video-player-modal-close{
     position:absolute;
-    top:-40px; right:0;
-    background:none;
+    top:8px; right:8px;
+    z-index:1;
+    width:32px; height:32px;
+    background:rgba(0,0,0,0.6);
     border:none;
+    border-radius:50%;
     color:#fff;
-    font-size:22px;
+    font-size:18px;
     cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
   @media (max-width:640px){
     .video-card{ width:230px; }
@@ -3416,7 +3425,7 @@
 
   <div class="video-showcase-row">
     <div class="video-showcase-card">
-      <div class="video-showcase-label">▶ 최신 유튜브</div>
+      <div class="video-showcase-label">▶ 최신 영상</div>
       <a class="video-showcase-thumb-wrap" id="latestYoutubeLink" href="https://www.youtube.com/channel/UCrDa_5OU-rhvXqWlPx5hgKQ" target="_blank" rel="noopener">
         <img class="video-showcase-thumb" id="latestYoutubeThumb" alt="" style="display:none;">
         <span class="video-showcase-play">▶</span>
@@ -7106,13 +7115,9 @@
       openVideoPlayerModal(videoId, 'youtube');
     }
   });
-  document.getElementById('latestTiktokLink')?.addEventListener('click', (e) => {
-    const videoId = e.currentTarget.dataset.videoId;
-    if (videoId) {
-      e.preventDefault();
-      openVideoPlayerModal(videoId, 'tiktok');
-    }
-  });
+  // 틱톡은 iframe 임베드를 자주 막아버려서, 억지로 인라인 재생을 시도하면
+  // 재생도 안 되고 원래 있던 링크 이동까지 같이 막혀버려요. 그래서 틱톡은
+  // 그냥 원래대로 새 탭에서 틱톡으로 바로 열리게 둬요(가장 확실하게 되는 방식).
 
   // ================= 유튜브 페이지 (재생목록별 영상) =================
   async function loadVideosData(){
