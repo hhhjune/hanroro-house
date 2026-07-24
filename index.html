@@ -1078,6 +1078,130 @@
     .memory-rank-submit input{ font-size:12px; }
     .memory-leaderboard-record{ font-size:10.5px; }
   }
+
+  .lyrics-box{
+    margin-top:26px;
+    background:var(--paper-fold);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:30px 24px;
+    text-align:center;
+    box-shadow:none;
+  }
+  .lyrics-intro p{
+    font-size:14px;
+    color:var(--ink-soft);
+    line-height:1.7;
+    margin:14px 0 22px;
+  }
+  .lyrics-question{ text-align:left; }
+  .lyrics-song-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:20px 0 18px;
+  }
+  .lyrics-song-cover{
+    width:64px; height:64px;
+    object-fit:cover;
+    border-radius:2px;
+    border:1px solid var(--rule);
+    flex:0 0 auto;
+  }
+  .lyrics-song-category{
+    font-size:11.5px;
+    color:var(--berry);
+    font-weight:700;
+    margin-bottom:2px;
+  }
+  .lyrics-song-title{
+    font-family:'Gowun Batang', serif;
+    font-size:17px;
+    color:var(--ink);
+  }
+  .lyrics-line{
+    font-size:15px;
+    line-height:1.9;
+    color:var(--ink);
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:18px 16px;
+    white-space:pre-line;
+    text-align:center;
+  }
+  .lyrics-line .blank{
+    display:inline-block;
+    min-width:56px;
+    border-bottom:2px solid var(--berry);
+    color:transparent;
+  }
+  .lyrics-instruction{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin:12px 0 16px;
+    text-align:center;
+  }
+  .lyrics-choices{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .lyrics-choice-btn{
+    background:#fff;
+    border:1px solid var(--rule-strong);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:14px;
+    padding:12px 16px;
+    border-radius:2px;
+    cursor:pointer;
+    text-align:left;
+  }
+  .lyrics-choice-btn:hover{ border-color:var(--berry); color:var(--berry); }
+  .lyrics-choice-btn.correct{ border-color:var(--moss-deep); background:rgba(95,111,82,0.12); }
+  .lyrics-choice-btn.wrong{ border-color:var(--berry); background:rgba(156,74,92,0.1); }
+  .lyrics-input-row{
+    display:flex;
+    gap:8px;
+  }
+  .lyrics-input-row input{
+    flex:1;
+    border:1px solid var(--rule-strong);
+    border-radius:2px;
+    padding:10px 12px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:14px;
+  }
+  .lyrics-score{
+    font-family:'Gowun Batang', serif;
+    font-size:32px;
+    font-weight:700;
+    color:var(--berry);
+    margin:10px 0;
+  }
+  .lyrics-review{
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1px dashed var(--rule-strong);
+    text-align:left;
+  }
+  .lyrics-review-item{
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    font-size:13px;
+  }
+  .lyrics-review-item .song{ font-weight:700; color:var(--ink); margin-bottom:4px; }
+  .lyrics-review-item .your-answer{ color:var(--berry); }
+  .lyrics-review-item .correct-answer{ color:var(--moss-deep); font-weight:700; }
+  @media (max-width:520px){
+    .lyrics-song-cover{ width:52px; height:52px; }
+    .lyrics-song-title{ font-size:14.5px; }
+    .lyrics-line{ font-size:13.5px; padding:14px 12px; }
+  }
   .memory-rank-submit{
     display:flex;
     gap:8px;
@@ -2125,7 +2249,21 @@
   }
 
   @media (max-width:760px){
-    .about{grid-template-columns:1fr; padding:80px 20px;}
+    .about{grid-template-columns:1fr; padding:36px 20px; gap:24px;}
+    .index-card{ padding:22px 20px; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+    .index-card h3{ font-size:12px; margin-bottom:16px; }
+    .index-card::before{ top:44px; }
+    .index-card dl{ gap:14px; }
+    .index-card .row{ font-size:14.5px; padding-bottom:12px; grid-template-columns:1fr; gap:4px; }
+    .index-card dt{ font-size:11px; letter-spacing:1.5px; text-transform:uppercase; opacity:0.65; padding-top:0; }
+    .index-card dd{ line-height:1.5; }
+    .index-card dd a{ display:inline-block; padding:4px 0; }
+    .bio h2{ font-size:20px; margin-bottom:12px; }
+    .bio p{ font-size:12.5px; margin:0 0 12px 0; line-height:1.6; }
+    .pull-quote{ margin:16px 0; padding:4px 0 4px 14px; font-size:14px; line-height:1.5; }
+    .pull-quote span{ font-size:11.5px; margin-top:6px; }
+    .tag-row{ gap:6px; margin-top:14px; }
+    .tag{ font-size:11px; padding:5px 10px; }
     .discography{max-width:100%;}
     .stop{width:78vw;}
     .road{padding:10px 20px 36px;}
@@ -3475,8 +3613,8 @@
       <div class="row"><dt>장르</dt><dd>모던록 · 인디팝</dd></div>
       <div class="row"><dt>팬덤명</dt><dd>로켓단</dd></div>
       <div class="row"><dt>인스타그램</dt><dd>
-        <a href="https://www.instagram.com/hanr0r0" target="_blank" rel="noopener">@hanr0r0</a><br>
-        <a href="https://www.instagram.com/fromhanroro" target="_blank" rel="noopener">@fromhanroro</a>
+        <a href="https://www.instagram.com/hanr0r0" target="_blank" rel="noopener">인스타</a><br>
+        <a href="https://www.instagram.com/fromhanroro" target="_blank" rel="noopener">공식인스타</a>
       </dd></div>
     </dl>
   </div>
@@ -3786,6 +3924,14 @@
         <span class="game-index-text">
           <span class="game-index-title">당신은 어떤 한로로일까요?</span>
           <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
+        </span>
+        <span class="game-index-arrow">›</span>
+      </button>
+      <button type="button" class="game-index-row" data-goto="gameLyricsScreen">
+        <span class="game-index-icon">📝</span>
+        <span class="game-index-text">
+          <span class="game-index-title">한로로 가사 맞추기</span>
+          <span class="game-index-desc">랜덤 20문제 · 빈칸에 들어갈 가사 맞히기</span>
         </span>
         <span class="game-index-arrow">›</span>
       </button>
@@ -4206,6 +4352,87 @@
         <input type="text" class="guestbook-search-input" placeholder="🔍 닉네임·내용으로 검색">
       </div>
       <div class="guestbook-list" data-game="rorosi"></div>
+    </div>
+  </div>
+
+  <!-- 게임: 한로로 가사 맞추기 -->
+  <div class="game-screen" id="gameLyricsScreen">
+    <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
+
+    <div class="game-subtabs">
+      <button type="button" class="game-subtab active" data-subtab="play">게임</button>
+      <button type="button" class="game-subtab" data-subtab="guestbook">방명록</button>
+    </div>
+
+    <div class="game-subpanel active" data-subpanel="play">
+    <div class="lyrics-box" id="lyricsBox">
+
+      <div class="lyrics-intro" id="lyricsIntro">
+        <span class="quiz-result-emoji">📝</span>
+        <h3>한로로 가사 맞추기</h3>
+        <p>준비된 문제 중에서 매번 랜덤으로 20문제가 출제돼요(문제는 중복되지 않아요).<br>난이도를 골라 시작해보세요.</p>
+        <div class="memory-diff-row">
+          <button type="button" class="memory-diff-btn" data-lyrics-diff="easy">쉬움 · 객관식</button>
+          <button type="button" class="memory-diff-btn" data-lyrics-diff="hard">어려움 · 주관식</button>
+        </div>
+      </div>
+
+      <div class="lyrics-question" id="lyricsQuestion" style="display:none;">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="lyricsProgressFill"></div></div>
+          <span id="lyricsProgressLabel">1 / 20</span>
+        </div>
+
+        <div class="lyrics-song-header">
+          <img class="lyrics-song-cover" id="lyricsSongCover" alt="">
+          <div>
+            <div class="lyrics-song-category" id="lyricsSongCategory"></div>
+            <div class="lyrics-song-title" id="lyricsSongTitle"></div>
+          </div>
+        </div>
+
+        <p class="lyrics-line" id="lyricsLine"></p>
+
+        <div class="lyrics-instruction" id="lyricsInstruction"></div>
+
+        <div class="lyrics-choices" id="lyricsChoices" style="display:none;"></div>
+
+        <div class="lyrics-input-row" id="lyricsInputRow" style="display:none;">
+          <input type="text" id="lyricsAnswerInput" placeholder="빈칸에 들어갈 가사를 입력하세요">
+          <button type="button" class="board-submit-btn" id="lyricsSubmitBtn">제출</button>
+        </div>
+      </div>
+
+      <div class="lyrics-result" id="lyricsResult" style="display:none;">
+        <span class="quiz-result-emoji">🎉</span>
+        <h3>결과</h3>
+        <div class="lyrics-score" id="lyricsScoreText"></div>
+
+        <div class="share-btn-row">
+          <button type="button" class="kakao-share-btn" id="lyricsKakaoBtn">💬 공유</button>
+          <button type="button" class="guestbook-fill-btn" id="lyricsGuestbookBtn">📖 방명록 작성</button>
+          <button type="button" class="quiz-retry-btn" id="lyricsRetryBtn">다시 하기</button>
+        </div>
+
+        <div class="lyrics-review" id="lyricsReview"></div>
+      </div>
+
+    </div>
+    </div>
+
+    <div class="game-subpanel" data-subpanel="guestbook">
+      <div class="guestbook-write">
+        <div class="board-write-row">
+          <input type="text" class="guestbook-author-input" placeholder="닉네임">
+          <input type="text" class="guestbook-result-input" placeholder="게임 결과를 먼저 완료해주세요" readonly>
+        </div>
+        <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
+        <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
+      </div>
+      <div class="guestbook-search-row">
+        <input type="text" class="guestbook-search-input" placeholder="🔍 닉네임·내용으로 검색">
+      </div>
+      <div class="guestbook-list" data-game="lyricsquiz"></div>
     </div>
   </div>
 
@@ -5266,6 +5493,1148 @@
     panel.style.display = isOpen ? 'none' : 'block';
     btn.textContent = isOpen ? '🏆 오늘의 랭킹 미리보기' : '🏆 미리보기 접기';
   });
+
+  // ================= 한로로 가사 맞추기 =================
+  // ⚠️ 아래 LYRICS_QUIZ_POOL은 총 120개의 "빈 칸"만 미리 만들어둔 상태예요. 실제
+  // 가사는 저작권 때문에 여기에 채워 넣지 않았어요 — 갖고 계신 문제 파일을 보시면서
+  // song/cover/category/lyric/answer/choices 값만 하나씩 직접 채워주시면 돼요.
+  //
+  // 각 문제 형식 (아래 120개 칸에 이미 이 형식으로 자리만 만들어뒀어요):
+  // {
+  //   song: "노래 제목",
+  //   cover: "images/whoyoufavorite/노래파일명.jpeg",  // 기존 앨범 커버 경로 재사용
+  //   category: "후렴구" 또는 "킬링 프레이즈" 또는 "클라이맥스" 등 (없어도 됨, ""로 두면 안 보여요),
+  //   lyric: "빈칸 앞부분 {blank} 빈칸 뒷부분 / 다음 줄 가사",  // {blank} 자리에 빈칸이 표시돼요
+  //   answer: "정답",
+  //   choices: ["오답1", "오답2"]  // 쉬움(객관식)일 때 정답과 함께 섞여서 보기 3개가 됨
+  // }
+  // 참고: song이 빈 문자열("")인 칸은 게임에서 자동으로 걸러지니, 다 채우기 전에
+  // 미리 테스트해보셔도 안전해요.
+  const LYRICS_QUIZ_POOL = [
+    {
+      song: "너와 나",           // 1번 노래 제목
+      cover: "images/whoyoufavorite/너와 나 (You and I).jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "우린 {blank}할 순 없겠지 그래도 / 오래 꿈꿔왔던 순간 즐겨봐",          // 빈칸은 {blank}로 표시
+      answer: "영원",
+      choices: ["사랑", "행복"]
+    },
+    {
+      song: "너와 나",           // 2번 노래 제목
+      cover: "images/whoyoufavorite/너와 나 (You and I).jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "내가 너고 네가 나인 이 세상은 당연하게 \n{blank}밖에 남지 않을 테니까",          // 빈칸은 {blank}로 표시
+      answer: "사랑",
+      choices: ["영원", "바람"]
+    },
+    {
+      song: "너와 나",           // 3번 노래 제목
+      cover: "images/whoyoufavorite/너와 나 (You and I).jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "내가 너고 네가 나인 이 세상은 당연하게 사랑밖에 남지 않을 테니까 \n{blank}속에서 헤엄치는 날 안아줘",          // 빈칸은 {blank}로 표시
+      answer: "울음",
+      choices: ["바다", "사랑"]
+    },
+    {
+      song: "너와 나",           // 4번 노래 제목
+      cover: "images/whoyoufavorite/너와 나 (You and I).jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "낯선 오늘에 매달린 {blank} \n살아내려 폭풍우치던 날들 / 나의 지금은 우리면 됐어",          // 빈칸은 {blank}로 표시
+      answer: "내일",
+      choices: ["오늘", "어"]
+    },
+    {
+      song: "게임 오버? (Game Over?)",           // 5번 노래 제목
+      cover: "images/whoyoufavorite/게임 오버 (Game Over).jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "돌고도는 {blank}에 나 역시 가만히 잠들 수는 없어요 \n미움 뒤의 사랑을 찾아서 당연한 꿈을 꿀 거예요",          // 빈칸은 {blank}로 표시
+      answer: "세계",
+      choices: ["계절", "세상"]
+    },
+    {
+      song: "게임 오버? (Game Over?)",           // 6번 노래 제목
+      cover: "images/whoyoufavorite/게임 오버 (Game Over).jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "저기는 목숨이 {blank} 개지만 \n여기는 목숨이 단 하나야",          // 빈칸은 {blank}로 표시
+      answer: "세 개",
+      choices: ["두 개", "네 개"]
+    },
+    {
+      song: "게임 오버? (Game Over?)",           // 7번 노래 제목
+      cover: "images/whoyoufavorite/게임 오버 (Game Over).jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "매일매일 외로워져요 {blank} 싸우는 것 같아",          // 빈칸은 {blank}로 표시
+      answer: "홀로",
+      choices: ["우린", "서로"]
+    },
+    {
+      song: "게임 오버? (Game Over?)",           // 8번 노래 제목
+      cover: "images/whoyoufavorite/게임 오버 (Game Over).jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "매일매일 외로워져요 홀로 싸우는 것 같아 \n내 무기는 {blank}뿐인데",          // 빈칸은 {blank}로 표시
+      answer: "다정함",
+      choices: ["간절함", "가정함"]
+    },
+    {
+      song: "게임 오버? (Game Over?)",           // 9번 노래 제목
+      cover: "images/whoyoufavorite/게임 오버 (Game Over).jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "삼킨 눈물로라도 목을 축여내는 내가 \n부끄럽지만 가끔은 {blank}도 나고요",          // 빈칸은 {blank}로 표시
+      answer: "웃음",
+      choices: ["눈물", "용기"]
+    },
+    {
+      song: "1111",           // 10번 노래 제목
+      cover: "images/whoyoufavorite/1111.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "언제부터 날 그렇게 {blank}했었나요 숲에 내던진 나를 \n아침에도 가라앉고 있어요 원한 거죠 아아 늪이었나",          // 빈칸은 {blank}로 표시
+      answer: "못 본 척",
+      choices: ["미워", "모른 "]
+    },
+    {
+      song: "1111",           // 11번 노래 제목
+      cover: "images/whoyoufavorite/1111.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "사랑하는 것들로부터 난 {blank} \n미워하는 것들 속에서 난 {blank} \n사랑하는 것들 속에서 난 {blank} \n미워하는 것들로부터 난 {blank}",          // 빈칸은 {blank}로 표시
+      answer: "한 발짝 멀어지고 - 한없이 작아지고 - 한 번의 숨을 쉬고 - 하루를 기도하고",
+      choices: ["한없이 작아지고 — 하루를 기도하고 — 한 번의 숨을 쉬고 — 한 발짝 멀어지고", "하루를 기도하고 — 한 발짝 멀어지고 — 한없이 작아지고 — 한 번의 숨을 쉬고"]
+    },
+    {
+      song: "1111",           // 12번 노래 제목
+      cover: "images/whoyoufavorite/1111.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "여기 또다시 {blank} 변함없어요 차피",          // 빈칸은 {blank}로 표시
+      answer: "태어난대도",
+      choices: ["살아간대도", "마주친대"]
+    },
+    {
+      song: "0+0",           // 13번 노래 제목
+      cover: "images/whoyoufavorite/0+0.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "앞서가는 너의 {blank}가 두 볼을 간지럽힐 때",          // 빈칸은 {blank}로 표시
+      answer: "머리",
+      choices: ["향기", "하루"]
+    },
+    {
+      song: "0+0",           // 14번 노래 제목
+      cover: "images/whoyoufavorite/0+0.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "영생과 영면의 차이를 너는 알고 있니? \n멍든 발목을 꺾으려 해도 망설임 없이 {blank}",          // 빈칸은 {blank}로 표시
+      answer: "태어나는 꿈",
+      choices: ["피어나는 꿈", "피어나는 꽃"]
+    },
+    {
+      song: "0+0",           // 15번 노래 제목
+      cover: "images/whoyoufavorite/0+0.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "난 널 버리지 않아 너도 같은 생각이지? \n{blank} 우리는 결코 우리가 될 수 없단다",          // 빈칸은 {blank}로 표시
+      answer: "저 너머의",
+      choices: ["저 너머엔", "저 너머로"]
+    },
+    {
+      song: "시간을 달리네",           // 16번 노래 제목
+      cover: "images/whoyoufavorite/시간을 달리네.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "시간을 달리네",           // 17번 노래 제목
+      cover: "images/whoyoufavorite/시간을 달리네.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "아 이 마음은 어디에 올려둬야만 우릴 내려볼 수 있는가 \n넌 내 {blank}였다는 걸 기억해 줘",          // 빈칸은 {blank}로 표시
+      answer: "조각",
+      choices: ["운명", "상처"]
+    },
+    {
+      song: "시간을 달리네",           // 18번 노래 제목
+      cover: "images/whoyoufavorite/시간을 달리네.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "기나긴 {blank}을 지나서 너에게 / 안기기 위해 오늘도 시간을 달리네",          // 빈칸은 {blank}로 표시
+      answer: "여름",
+      choices: ["시간", "추억"]
+    },
+    {
+      song: "시간을 달리네",           // 19번 노래 제목
+      cover: "images/whoyoufavorite/시간을 달리네.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "손을 뻗어봐도 넌 울음만 터뜨리고 돌아가야 할 때 벌써 내일을 아파하지만 \n같은 자리에서 같은 {blank} 보고 싶을 거야",          // 빈칸은 {blank}로 표시
+      answer: "웃음을 띄워 줘",
+      choices: ["이름을 불러 줘", "눈물을 감춰 줘"]
+    },
+    {
+      song: "용의자",           // 20번 노래 제목
+      cover: "images/whoyoufavorite/용의자.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "용의자",           // 21번 노래 제목
+      cover: "images/whoyoufavorite/용의자.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "죽어가던 그녀를 안았어요 \n걸터앉은 {blank} 외로웠죠",          // 빈칸은 {blank}로 표시
+      answer: "눈물은",
+      choices: ["그녀는", "우리는"]
+    },
+    {
+      song: "용의자",           // 22번 노래 제목
+      cover: "images/whoyoufavorite/용의자.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "알면서도 흩어져 가는 {blank} \n나만 우두커니 서 있네",          // 빈칸은 {blank}로 표시
+      answer: "흔적들",
+      choices: ["기억들", "조각들"]
+    },
+    {
+      song: "용의자",           // 23번 노래 제목
+      cover: "images/whoyoufavorite/용의자.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "우 이게 내 잘못일까요 우 {blank} 마세요 \n우 결국 그녀는 떠났죠 우 혼자였거든요",          // 빈칸은 {blank}로 표시
+      answer: "웃기지",
+      choices: ["거짓말", "말리지"]
+    },
+    {
+      song: "내일에서 온 티켓",           // 24번 노래 제목
+      cover: "images/whoyoufavorite/내일에서 온 티켓.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "당신은 무엇 때문에 {blank} 싶나요? \n그 이유가 명확한 당신, 우리와 함께합시다",          // 빈칸은 {blank}로 표시
+      answer: "죽고",
+      choices: ["살고", "살아가고"]
+    },
+    {
+      song: "내일에서 온 티켓",           // 25번 노래 제목
+      cover: "images/whoyoufavorite/내일에서 온 티켓.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "가입을 원할 시, 뒷면의 티켓을 갖고 내일 오후 {blank}에 음악실로 오세요",          // 빈칸은 {blank}로 표시
+      answer: "다섯 시",
+      choices: ["세 시", "네 "]
+    },
+    {
+      song: "내일에서 온 티켓",           // 26번 노래 제목
+      cover: "images/whoyoufavorite/내일에서 온 티켓.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "내일에서 온 티켓",           // 27번 노래 제목
+      cover: "images/whoyoufavorite/내일에서 온 티켓.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "원래 이런 거야 하루만 미뤄 내보는 다이빙 \n정말 꿈이 아니라면 {blank}부터 다친 맘을 고쳐낼 거야",          // 빈칸은 {blank}로 표시
+      answer: "꿈틀대는 날개",
+      choices: ["떨리는 두 발", "거칠어진 숨결"]
+    },
+    {
+      song: "내일에서 온 티켓",           // 28번 노래 제목
+      cover: "images/whoyoufavorite/내일에서 온 티켓.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "차갑던 햇살 위태로운 눈물을 닦아주네\n 원래 이랬던가? 하루만 미뤄 내보는 {blank}",          // 빈칸은 {blank}로 표시
+      answer: "다이빙",
+      choices: ["여행", "고백"]
+    },
+    {
+      song: "내일에서 온 티켓",           // 29번 노래 제목
+      cover: "images/whoyoufavorite/내일에서 온 티켓.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "이름도, 사는 곳도 모르는 나의 {blank} 사이서 내가 감히 함께 외쳐봐도 될까요? ",          // 빈칸은 {blank}로 표시
+      answer: "구원자",
+      choices: ["방랑자", "그림자"]
+    },
+    {
+      song: "도망",           // 30번 노래 제목
+      cover: "images/whoyoufavorite/도망.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "끝없는 {blank}은 아프지 / 않단 걸 그녀도 알까요",          // 빈칸은 {blank}로 표시
+      answer: "추락",
+      choices: ["어둠", "침묵"]
+    },
+    {
+      song: "도망",           // 31번 노래 제목
+      cover: "images/whoyoufavorite/도망.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "어린 개야 울음을 멈추고 알려줘 / 이대로 산다면 뭐가 되고 / 죽으면 어느 {blank}가 남는 건지"          // 빈칸은 {blank}로 표시
+      answer: "부위",
+      choices: ["의미", "흉터"]
+    },
+    {
+      song: "도망",           // 32번 노래 제목
+      cover: "images/whoyoufavorite/도망.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "기우는 새벽에 매달린 채 밝아온 {blank} / 나와 상관없죠",          // 빈칸은 {blank}로 표시
+      answer: "천국",
+      choices: ["아침", "세상"]
+    },
+    {
+      song: "",           // 33번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 34번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 35번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 36번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 37번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 38번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 39번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 40번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 41번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 42번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 43번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 44번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 45번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 46번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 47번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 48번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 49번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 50번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 51번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 52번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 53번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 54번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 55번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 56번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 57번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 58번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 59번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 60번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 61번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 62번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 63번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 64번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 65번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 66번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 67번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 68번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 69번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 70번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 71번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 72번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 73번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 74번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 75번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 76번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 77번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 78번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 79번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 80번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 81번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 82번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 83번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 84번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 85번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 86번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 87번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 88번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 89번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 90번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 91번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 92번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 93번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 94번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 95번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 96번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 97번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 98번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 99번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 100번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 101번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 102번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 103번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 104번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 105번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 106번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 107번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 108번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 109번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 110번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 111번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 112번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 113번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 114번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 115번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 116번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 117번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 118번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 119번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+    {
+      song: "",           // 120번 노래 제목
+      cover: "",          // images/whoyoufavorite/노래파일명.jpeg
+      category: "",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
+      lyric: "",          // 빈칸은 {blank}로 표시
+      answer: "",
+      choices: ["", ""]
+    },
+  ];
+
+  (function(){
+    const introEl = document.getElementById('lyricsIntro');
+    const questionEl = document.getElementById('lyricsQuestion');
+    const resultEl = document.getElementById('lyricsResult');
+    if (!introEl) return;
+
+    let quizQuestions = [];
+    let currentIndex = 0;
+    let difficulty = 'easy';
+    let wrongAnswers = [];
+    let correctCount = 0;
+
+    function shuffleArray(arr){
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function pickRandomQuestions(pool, count){
+      return shuffleArray(pool).slice(0, Math.min(count, pool.length));
+    }
+
+    function startLyricsQuiz(diff){
+      difficulty = diff;
+      const filledPool = LYRICS_QUIZ_POOL.filter(q => q.song && q.song.trim() && q.lyric && q.answer);
+      quizQuestions = pickRandomQuestions(filledPool, 20);
+      currentIndex = 0;
+      wrongAnswers = [];
+      correctCount = 0;
+
+      if (quizQuestions.length === 0) {
+        alert('아직 문제가 등록되지 않았어요. 관리자에게 문제 등록을 요청해주세요.');
+        return;
+      }
+
+      introEl.style.display = 'none';
+      resultEl.style.display = 'none';
+      questionEl.style.display = 'block';
+      showLyricsQuestion();
+    }
+
+    function showLyricsQuestion(){
+      const q = quizQuestions[currentIndex];
+      document.getElementById('lyricsProgressLabel').textContent = `${currentIndex + 1} / ${quizQuestions.length}`;
+      document.getElementById('lyricsProgressFill').style.width = `${((currentIndex) / quizQuestions.length) * 100}%`;
+
+      const coverEl = document.getElementById('lyricsSongCover');
+      if (q.cover) { coverEl.src = q.cover; coverEl.style.display = ''; }
+      else { coverEl.style.display = 'none'; }
+      document.getElementById('lyricsSongCategory').textContent = q.category ? `[${q.category}]` : '';
+      document.getElementById('lyricsSongTitle').textContent = q.song;
+
+      const lineHtml = q.lyric.replace('{blank}', '<span class="blank">빈칸</span>');
+      document.getElementById('lyricsLine').innerHTML = lineHtml;
+
+      const choicesEl = document.getElementById('lyricsChoices');
+      const inputRowEl = document.getElementById('lyricsInputRow');
+      const instructionEl = document.getElementById('lyricsInstruction');
+
+      if (difficulty === 'easy') {
+        instructionEl.textContent = '빈칸에 알맞은 정답을 선택하시오.';
+        choicesEl.style.display = 'flex';
+        inputRowEl.style.display = 'none';
+        const options = shuffleArray([q.answer, ...(q.choices || [])]);
+        choicesEl.innerHTML = options.map((opt, i) => `
+          <button type="button" class="lyrics-choice-btn" data-idx="${i}">${i + 1}. ${opt}</button>
+        `).join('');
+        choicesEl.querySelectorAll('.lyrics-choice-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const chosen = options[Number(btn.dataset.idx)];
+            submitLyricsAnswer(chosen, q);
+          });
+        });
+      } else {
+        instructionEl.textContent = '빈칸에 알맞은 정답을 적어넣으시오.';
+        choicesEl.style.display = 'none';
+        inputRowEl.style.display = 'flex';
+        const input = document.getElementById('lyricsAnswerInput');
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function normalizeAnswer(s){
+      return (s || '').replace(/\s+/g, '').trim();
+    }
+
+    function submitLyricsAnswer(userAnswer, q){
+      const isCorrect = normalizeAnswer(userAnswer) === normalizeAnswer(q.answer);
+      if (isCorrect) {
+        correctCount++;
+      } else {
+        wrongAnswers.push({ song: q.song, lyric: q.lyric, answer: q.answer, userAnswer: userAnswer || '(입력 안 함)' });
+      }
+      currentIndex++;
+      if (currentIndex >= quizQuestions.length) {
+        finishLyricsQuiz();
+      } else {
+        showLyricsQuestion();
+      }
+    }
+
+    function finishLyricsQuiz(){
+      questionEl.style.display = 'none';
+      resultEl.style.display = 'block';
+      document.getElementById('lyricsScoreText').textContent = `${correctCount} / ${quizQuestions.length}문제 맞췄어요!`;
+
+      const reviewEl = document.getElementById('lyricsReview');
+      if (wrongAnswers.length === 0) {
+        reviewEl.innerHTML = '<p>🎉 전부 맞췄어요! 오답이 없어요.</p>';
+      } else {
+        reviewEl.innerHTML = `<h4 class="worldcup-stats-title">📋 오답노트</h4>` + wrongAnswers.map(w => {
+          const lineHtml = w.lyric.replace('{blank}', `<span class="blank" style="color:var(--berry);">____</span>`);
+          return `
+            <div class="lyrics-review-item">
+              <div class="song">${w.song}</div>
+              <div>${lineHtml}</div>
+              <div>내가 쓴 답: <span class="your-answer">${w.userAnswer}</span></div>
+              <div>정답: <span class="correct-answer">${w.answer}</span></div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      window.currentLyricsResult = { correctCount, total: quizQuestions.length };
+      const resultInputEl = document.querySelector('#gameLyricsScreen .guestbook-result-input');
+      if (resultInputEl) resultInputEl.value = `${correctCount} / ${quizQuestions.length}문제`;
+    }
+
+    document.querySelectorAll('[data-lyrics-diff]').forEach(btn => {
+      btn.addEventListener('click', () => startLyricsQuiz(btn.dataset.lyricsDiff));
+    });
+    document.getElementById('lyricsSubmitBtn')?.addEventListener('click', () => {
+      const q = quizQuestions[currentIndex];
+      const val = document.getElementById('lyricsAnswerInput').value.trim();
+      if (!val) { document.getElementById('lyricsAnswerInput').focus(); return; }
+      submitLyricsAnswer(val, q);
+    });
+    document.getElementById('lyricsAnswerInput')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('lyricsSubmitBtn').click();
+    });
+    document.getElementById('lyricsRetryBtn')?.addEventListener('click', () => {
+      resultEl.style.display = 'none';
+      introEl.style.display = 'block';
+    });
+    document.getElementById('lyricsKakaoBtn')?.addEventListener('click', () => {
+      if (!window.currentLyricsResult) return;
+      shareToKakao(
+        `📝 한로로 가사 맞추기 완료!`,
+        `${window.currentLyricsResult.correctCount} / ${window.currentLyricsResult.total}문제 맞췄어요 — 당신도 도전해보세요!`,
+        '#quiz',
+        new URL('images/icons/icon-512.png', location.href).href,
+        '나도 해보기'
+      );
+    });
+    document.getElementById('lyricsGuestbookBtn')?.addEventListener('click', () => {
+      if (window.currentLyricsResult) fillGuestbookWithResult('lyricsquiz', `${window.currentLyricsResult.correctCount} / ${window.currentLyricsResult.total}문제`);
+    });
+  })();
 
   // 게시판: 전체 / 자유게시판 / 질문게시판 탭 전환
   const boardTabButtons = document.querySelectorAll('.board-tab');
@@ -6686,6 +8055,7 @@
 
   setupGuestbook('worldcup');
   setupGuestbook('rorosi');
+  setupGuestbook('lyricsquiz');
 
   // ================= 로로시 게임: 오늘의 TOP10 (닉네임 필수, 매일 초기화) =================
   // 날짜(KST)가 바뀌면 자동으로 새 하루치 랭킹만 보여요. 어제 기록은 안 지워지고
