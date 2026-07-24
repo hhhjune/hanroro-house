@@ -1703,7 +1703,7 @@
   }
   .video-card{
     flex:0 0 auto;
-    width:220px;
+    width:300px;
     cursor:pointer;
     scroll-snap-align:start;
   }
@@ -1726,17 +1726,17 @@
     position:absolute;
     top:50%; left:50%;
     transform:translate(-50%,-50%);
-    width:40px; height:40px;
+    width:56px; height:56px;
     border-radius:50%;
     background:rgba(0,0,0,0.55);
     color:#fff;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:14px;
+    font-size:18px;
   }
   .video-card-title{
-    font-size:12.5px;
+    font-size:13.5px;
     color:var(--ink);
     margin-top:8px;
     line-height:1.5;
@@ -1782,7 +1782,7 @@
     cursor:pointer;
   }
   @media (max-width:640px){
-    .video-card{ width:160px; }
+    .video-card{ width:230px; }
     .video-playlist-title{ font-size:16px; }
   }
 
@@ -6999,6 +6999,7 @@
     const latest = items[0];
     const videoId = extractYoutubeId(latest.link);
     linkEl.href = latest.link;
+    linkEl.dataset.videoId = videoId || '';
     titleEl.textContent = latest.title;
     if (videoId) {
       thumbEl.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
@@ -7018,6 +7019,8 @@
     }
     const latest = items[0];
     linkEl.href = latest.link;
+    const tiktokMatch = (latest.link || '').match(/\/video\/(\d+)/);
+    linkEl.dataset.videoId = tiktokMatch ? tiktokMatch[1] : '';
     titleEl.textContent = latest.title;
 
     // 썸네일은 브라우저에서 틱톡에 직접 요청하지 않고, update_today.py가 미리
@@ -7079,6 +7082,23 @@
 
   loadTodayData();
 
+  // "오늘, 한로로는"의 최신 유튜브·틱톡도 "유튜브" 페이지처럼 클릭하면
+  // 페이지 이동 없이 바로 그 자리에서 재생되게 해요.
+  document.getElementById('latestYoutubeLink')?.addEventListener('click', (e) => {
+    const videoId = e.currentTarget.dataset.videoId;
+    if (videoId) {
+      e.preventDefault();
+      openVideoPlayerModal(videoId, 'youtube');
+    }
+  });
+  document.getElementById('latestTiktokLink')?.addEventListener('click', (e) => {
+    const videoId = e.currentTarget.dataset.videoId;
+    if (videoId) {
+      e.preventDefault();
+      openVideoPlayerModal(videoId, 'tiktok');
+    }
+  });
+
   // ================= 유튜브 페이지 (재생목록별 영상) =================
   async function loadVideosData(){
     const wrap = document.getElementById('videoCategoriesWrap');
@@ -7120,10 +7140,14 @@
     }
   }
 
-  function openVideoPlayerModal(videoId){
+  function openVideoPlayerModal(videoId, platform){
     const modal = document.getElementById('videoPlayerModal');
     const frame = document.getElementById('videoPlayerModalFrame');
-    frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    if (platform === 'tiktok') {
+      frame.innerHTML = `<iframe src="https://www.tiktok.com/embed/v2/${videoId}" title="TikTok video player" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+    } else {
+      frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    }
     modal.style.display = 'flex';
   }
   function closeVideoPlayerModal(){
