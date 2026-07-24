@@ -422,52 +422,90 @@
   .game-screen.active{ display:block; }
 
   .game-index-list{
-    display:flex;
-    flex-direction:column;
-    gap:0;
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:14px;
     margin-top:30px;
-    border-top:1px solid var(--rule);
   }
   .game-index-row{
+    position:relative;
     display:flex;
     align-items:center;
-    gap:16px;
+    gap:14px;
     width:100%;
-    background:none;
-    border:none;
-    border-bottom:1px solid var(--rule);
-    padding:18px 6px;
+    background:#fff;
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:20px 18px 20px 22px;
     cursor:pointer;
     text-align:left;
-    transition:background 0.15s ease;
+    overflow:hidden;
+    box-shadow:0 1px 3px rgba(42,39,36,0.06);
+    transition:transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
-  .game-index-row:hover{ background:var(--paper-fold); }
+  .game-index-row::before{
+    content:'';
+    position:absolute;
+    top:0; left:0;
+    width:5px; height:100%;
+    background:var(--tint-color, var(--berry));
+  }
+  .game-index-row[data-tint="berry"]{ --tint-color:#9C4A5C; --tint-bg:#F5E9EB; --tint-border:#DCB9C0; }
+  .game-index-row[data-tint="moss"]{ --tint-color:#47543C; --tint-bg:#EBEEE6; --tint-border:#C3CDB6; }
+  .game-index-row[data-tint="gold"]{ --tint-color:#96701E; --tint-bg:#F3ECDD; --tint-border:#DCC48C; }
+  .game-index-row[data-tint="blue"]{ --tint-color:#3F5B74; --tint-bg:#E9EEF2; --tint-border:#B7C7D3; }
+  .game-index-row[data-tint="terracotta"]{ --tint-color:#A2532E; --tint-bg:#F3E7DD; --tint-border:#DCB393; }
+  .game-index-row[data-tint="plum"]{ --tint-color:#6E5075; --tint-bg:#EFE9F0; --tint-border:#CBB8CE; }
+  .game-index-row:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 28px rgba(42,39,36,0.14);
+    border-color:var(--tint-border, var(--rule-strong));
+  }
   .game-index-icon{
     flex-shrink:0;
-    font-size:24px;
-    width:44px;
-    height:44px;
+    font-size:26px;
+    width:52px;
+    height:52px;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:var(--paper-fold);
-    border:1px solid var(--rule);
-    border-radius:50%;
+    background:var(--tint-bg, var(--paper-fold));
+    border-radius:14px;
+    transition:transform 0.25s ease;
+  }
+  .game-index-row:hover .game-index-icon{
+    transform:scale(1.1) rotate(-5deg);
   }
   .game-index-text{
     flex:1;
     display:flex;
     flex-direction:column;
-    gap:3px;
+    gap:4px;
+    min-width:0;
   }
   .game-index-title{
     font-family:'Gowun Batang', serif;
-    font-size:16px;
+    font-size:16.5px;
+    font-weight:700;
     color:var(--ink);
   }
   .game-index-desc{
-    font-size:12.5px;
+    font-size:12px;
     color:var(--ink-soft);
+    line-height:1.4;
+  }
+  .game-index-badge{
+    flex-shrink:0;
+    align-self:flex-start;
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--tint-color, var(--berry));
+    background:var(--tint-bg, var(--paper-fold));
+    border:1px solid var(--tint-border, var(--rule-strong));
+    padding:4px 9px;
+    border-radius:999px;
+    white-space:nowrap;
+    margin-top:2px;
   }
   .game-index-arrow{
     flex-shrink:0;
@@ -475,7 +513,7 @@
     color:var(--rule-strong);
     transition:color 0.15s ease, transform 0.15s ease;
   }
-  .game-index-row:hover .game-index-arrow{ color:var(--berry); transform:translateX(3px); }
+  .game-index-row:hover .game-index-arrow{ color:var(--tint-color, var(--berry)); transform:translateX(4px); }
 
   .game-back-btn{
     background:none;
@@ -2295,10 +2333,12 @@
     .road-arrow-right{right:2px;}
     .hero h1{letter-spacing:3px;}
 
-    .game-index-row{ padding:14px 12px; gap:10px; }
-    .game-index-icon{ font-size:20px; }
-    .game-index-title{ font-size:14px; }
+    .game-index-list{ grid-template-columns:1fr; }
+    .game-index-row{ padding:16px 14px 16px 18px; gap:12px; }
+    .game-index-icon{ font-size:22px; width:44px; height:44px; }
+    .game-index-title{ font-size:14.5px; }
     .game-index-desc{ font-size:11.5px; }
+    .game-index-badge{ font-size:9.5px; padding:3px 7px; }
 
     .quiz-box, .lyrics-box{ padding:20px 14px; margin-top:16px; }
     .lyrics-intro p{ font-size:12.5px; margin:10px 0 16px; line-height:1.55; }
@@ -3927,58 +3967,64 @@
   <div class="section-head">
     <span class="eyebrow handwrite">놀면서 알아가는</span>
     <h2>한로로 게임</h2>
-    <p class="today-sub">하고 싶은 게임을 골라보세요.</p>
+    <p class="today-sub">여섯 가지 게임이 기다리고 있어요 — 하고 싶은 걸 골라보세요!</p>
   </div>
 
   <!-- 게임 목록 화면 -->
   <div class="game-screen active" id="gameIndexScreen">
     <div class="game-index-list">
-      <button type="button" class="game-index-row" data-goto="gameTriviaScreen">
+      <button type="button" class="game-index-row" data-goto="gameTriviaScreen" data-tint="berry">
         <span class="game-index-icon">🧠</span>
         <span class="game-index-text">
           <span class="game-index-title">한로로 퀴즈</span>
           <span class="game-index-desc">20문항 · 얼마나 잘 아는지 테스트</span>
         </span>
+        <span class="game-index-badge">20문항</span>
         <span class="game-index-arrow">›</span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gameRorosiScreen">
+      <button type="button" class="game-index-row" data-goto="gameRorosiScreen" data-tint="plum">
         <span class="game-index-icon">🌸</span>
         <span class="game-index-text">
           <span class="game-index-title">로로시 게임</span>
           <span class="game-index-desc">가상 시계 11:11:00.000에 정확히 맞춰 누르기</span>
         </span>
+        <span class="game-index-badge">타이밍 게임</span>
         <span class="game-index-arrow">›</span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gameLyricsScreen">
+      <button type="button" class="game-index-row" data-goto="gameLyricsScreen" data-tint="moss">
         <span class="game-index-icon">📝</span>
         <span class="game-index-text">
           <span class="game-index-title">한로로 가사 맞추기</span>
           <span class="game-index-desc">랜덤 20문제 · 빈칸에 들어갈 가사 맞히기</span>
         </span>
+        <span class="game-index-badge">🆕 NEW</span>
         <span class="game-index-arrow">›</span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gameWorldcupHubScreen">
+      <button type="button" class="game-index-row" data-goto="gameWorldcupHubScreen" data-tint="gold">
         <span class="game-index-icon">🏆</span>
         <span class="game-index-text">
           <span class="game-index-title">이상형 월드컵</span>
           <span class="game-index-desc">1:1로 골라서 최애 뽑기</span>
         </span>
+        <span class="game-index-badge">32강 토너먼트</span>
         <span class="game-index-arrow">›</span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gameMemoryScreen">
+      <button type="button" class="game-index-row" data-goto="gameMemoryScreen" data-tint="blue">
         <span class="game-index-icon">🃏</span>
         <span class="game-index-text">
           <span class="game-index-title">앨범 커버 짝 맞추기</span>
           <span class="game-index-desc">카드 뒤집기 · 같은 앨범 커버 찾기</span>
         </span>
+        <span class="game-index-badge">카드 매칭</span>
         <span class="game-index-arrow">›</span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gamePersonalityScreen">
+      <button type="button" class="game-index-row" data-goto="gamePersonalityScreen" data-tint="terracotta">
         <span class="game-index-icon">🎧</span>
         <span class="game-index-text">
           <span class="game-index-title">당신은 어떤 한로로일까요?</span>
           <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
         </span>
+        <span class="game-index-badge">성향 테스트</span>
         <span class="game-index-arrow">›</span>
       </button>
     </div>
@@ -5940,8 +5986,8 @@
       cover: "images/whoyoufavorite/집.jpeg",          // images/whoyoufavorite/노래파일명.jpeg
       category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
       lyric: "다시 지을 수 있단 약속들이 / 마치 지울 수 없는 {blank}처럼 번져가",          // 빈칸은 {blank}로 표시
-      answer: "얼룩",
-      choices: ["흉터", "상처"]
+      answer: "흉터",
+      choices: ["얼룩", "상처"]
     },
     {
       song: "ㅈㅣㅂ",           // 47번 노래 제목
@@ -6085,7 +6131,7 @@
       category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
       lyric: "이 벅찬 봄날이 {blank} 때 / 한 번만 나를 돌아봐요",          // 빈칸은 {blank}로 표시
       answer: "시들",
-      choices: ["피", "채울"]
+      choices: ["저물", "채울"]
     },
     {
       song: "거울",           // 65번 노래 제목
@@ -6101,7 +6147,7 @@
       category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
       lyric: "젖은 머리 위로는 더 축축한 {blank}만이 맴돌고 / 울려 퍼지는 숨소린 아무도 듣지 못하고",          // 빈칸은 {blank}로 표시
       answer: "괴로움",
-      choices: ["슬픔", "로움"]
+      choices: ["슬픔", "외로움"]
     },
     {
       song: "거울",           // 67번 노래 제목
@@ -6205,7 +6251,7 @@
       category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
       lyric: "네가 아무렇지 않게 웃던 밤 / 나는 처음으로 죽어 울었어 \n비가 눈이 되어 무거워진 날 / 맨발로 붉은 {blank}",          // 빈칸은 {blank}로 표시
       answer: "사랑을 그렸어",
-      choices: ["눈물을 흘렸어", "하늘을 바라봤어"]
+      choices: ["눈믈을 흘렸어", "하늘을 바라봤어"]
     },
     {
       song: "하루살이",           // 80번 노래 제목
@@ -6367,7 +6413,7 @@
       category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
       lyric: "맞이하는 {blank} 없어도 \n텅 빈 이곳은 따뜻하네요",          // 빈칸은 {blank}로 표시
       answer: "사람",
-      choices: ["사랑", "버스"]
+      choices: ["사", "버스"]
     },
     {
       song: "정류장",           // 100번 노래 제목
