@@ -19,11 +19,28 @@ import html
 socket.setdefaulttimeout(15.0)
 
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "today.json")
+VIDEOS_OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "videos.json")
 
 YOUTUBE_CHANNEL_ID = "UCrDa_5OU-rhvXqWlPx5hgKQ"   # 한로로 HANRORO 공식 채널
 INSTAGRAM_USERNAME = "hanr0r0"
 TIKTOK_USERNAME = "hanroro_official"
 NAVER_BLOG_ID = "hanr0r0"
+
+# "유튜브" 페이지에 카테고리별로 보여줄 재생목록들이에요.
+# 아래 값을 실제 재생목록 ID로 바꿔주세요 — youtube.com/@hanroro6055/playlists 에서
+# 각 재생목록 클릭 → 주소창의 list= 뒤에 오는 문자열이 ID예요.
+# ID가 비어있는("") 항목은 자동으로 건너뛰어요.
+PLAYLISTS = [
+    { "key": "survival", "label": "로로의 생존법", "playlistId": "PLbTfENeeHwBo" },
+    { "key": "liveclip", "label": "LIVE CLIP", "playlistId": "PL2Q5225gYAkDtMMK8u0LFCq4y1gHeg83Q" },
+    { "key": "mv", "label": "MV", "playlistId": "PL2Q5225gYAkCGoCvtI2k3DJAUXaVFi_AA" },
+    { "key": "rorolog", "label": "ROROLOG", "playlistId": "PL2Q5225gYAkB1DLz2jPF9M5CL2pwWyMJP" },
+    { "key": "dangbamnabam", "label": "당밤나밤", "playlistId": "PL2Q5225gYAkDjWjuqbCB3PdWmBClPlKDo" },
+    { "key": "bucketlist", "label": "BUCKET LIST", "playlistId": "PL2Q5225gYAkBxPaHe4brbuhIzW64os1Y9" },
+    { "key": "piecesoforo", "label": "Pieces of RORO", "playlistId": "PL2Q5225gYAkAhK5IcrRUs6yklp9YlSE57" },
+    { "key": "roronote", "label": "RORONOTE", "playlistId": "PL2Q5225gYAkAVv8cyXNcWGNXqMdTGbMZN" },
+    { "key": "cover", "label": "COVER", "playlistId": "PL2Q5225gYAkDBgT9f3kDWyClVVJfAYVre" },
+]
 
 MAX_ITEMS_PER_SOURCE = 10
 
@@ -74,6 +91,69 @@ def fetch_youtube_latest():
     except Exception as e:
         print(f"[youtube] 수집 중 예외 발생: {e}")
         return []
+
+
+def fetch_playlist_videos(playlist_id, max_results=20):
+    """YouTube Data API v3로 특정 재생목록의 영상 목록을 가져옵니다."""
+    api_key = os.environ.get("YOUTUBE_API_KEY")
+    if not api_key or not playlist_id:
+        return []
+
+    try:
+        from googleapiclient.discovery import build
+        youtube = build("youtube", "v3", developerKey=api_key)
+
+        playlist_res = youtube.playlistItems().list(
+            part="snippet",
+            playlistId=playlist_id,
+            maxResults=max_results
+        ).execute()
+
+        results = []
+        for item in playlist_res.get("items", []):
+            snippet = item.get("snippet", {})
+            resource = snippet.get("resourceId", {})
+            video_id = resource.get("videoId")
+            if not video_id:
+                continue
+            thumbnails = snippet.get("thumbnails", {})
+            thumb = (
+                thumbnails.get("medium", {}).get("url")
+                or thumbnails.get("default", {}).get("url")
+                or ""
+            )
+            results.append({
+                "videoId": video_id,
+                "title": snippet.get("title", ""),
+                "thumbnail": thumb,
+                "link": f"https://www.youtube.com/watch?v={video_id}"
+            })
+        return results
+    except Exception as e:
+        print(f"[유튜브 재생목록:{playlist_id}] 수집 실패: {e}")
+        return []
+
+
+def build_videos_json():
+    """PLAYLISTS에 정의된 재생목록마다 영상을 가져와서 videos.json으로 저장해요."""
+    print("--- '유튜브' 페이지용 재생목록 데이터 수집 시작 ---")
+    categories = []
+    for pl in PLAYLISTS:
+        if not pl.get("playlistId"):
+            print(f"[유튜브 재생목록] '{pl['label']}' — playlistId가 비어있어서 건너뜁니다.")
+            categories.append({ "key": pl["key"], "label": pl["label"], "videos": [] })
+            continue
+        videos = fetch_playlist_videos(pl["playlistId"])
+        print(f"[유튜브 재생목록] '{pl['label']}' — {len(videos)}개 영상 수집")
+        categories.append({ "key": pl["key"], "label": pl["label"], "videos": videos })
+
+    data = {
+        "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "categories": categories
+    }
+    with open(VIDEOS_OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"videos.json 생성 완료 → {VIDEOS_OUTPUT_PATH}")
 
 
 def _clean_caption(caption_raw):
@@ -340,6 +420,8 @@ def main():
 
     print(f"today.json 생성 완료 → {OUTPUT_PATH}")
     print(f"  instagram: {len(data['instagram'])}건 / youtube: {len(data['youtube'])}건 / tiktok: {len(data['tiktok'])}건 / naverblog: {len(data['naverblog'])}건")
+
+    build_videos_json()
 
 
 if __name__ == "__main__":
