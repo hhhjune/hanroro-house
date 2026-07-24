@@ -1,10 +1,16 @@
 {
-  "updated_at": "2026-07-24T02:59:09.211640+00:00",
+  "updated_at": "2026-07-24T08:16:42.235497+00:00",
   "categories": [
     {
       "key": "survival",
       "label": "로로의 생존법",
       "videos": [
+        {
+          "videoId": "_q-0t--U6WI",
+          "title": "[로로의 생존법] 제1조 여행",
+          "thumbnail": "https://i.ytimg.com/vi/_q-0t--U6WI/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=_q-0t--U6WI"
+        },
         {
           "videoId": "MbzGAo0xgZM",
           "title": "[로로의 생존법] 프롤로그",

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-24T02:59:08.090171+00:00",
+  "updated_at": "2026-07-24T08:16:41.052972+00:00",
   "instagram": [
     {
       "date": "최근 게시물",
@@ -54,6 +54,16 @@
   ],
   "youtube": [
     {
+      "date": "2026.07.24",
+      "title": "로로의 핫 써머",
+      "link": "https://www.youtube.com/watch?v=2IurOD_yGQc"
+    },
+    {
+      "date": "2026.07.24",
+      "title": "[로로의 생존법] 제1조 여행",
+      "link": "https://www.youtube.com/watch?v=_q-0t--U6WI"
+    },
+    {
       "date": "2026.07.22",
       "title": "로로가 채워 나갈 생존법",
       "link": "https://www.youtube.com/watch?v=3pUeI4SlBGg"
@@ -92,24 +102,19 @@
       "date": "2026.07.01",
       "title": "2% 와 사랑하게 될 거야",
       "link": "https://www.youtube.com/watch?v=7sGeeTRKndE"
-    },
-    {
-      "date": "2026.07.01",
-      "title": "[BEHIND] 2% 와 사랑하게 될 거야",
-      "link": "https://www.youtube.com/watch?v=cMG9Ld7eo20"
-    },
-    {
-      "date": "2026.06.26",
-      "title": "[LIVE] 한로로 (HANRORO) – 정류장 [The 18th Seoul Jazz Festival 2026]",
-      "link": "https://www.youtube.com/watch?v=rWHmpysuwgk"
     }
   ],
   "tiktok": [
     {
       "date": "",
+      "title": "@hanroro_official — [로로의 생존법] 제1조 여행 지금 한로로 유튜브에서 확인하세요.📕  #HANRORO #한로로 ",
+      "link": "https://www.tiktok.com/@hanroro_official/video/7666001730974338324",
+      "thumbnail": "https://p19-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/osYAQBExfvDERQg5uFGIFzGBf7cDbqQENMQubm~tplv-tiktokx-origin.image?dr=9636&x-expires=1785052800&x-signature=EbOFx5Eq26%2BF8GGdNtBhYr0w3pc%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8"
+    },
+    {
+      "date": "",
       "title": "@hanroro_official — #최유정 님과 나! 🐹💞 #한로로 #HANRORO #너와나 ",
-      "link": "https://www.tiktok.com/@hanroro_official/video/7665645902865943828",
-      "thumbnail": "https://p16-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/oIbfeGQQQGApfoh852WQhtlPKGEEIRANMF2GCe~tplv-tiktokx-origin.image?dr=9636&x-expires=1785031200&x-signature=vggut7YDPYnBLiEdbM2ppU29OSY%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
+      "link": "https://www.tiktok.com/@hanroro_official/video/7665645902865943828"
     },
     {
       "date": "",
@@ -150,11 +155,6 @@
       "date": "",
       "title": "@hanroro_official — 정신을 깨울 때는 역시 레모네이드...🍋 #한로로 #HANRORO ",
       "link": "https://www.tiktok.com/@hanroro_official/video/7662025699653340437"
-    },
-    {
-      "date": "",
-      "title": "@hanroro_official — GG EZ #한로로 #HANRORO ",
-      "link": "https://www.tiktok.com/@hanroro_official/video/7660883935496359189"
     }
   ],
   "naverblog": [
