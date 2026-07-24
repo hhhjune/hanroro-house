@@ -4283,14 +4283,16 @@
   <div id="videoCategoriesWrap">
     <p class="archive-empty">불러오는 중…</p>
   </div>
-
-  <div class="video-player-modal" id="videoPlayerModal" style="display:none;">
-    <div class="video-player-modal-inner">
-      <button type="button" class="video-player-modal-close" id="videoPlayerModalClose">✕</button>
-      <div class="video-player-modal-frame" id="videoPlayerModalFrame"></div>
-    </div>
-  </div>
 </section>
+
+<!-- 영상 재생 모달: 어느 페이지에서 열리든(오늘, 한로로는 / 유튜브 등) 항상 보이도록
+     특정 page 섹션 안이 아니라 바깥(전역)에 둬요. -->
+<div class="video-player-modal" id="videoPlayerModal" style="display:none;">
+  <div class="video-player-modal-inner">
+    <button type="button" class="video-player-modal-close" id="videoPlayerModalClose">✕</button>
+    <div class="video-player-modal-frame" id="videoPlayerModalFrame"></div>
+  </div>
+</div>
 
 <section id="setlists" class="page setlists-section">
   <div class="section-head">
