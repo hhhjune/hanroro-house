@@ -2294,6 +2294,29 @@
     .road-arrow-left{left:2px;}
     .road-arrow-right{right:2px;}
     .hero h1{letter-spacing:3px;}
+
+    .game-index-row{ padding:14px 12px; gap:10px; }
+    .game-index-icon{ font-size:20px; }
+    .game-index-title{ font-size:14px; }
+    .game-index-desc{ font-size:11.5px; }
+
+    .quiz-box, .lyrics-box{ padding:20px 14px; margin-top:16px; }
+    .lyrics-intro p{ font-size:12.5px; margin:10px 0 16px; line-height:1.55; }
+    .memory-diff-row{ flex-direction:column; gap:8px; }
+    .lyrics-song-header{ gap:10px; margin:14px 0 12px; }
+    .lyrics-song-cover{ width:48px; height:48px; }
+    .lyrics-song-title{ font-size:14px; }
+    .lyrics-song-category{ font-size:10.5px; }
+    .lyrics-line{ font-size:13px; line-height:1.7; padding:14px 12px; }
+    .lyrics-instruction{ font-size:11.5px; margin:10px 0 12px; }
+    .lyrics-hint-row{ margin:-4px 0 12px; }
+    .lyrics-hint-btn{ font-size:12px; padding:5px 12px; }
+    .lyrics-choice-btn{ font-size:13px; padding:10px 12px; }
+    .lyrics-input-row input{ font-size:13px; padding:9px 10px; }
+    .lyrics-score{ font-size:26px; }
+    .lyrics-review-item{ font-size:12px; padding:10px 12px; }
+    .worldcup-preview-toggle-btn{ font-size:12.5px; padding:8px 14px; }
+    .worldcup-stats{ padding:14px 12px; }
   }
 
   @media (max-width:1100px){
@@ -4438,9 +4461,10 @@
       </div>
 
       <div class="lyrics-result" id="lyricsResult" style="display:none;">
-        <span class="quiz-result-emoji">🎉</span>
+        <span class="quiz-result-emoji" id="lyricsResultEmoji">🎉</span>
         <h3>결과</h3>
         <div class="lyrics-score" id="lyricsScoreText"></div>
+        <p class="quiz-result-desc" id="lyricsResultTier"></p>
 
         <div class="share-btn-row">
           <button type="button" class="kakao-share-btn" id="lyricsKakaoBtn">💬 공유</button>
@@ -6559,8 +6583,27 @@
       '0+0': '_Ngk-DCHfD0',
       '게임 오버? (Game Over?)': 'qrzKsS-4lZo',
       '1111': 'Gofn_ULNd5Q',
-      '너와 나': 'Tos8R9Tcem8'
+      '너와 나': 'Tos8R9Tcem8',
+      '화해': 'gC2zA8NRzXk',
+      '용의자': 'EPMh3g5qh2Y',
+      '갈림길': '9hjnGy4aVgo',
+      '재': 'C77DJ8nySoo',
+      '금붕어': 'dAgY7zUqd8E',
+      '__에게': 'RuwWXZiR3AU',
+      '먹이사슬': '4HZ8wh2MMpQ',
+      '보수공사': 'RWMIDk2e2U4',
+      '놀이터': 'Sh2QhzNiD9Y',
+      '귀가': 'VQPnYg1a3hk',
+      '내일에서 온 티켓': 'cp0eesd7h_w'
     };
+
+    const LYRICS_SCORE_TIERS = [
+      { min: 0, max: 4, emoji: '🌱', label: '한로로 초보 팬' },
+      { min: 5, max: 9, emoji: '🎵', label: '한로로 하수' },
+      { min: 10, max: 13, emoji: '🚏', label: '한로로 중수' },
+      { min: 14, max: 17, emoji: '✈️', label: '한로로 고수' },
+      { min: 18, max: 20, emoji: '👑', label: '한로로 초고수' },
+    ];
 
     function playLyricsHint(song){
       const videoId = LYRICS_HINT_VIDEO_MAP[song];
@@ -6663,6 +6706,12 @@
       resultEl.style.display = 'block';
       document.getElementById('lyricsScoreText').textContent = `${correctCount} / ${quizQuestions.length}문제 맞췄어요!`;
 
+      const tier = LYRICS_SCORE_TIERS.find(t => correctCount >= t.min && correctCount <= t.max) || LYRICS_SCORE_TIERS[0];
+      const emojiEl = document.getElementById('lyricsResultEmoji');
+      const tierEl = document.getElementById('lyricsResultTier');
+      if (emojiEl) emojiEl.textContent = tier.emoji;
+      if (tierEl) tierEl.textContent = tier.label;
+
       const reviewEl = document.getElementById('lyricsReview');
       if (wrongAnswers.length === 0) {
         reviewEl.innerHTML = '<p>🎉 전부 맞췄어요! 오답이 없어요.</p>';
@@ -6680,7 +6729,7 @@
         }).join('');
       }
 
-      window.currentLyricsResult = { correctCount, total: quizQuestions.length };
+      window.currentLyricsResult = { correctCount, total: quizQuestions.length, tier };
       const resultInputEl = document.querySelector('#gameLyricsScreen .guestbook-result-input');
       if (resultInputEl) resultInputEl.value = `${correctCount} / ${quizQuestions.length}문제`;
 
@@ -6711,8 +6760,8 @@
     document.getElementById('lyricsKakaoBtn')?.addEventListener('click', () => {
       if (!window.currentLyricsResult) return;
       shareToKakao(
-        `📝 한로로 가사 맞추기 완료!`,
-        `${window.currentLyricsResult.correctCount} / ${window.currentLyricsResult.total}문제 맞췄어요 — 당신도 도전해보세요!`,
+        `${window.currentLyricsResult.tier.emoji} 한로로 가사 맞추기 완료!`,
+        `${window.currentLyricsResult.correctCount} / ${window.currentLyricsResult.total}문제 맞췄어요 — '${window.currentLyricsResult.tier.label}'! 당신도 도전해보세요!`,
         '#quiz',
         new URL('images/icons/icon-512.png', location.href).href,
         '나도 해보기'
