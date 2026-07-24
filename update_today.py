@@ -26,6 +26,10 @@ INSTAGRAM_USERNAME = "hanr0r0"
 TIKTOK_USERNAME = "hanroro_official"
 NAVER_BLOG_ID = "hanr0r0"
 
+# "오늘, 한로로는"에 쇼츠를 걸러내기 위한 기준(초)이에요.
+# 60초(1분) 이하인 영상은 쇼츠로 보고 "최신 영상" 목록에서 제외해요.
+SHORTS_MAX_DURATION_SEC = 60
+
 # "유튜브" 페이지에 카테고리별로 보여줄 재생목록들이에요.
 # 아래 값을 실제 재생목록 ID로 바꿔주세요 — youtube.com/@hanroro6055/playlists 에서
 # 각 재생목록 클릭 → 주소창의 list= 뒤에 오는 문자열이 ID예요.
@@ -43,10 +47,49 @@ PLAYLISTS = [
 ]
 
 MAX_ITEMS_PER_SOURCE = 10
+# 쇼츠를 걸러내고도 MAX_ITEMS_PER_SOURCE개를 채울 수 있도록,
+# 업로드 목록은 넉넉히 더 많이 가져와요.
+YOUTUBE_FETCH_BUFFER = 30
+
+
+def _parse_iso8601_duration_to_seconds(duration):
+    """'PT1H2M3S' 같은 ISO 8601 길이 문자열을 초 단위 정수로 바꿔줍니다."""
+    if not duration:
+        return 0
+    m = re.match(r'^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$', duration)
+    if not m:
+        return 0
+    hours = int(m.group(1) or 0)
+    minutes = int(m.group(2) or 0)
+    seconds = int(m.group(3) or 0)
+    return hours * 3600 + minutes * 60 + seconds
+
+
+def _fetch_video_durations(youtube, video_ids):
+    """videos().list로 영상 ID들의 길이(초)를 한 번에 조회해요. (최대 50개씩 배치)"""
+    durations = {}
+    for i in range(0, len(video_ids), 50):
+        batch = video_ids[i:i + 50]
+        try:
+            res = youtube.videos().list(
+                part="contentDetails",
+                id=",".join(batch)
+            ).execute()
+            for item in res.get("items", []):
+                vid = item["id"]
+                duration_str = item.get("contentDetails", {}).get("duration", "")
+                durations[vid] = _parse_iso8601_duration_to_seconds(duration_str)
+        except Exception as e:
+            print(f"[youtube] 영상 길이 조회 실패: {e}")
+    return durations
 
 
 def fetch_youtube_latest():
-    """YouTube Data API v3로 채널의 최신 업로드 영상을 가져옵니다."""
+    """YouTube Data API v3로 채널의 최신 업로드 영상을 가져옵니다.
+
+    쇼츠(길이가 SHORTS_MAX_DURATION_SEC 이하인 영상)는 제외하고,
+    롱폼 영상만 최신순으로 MAX_ITEMS_PER_SOURCE개 반환해요.
+    """
     api_key = os.environ.get("YOUTUBE_API_KEY")
     print(f"[youtube] YOUTUBE_API_KEY 존재 여부: {'OK' if api_key else 'NOT FOUND'}")
 
@@ -70,22 +113,51 @@ def fetch_youtube_latest():
 
         uploads_playlist_id = items[0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
+        # 쇼츠를 걸러내고도 개수를 채울 수 있도록 넉넉히 가져와요.
         playlist_res = youtube.playlistItems().list(
             part="snippet",
             playlistId=uploads_playlist_id,
-            maxResults=MAX_ITEMS_PER_SOURCE
+            maxResults=YOUTUBE_FETCH_BUFFER
         ).execute()
 
-        results = []
+        candidates = []
         for item in playlist_res.get("items", []):
             snippet = item["snippet"]
             video_id = snippet["resourceId"]["videoId"]
             published = snippet["publishedAt"][:10].replace("-", ".")
-            results.append({
+            candidates.append({
+                "videoId": video_id,
                 "date": published,
                 "title": snippet["title"],
                 "link": f"https://www.youtube.com/watch?v={video_id}"
             })
+
+        if not candidates:
+            return []
+
+        # 영상 길이를 조회해서 쇼츠(SHORTS_MAX_DURATION_SEC초 이하)는 제외해요.
+        durations = _fetch_video_durations(youtube, [c["videoId"] for c in candidates])
+
+        results = []
+        for c in candidates:
+            duration_sec = durations.get(c["videoId"], None)
+            if duration_sec is None:
+                # 길이 조회에 실패한 영상은 안전하게 롱폼으로 간주해서 포함해요.
+                is_short = False
+            else:
+                is_short = duration_sec <= SHORTS_MAX_DURATION_SEC
+
+            if is_short:
+                print(f"[youtube] 쇼츠로 판단되어 제외: {c['title']} ({duration_sec}초)")
+                continue
+
+            results.append({
+                "date": c["date"],
+                "title": c["title"],
+                "link": c["link"]
+            })
+            if len(results) >= MAX_ITEMS_PER_SOURCE:
+                break
 
         return results
     except Exception as e:
