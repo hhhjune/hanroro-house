@@ -400,8 +400,31 @@
     line-height:1.7;
     text-align:center;
   }
+  .today-swipe-hint{ display:none; }
   @media (max-width:640px){
-    .video-showcase-row{ grid-template-columns:1fr; }
+    .today-swipe-hint{
+      display:block;
+      text-align:center;
+      margin-top:2px;
+      font-size:11.5px;
+      color:var(--ink-soft);
+      opacity:0.6;
+    }
+    .video-showcase-row{
+      display:flex;
+      overflow-x:auto;
+      gap:14px;
+      margin:0 -24px;
+      padding:4px 24px 14px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .video-showcase-row::-webkit-scrollbar{ display:none; }
+    .video-showcase-card{
+      flex:0 0 78%;
+      scroll-snap-align:start;
+    }
   }
 
   /* ---------- QUIZ ---------- */
@@ -3629,8 +3652,8 @@
     </div>
   </div>
   <nav class="site-gnb" id="siteGnb">
-    <a href="#today">오늘, 한로로는</a>
     <a href="#quiz">한로로 게임</a>
+    <a href="#today">오늘, 한로로는</a>
     <a href="#board">게시판</a>
     <a href="#videos">유튜브</a>
     <a href="#setlists">셋리스트</a>
@@ -3677,6 +3700,8 @@
       <a class="video-showcase-footer-link" href="https://blog.naver.com/hanr0r0" target="_blank" rel="noopener">다음에서 보기: 📝 네이버 블로그</a>
     </div>
   </div>
+
+  <p class="today-swipe-hint">← 옆으로 넘겨보세요 →</p>
 
   <p class="today-updated-at" id="todayUpdatedAt"></p>
 </section>
