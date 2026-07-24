@@ -6767,9 +6767,6 @@
         '나도 해보기'
       );
     });
-    document.getElementById('lyricsGuestbookBtn')?.addEventListener('click', () => {
-      if (window.currentLyricsResult) fillGuestbookWithResult('lyricsquiz', `${window.currentLyricsResult.correctCount} / ${window.currentLyricsResult.total}문제`);
-    });
   })();
 
   // 게시판: 전체 / 자유게시판 / 질문게시판 탭 전환
@@ -8539,6 +8536,9 @@
   document.getElementById('rorosiGuestbookBtn')?.addEventListener('click', () => {
     if (rorosiResultData) fillGuestbookWithResult('rorosi', `${rorosiResultData.tier.emoji} ${rorosiResultData.tier.label} · ${rorosiResultData.absDiffSec.toFixed(3)}초 차이`);
   });
+  document.getElementById('lyricsGuestbookBtn')?.addEventListener('click', () => {
+    if (window.currentLyricsResult) fillGuestbookWithResult('lyricsquiz', `${window.currentLyricsResult.correctCount} / ${window.currentLyricsResult.total}문제`);
+  });
 </script>
 
 <script>
@@ -9132,25 +9132,6 @@
   triviaRetryBtn.addEventListener('click', () => {
     triviaResultEl.style.display = 'none';
     triviaIntro.style.display = 'block';
-  });
-
-  // ================= 방명록: 게임 결과 채우기 (DOM만 다루는 부분) =================
-  // Firestore 저장/불러오기 로직은 위쪽 모듈 스크립트로 옮겼어요 (db/collection이
-  // 필요한 코드라 이 script 태그 안에서는 쓸 수 없었어요).
-  const guestbookResultInput = document.getElementById('guestbookResultInput');
-  const guestbookMessageInput = document.getElementById('guestbookMessageInput');
-
-  function fillGuestbookWithResult(resultText){
-    guestbookResultInput.value = resultText;
-    document.querySelector('.guestbook-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    guestbookMessageInput.focus();
-  }
-
-  document.getElementById('personalityGuestbookBtn').addEventListener('click', () => {
-    if (currentQuizType) fillGuestbookWithResult(currentQuizType.name);
-  });
-  document.getElementById('triviaGuestbookBtn').addEventListener('click', () => {
-    if (currentTriviaResult) fillGuestbookWithResult(`한로로 퀴즈 ${currentTriviaResult.score}점 (${currentTriviaResult.tier.label})`);
   });
 
   // ================= 한로로 캘린더 =================
