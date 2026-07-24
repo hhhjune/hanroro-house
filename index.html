@@ -1142,6 +1142,29 @@
     margin:12px 0 16px;
     text-align:center;
   }
+  .lyrics-hint-row{
+    display:flex;
+    justify-content:center;
+    margin:-8px 0 16px;
+  }
+  .lyrics-hint-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:13px;
+    color:var(--berry);
+    background:none;
+    border:1px solid var(--berry);
+    padding:5px 14px;
+    border-radius:2px;
+    cursor:pointer;
+    transition:background 0.2s ease, color 0.2s ease;
+  }
+  .lyrics-hint-btn:hover{
+    background:var(--berry);
+    color:#fff;
+  }
   .lyrics-choices{
     display:flex;
     flex-direction:column;
@@ -2249,21 +2272,21 @@
   }
 
   @media (max-width:760px){
-    .about{grid-template-columns:1fr; padding:36px 20px; gap:24px;}
-    .index-card{ padding:22px 20px; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
-    .index-card h3{ font-size:12px; margin-bottom:16px; }
-    .index-card::before{ top:44px; }
-    .index-card dl{ gap:14px; }
-    .index-card .row{ font-size:14.5px; padding-bottom:12px; grid-template-columns:1fr; gap:4px; }
-    .index-card dt{ font-size:11px; letter-spacing:1.5px; text-transform:uppercase; opacity:0.65; padding-top:0; }
-    .index-card dd{ line-height:1.5; }
-    .index-card dd a{ display:inline-block; padding:4px 0; }
-    .bio h2{ font-size:20px; margin-bottom:12px; }
-    .bio p{ font-size:12.5px; margin:0 0 12px 0; line-height:1.6; }
-    .pull-quote{ margin:16px 0; padding:4px 0 4px 14px; font-size:14px; line-height:1.5; }
-    .pull-quote span{ font-size:11.5px; margin-top:6px; }
-    .tag-row{ gap:6px; margin-top:14px; }
-    .tag{ font-size:11px; padding:5px 10px; }
+    .about{grid-template-columns:1fr; padding:24px 18px; gap:16px;}
+    .index-card{ padding:16px 16px; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+    .index-card h3{ font-size:11px; margin-bottom:10px; }
+    .index-card::before{ top:34px; }
+    .index-card dl{ gap:7px; }
+    .index-card .row{ font-size:12.5px; padding-bottom:6px; grid-template-columns:58px 1fr; gap:8px; }
+    .index-card dt{ font-size:10.5px; letter-spacing:0.5px; text-transform:uppercase; opacity:0.65; padding-top:1px; }
+    .index-card dd{ line-height:1.35; }
+    .index-card dd a{ display:inline-block; padding:2px 0; }
+    .bio h2{ font-size:18px; margin-bottom:8px; }
+    .bio p{ font-size:12px; margin:0 0 8px 0; line-height:1.45; }
+    .pull-quote{ margin:10px 0; padding:3px 0 3px 12px; font-size:13px; line-height:1.4; }
+    .pull-quote span{ font-size:10.5px; margin-top:4px; }
+    .tag-row{ gap:5px; margin-top:8px; }
+    .tag{ font-size:10px; padding:4px 8px; }
     .discography{max-width:100%;}
     .stop{width:78vw;}
     .road{padding:10px 20px 36px;}
@@ -3903,6 +3926,14 @@
         </span>
         <span class="game-index-arrow">›</span>
       </button>
+      <button type="button" class="game-index-row" data-goto="gameLyricsScreen">
+        <span class="game-index-icon">📝</span>
+        <span class="game-index-text">
+          <span class="game-index-title">한로로 가사 맞추기</span>
+          <span class="game-index-desc">랜덤 20문제 · 빈칸에 들어갈 가사 맞히기</span>
+        </span>
+        <span class="game-index-arrow">›</span>
+      </button>
       <button type="button" class="game-index-row" data-goto="gameWorldcupHubScreen">
         <span class="game-index-icon">🏆</span>
         <span class="game-index-text">
@@ -3924,14 +3955,6 @@
         <span class="game-index-text">
           <span class="game-index-title">당신은 어떤 한로로일까요?</span>
           <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
-        </span>
-        <span class="game-index-arrow">›</span>
-      </button>
-      <button type="button" class="game-index-row" data-goto="gameLyricsScreen">
-        <span class="game-index-icon">📝</span>
-        <span class="game-index-text">
-          <span class="game-index-title">한로로 가사 맞추기</span>
-          <span class="game-index-desc">랜덤 20문제 · 빈칸에 들어갈 가사 맞히기</span>
         </span>
         <span class="game-index-arrow">›</span>
       </button>
@@ -4370,10 +4393,17 @@
       <div class="lyrics-intro" id="lyricsIntro">
         <span class="quiz-result-emoji">📝</span>
         <h3>한로로 가사 맞추기</h3>
-        <p>준비된 문제 중에서 매번 랜덤으로 20문제가 출제돼요(문제는 중복되지 않아요).<br>난이도를 골라 시작해보세요.</p>
+        <p>총 100문제가 준비되어있습니다. 다만 매번 랜덤으로 20문제가 출제돼요.<br>당신은 한로로의 노래 가사를 모두 알고 있나요? 난이도를 골라 시작해보세요.</p>
         <div class="memory-diff-row">
           <button type="button" class="memory-diff-btn" data-lyrics-diff="easy">쉬움 · 객관식</button>
           <button type="button" class="memory-diff-btn" data-lyrics-diff="hard">어려움 · 주관식</button>
+        </div>
+
+        <button type="button" class="worldcup-preview-toggle-btn" id="lyricsPreviewToggleBtn">📊 점수 분포 보기</button>
+        <div class="worldcup-stats" id="lyricsHubStats" style="display:none;">
+          <h4 class="worldcup-stats-title">📊 실시간 점수 분포</h4>
+          <p class="worldcup-stats-total" id="lyricsHubStatsTotal"></p>
+          <div class="worldcup-stats-list" id="lyricsHubStatsList"></div>
         </div>
       </div>
 
@@ -4395,6 +4425,10 @@
 
         <div class="lyrics-instruction" id="lyricsInstruction"></div>
 
+        <div class="lyrics-hint-row">
+          <button type="button" class="lyrics-hint-btn" id="lyricsHintBtn">🔎 힌트보기 (영상으로 확인)</button>
+        </div>
+
         <div class="lyrics-choices" id="lyricsChoices" style="display:none;"></div>
 
         <div class="lyrics-input-row" id="lyricsInputRow" style="display:none;">
@@ -4415,6 +4449,12 @@
         </div>
 
         <div class="lyrics-review" id="lyricsReview"></div>
+
+        <div class="worldcup-stats" id="lyricsStats">
+          <h4 class="worldcup-stats-title">📊 실시간 점수 분포</h4>
+          <p class="worldcup-stats-total" id="lyricsStatsTotal"></p>
+          <div class="worldcup-stats-list" id="lyricsStatsList"></div>
+        </div>
       </div>
 
     </div>
@@ -6269,7 +6309,8 @@
       category: "EP",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
       lyric: "아 {blank} 마요 / 잠시 내게서 벗어날 뿐야 \n차가운 바람에 부서진대도 / 무너지진 않을 테니",          // 빈칸은 {blank}로 표시
       answer: "동정은",
-      choices: ["스팸", "걱정은"]
+      choices: ["스팸", "걱정은"],
+      forceInclude: true       // 사용자 요청: 이 문제는 매번 반드시 출제
     },
     {
       song: "화해",           // 96번 노래 제목
@@ -6293,7 +6334,8 @@
       category: "디지털 싱글",       // 후렴구 / 킬링 프레이즈 / 클라이맥스 등 (없으면 "")
       lyric: "세모난 {blank}도 / 나사 빠진 핸들도 \n깜빡이는 신호등도 / 결국 모두 살아있네",          // 빈칸은 {blank}로 표시
       answer: "바퀴",
-      choices: ["피자", "삼각김밥"]
+      choices: ["피자", "삼각김밥"],
+      forceInclude: true       // 사용자 요청: 이 문제는 매번 반드시 출제
     },
     {
       song: "정류장",           // 99번 노래 제목
@@ -6498,10 +6540,48 @@
       return shuffleArray(pool).slice(0, Math.min(count, pool.length));
     }
 
+    // 노래 제목 → 유튜브 공식 영상(videoId) 매핑이에요. 사이트 디스코그래피에
+    // 이미 올라와 있는 검증된 공식 MV만 담았어요. 여기 없는 곡(개별 공식 영상이
+    // 따로 없는 곡)은 힌트 버튼을 누르면 유튜브 검색 결과로 대신 연결돼요.
+    const LYRICS_HINT_VIDEO_MAP = {
+      '입춘': 'pNi9PjmbUrI',
+      '거울': '_TnsZ71zaxU',
+      '비틀비틀 짝짜꿍': 'eERmo7trq4k',
+      '정류장': '4SrrieLwsOI',
+      '자처': 'JyoltvsJ9Fw',
+      '사랑하게 될 거야': 'h0KIWaUEIgQ',
+      '하루살이': 'fdwB6U4u-vk',
+      '생존법': 'puw1hdSnSX0',
+      'ㅈㅣㅂ': 'U4-cz9NHQv4',
+      '나침반': '4JwkYsfKRKM',
+      '도망': 'nhntH2wn3m0',
+      '시간을 달리네': 'tKERw3_ked0',
+      '0+0': '_Ngk-DCHfD0',
+      '게임 오버? (Game Over?)': 'qrzKsS-4lZo',
+      '1111': 'Gofn_ULNd5Q',
+      '너와 나': 'Tos8R9Tcem8'
+    };
+
+    function playLyricsHint(song){
+      const videoId = LYRICS_HINT_VIDEO_MAP[song];
+      if (videoId && typeof openVideoPlayerModal === 'function') {
+        openVideoPlayerModal(videoId, 'youtube');
+      } else if (videoId) {
+        window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
+      } else {
+        window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent('한로로 ' + song)}`, '_blank');
+      }
+    }
+
     function startLyricsQuiz(diff){
       difficulty = diff;
       const filledPool = LYRICS_QUIZ_POOL.filter(q => q.song && q.song.trim() && q.lyric && q.answer);
-      quizQuestions = pickRandomQuestions(filledPool, 20);
+      // forceInclude로 표시된 문제(95번, 98번)는 매번 반드시 출제되고,
+      // 나머지 자리는 그 외 문제 중에서 랜덤으로 채워요.
+      const forcedQuestions = filledPool.filter(q => q.forceInclude);
+      const otherQuestions = filledPool.filter(q => !q.forceInclude);
+      const remainingCount = Math.max(0, 20 - forcedQuestions.length);
+      quizQuestions = shuffleArray([...forcedQuestions, ...pickRandomQuestions(otherQuestions, remainingCount)]);
       currentIndex = 0;
       wrongAnswers = [];
       correctCount = 0;
@@ -6603,10 +6683,17 @@
       window.currentLyricsResult = { correctCount, total: quizQuestions.length };
       const resultInputEl = document.querySelector('#gameLyricsScreen .guestbook-result-input');
       if (resultInputEl) resultInputEl.value = `${correctCount} / ${quizQuestions.length}문제`;
+
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (window.recordLyricsResult) window.recordLyricsResult(correctCount);
     }
 
     document.querySelectorAll('[data-lyrics-diff]').forEach(btn => {
       btn.addEventListener('click', () => startLyricsQuiz(btn.dataset.lyricsDiff));
+    });
+    document.getElementById('lyricsHintBtn')?.addEventListener('click', () => {
+      const q = quizQuestions[currentIndex];
+      if (q) playLyricsHint(q.song);
     });
     document.getElementById('lyricsSubmitBtn')?.addEventListener('click', () => {
       const q = quizQuestions[currentIndex];
@@ -8312,6 +8399,41 @@
       console.error('[한로로 퀴즈 통계] 기록 실패:', err);
     }
   };
+
+  // ================= 가사 맞추기 점수 분포 (닉네임 비공개, 집계만) =================
+  const quizStatsLyricsRef = doc(db, 'quizStats', 'lyrics');
+
+  (async () => {
+    try {
+      const snap = await getDocFromServerSafe(quizStatsLyricsRef);
+      if (!snap || !snap.exists()) {
+        await setDoc(quizStatsLyricsRef, {
+          counts: { '20': 2, '18': 3, '17': 4, '15': 5, '13': 5, '11': 6, '9': 5, '7': 4, '5': 3, '3': 2, '1': 1 }
+        });
+      }
+    } catch (err) { /* 이미 있거나 권한 문제면 조용히 넘어가요 */ }
+  })();
+
+  onSnapshot(quizStatsLyricsRef, (snap) => {
+    renderScoreStats(snap.exists() ? snap.data() : {}, 'lyricsStatsTotal', 'lyricsStatsList');
+    renderScoreStats(snap.exists() ? snap.data() : {}, 'lyricsHubStatsTotal', 'lyricsHubStatsList');
+  }, (err) => console.error('[가사 맞추기 통계] 불러오기 실패:', err));
+
+  window.recordLyricsResult = async function(score){
+    try {
+      await setDoc(quizStatsLyricsRef, { counts: { [String(score)]: increment(1) } }, { merge: true });
+    } catch (err) {
+      console.error('[가사 맞추기 통계] 기록 실패:', err);
+    }
+  };
+
+  document.getElementById('lyricsPreviewToggleBtn')?.addEventListener('click', () => {
+    const panel = document.getElementById('lyricsHubStats');
+    const btn = document.getElementById('lyricsPreviewToggleBtn');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? '📊 점수 분포 보기' : '📊 분포 접기';
+  });
 
   document.getElementById('quizPreviewToggleBtn')?.addEventListener('click', () => {
     const panel = document.getElementById('quizHubStats');
