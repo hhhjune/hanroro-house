@@ -1,10 +1,16 @@
 {
-  "updated_at": "2026-07-30T21:09:18.531627+00:00",
+  "updated_at": "2026-07-31T08:10:51.857452+00:00",
   "categories": [
     {
       "key": "survival",
       "label": "로로의 생존법",
       "videos": [
+        {
+          "videoId": "ywGXWnKxaMk",
+          "title": "[로로의 생존법] 제2조 빙수",
+          "thumbnail": "https://i.ytimg.com/vi/ywGXWnKxaMk/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=ywGXWnKxaMk"
+        },
         {
           "videoId": "_q-0t--U6WI",
           "title": "[로로의 생존법] 제1조 여행",
