@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-07T06:13:00.503547+00:00",
+  "updated_at": "2026-08-07T10:14:55.830038+00:00",
   "instagram": [
     {
       "date": "최근 게시물",
@@ -54,6 +54,11 @@
   ],
   "youtube": [
     {
+      "date": "2026.08.07",
+      "title": "[로로의 생존법] 제3조 커피",
+      "link": "https://www.youtube.com/watch?v=w5rrdebwsQo"
+    },
+    {
       "date": "2026.07.31",
       "title": "[로로의 생존법] 제2조 빙수",
       "link": "https://www.youtube.com/watch?v=ywGXWnKxaMk"
@@ -97,19 +102,19 @@
       "date": "2026.06.26",
       "title": "[LIVE] 한로로 (HANRORO) - 정류장 (The 18th Seoul Jazz Festival 2026)",
       "link": "https://www.youtube.com/watch?v=Xen71iW5fFE"
-    },
-    {
-      "date": "2026.05.18",
-      "title": "[LIVE] 한로로 (HANRORO) - 입춘 (GREENCAMP FESTIVAL 2026)",
-      "link": "https://www.youtube.com/watch?v=1sUZ2nvTv3w"
     }
   ],
   "tiktok": [
     {
       "date": "",
+      "title": "@hanroro_official — [로로의 생존법] 제3조 커피 지금 한로로 유튜브에서 확인하세요.📕 #한로로 #HANRORO ",
+      "link": "https://www.tiktok.com/@hanroro_official/video/7671198547433377044",
+      "thumbnail": "https://p16-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/oUkpFsfcgrft8ukARAeB1hFlGjfQYGFWR4cA9w~tplv-tiktokx-origin.image?dr=9636&x-expires=1786269600&x-signature=z2tGfeAkl%2Bl0fUQ6I3eq4jVDmbc%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8"
+    },
+    {
+      "date": "",
       "title": "@hanroro_official — #강남 님과 나! 📸🎶 #한로로 #HANRORO #너와나",
-      "link": "https://www.tiktok.com/@hanroro_official/video/7670874040223010068",
-      "thumbnail": "https://p19-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/oEIa0naAivBiRTBIAzjgAEBVqYlVBbsgD17FV~tplv-tiktokx-origin.image?dr=9636&x-expires=1786255200&x-signature=s2UXD7tCd1z%2BlmDVR7Wci%2BXjUL8%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
+      "link": "https://www.tiktok.com/@hanroro_official/video/7670874040223010068"
     },
     {
       "date": "",
@@ -150,11 +155,6 @@
       "date": "",
       "title": "@hanroro_official — #최유정 님과 나! 🐹💞 #한로로 #HANRORO #너와나 ",
       "link": "https://www.tiktok.com/@hanroro_official/video/7665645902865943828"
-    },
-    {
-      "date": "",
-      "title": "@hanroro_official — 새 콘텐츠 [로로의 생존법] 📕 프롤로그 영상이 한로로 유튜브에 공개되었습니다. #HANRORO #한로로 ",
-      "link": "https://www.tiktok.com/@hanroro_official/video/7665259453201255701"
     }
   ],
   "naverblog": [
