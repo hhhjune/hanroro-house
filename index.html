@@ -469,9 +469,10 @@
     overflow:hidden;
     cursor:pointer;
     text-align:left;
-    padding:0;
+    padding:10px 10px 6px;
     box-shadow:0 1px 3px rgba(42,39,36,0.06);
     transition:transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-sizing:border-box;
   }
   .game-index-row[data-tint="berry"]{ --tint-color:#9C4A5C; --tint-bg:#F5E9EB; --tint-border:#DCB9C0; }
   .game-index-row[data-tint="moss"]{ --tint-color:#47543C; --tint-bg:#EBEEE6; --tint-border:#C3CDB6; }
@@ -486,13 +487,18 @@
     border-color:var(--tint-border, var(--rule-strong));
   }
   .game-index-thumb-wrap{
+    display:block;
     position:relative;
     width:100%;
-    aspect-ratio:1/1;
+    height:0;
+    padding-top:100%;
+    border-radius:8px;
     background:var(--tint-bg, var(--paper-fold));
     overflow:hidden;
   }
   .game-index-thumb-wrap img{
+    position:absolute;
+    inset:0;
     width:100%;
     height:100%;
     object-fit:cover;
@@ -500,17 +506,17 @@
   }
   .game-index-icon{
     position:absolute;
-    top:10px;
-    left:10px;
-    width:34px;
-    height:34px;
+    top:8px;
+    left:8px;
+    width:32px;
+    height:32px;
     border-radius:50%;
     background:#fff;
     box-shadow:0 1px 4px rgba(0,0,0,0.25);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:17px;
+    font-size:16px;
     transition:transform 0.25s ease;
   }
   .game-index-row:hover .game-index-icon{
@@ -518,28 +524,28 @@
   }
   .game-index-views{
     position:absolute;
-    left:8px;
-    bottom:8px;
+    left:7px;
+    bottom:7px;
     display:flex;
     align-items:center;
     gap:3px;
-    font-size:11px;
+    font-size:10.5px;
     font-weight:700;
     color:#fff;
     background:rgba(20,16,14,0.62);
-    padding:4px 9px;
+    padding:3px 8px;
     border-radius:999px;
     white-space:nowrap;
   }
   .game-index-badge{
     position:absolute;
-    right:8px;
-    bottom:8px;
-    font-size:11px;
+    right:7px;
+    bottom:7px;
+    font-size:10.5px;
     font-weight:700;
     color:#fff;
     background:var(--tint-color, var(--berry));
-    padding:4px 10px;
+    padding:3px 9px;
     border-radius:999px;
     white-space:nowrap;
   }
@@ -547,8 +553,8 @@
     display:flex;
     flex-direction:column;
     gap:4px;
-    padding:12px 14px 16px;
-    min-height:94px;
+    padding:10px 4px 6px;
+    min-height:80px;
     box-sizing:border-box;
   }
   .game-index-title{
@@ -2420,10 +2426,12 @@
     .hero h1{letter-spacing:3px;}
 
     .game-index-list{ grid-template-columns:repeat(2, 1fr); gap:10px; }
-    .game-index-icon{ width:26px; height:26px; font-size:13px; top:6px; left:6px; }
-    .game-index-views{ font-size:8.5px; padding:3px 6px; left:5px; bottom:5px; gap:2px; }
-    .game-index-badge{ font-size:9px; padding:3px 7px; right:5px; bottom:5px; }
-    .game-index-text{ padding:8px 9px 11px; gap:2px; min-height:66px; }
+    .game-index-row{ padding:7px 7px 4px; }
+    .game-index-thumb-wrap{ border-radius:6px; }
+    .game-index-icon{ width:22px; height:22px; font-size:11px; top:5px; left:5px; }
+    .game-index-views{ font-size:8px; padding:2px 5px; left:4px; bottom:4px; gap:2px; }
+    .game-index-badge{ font-size:8px; padding:2px 6px; right:4px; bottom:4px; }
+    .game-index-text{ padding:7px 2px 4px; gap:2px; min-height:56px; }
     .game-index-title{ font-size:12.5px; line-height:1.3; }
     .game-index-desc{ font-size:10.5px; line-height:1.35; -webkit-line-clamp:2; }
 
@@ -4683,10 +4691,10 @@
 
         <div class="intro-player">
           <div class="intro-countdown" id="introCountdown">3</div>
-          <button type="button" class="intro-play-btn" id="introReplayBtn" style="display:none;">🔁 다시 듣기</button>
+          <button type="button" class="intro-play-btn" id="introPlayBtn" style="display:none;">▶ 재생</button>
         </div>
 
-        <div class="lyrics-instruction">방금 들은 노래, 무슨 곡일까요? (띄어쓰기까지 정확하게)</div>
+        <div class="lyrics-instruction">노래는 1초만 들려드려요. 버튼을 눌러 들어보세요. (띄어쓰기까지 정확하게)</div>
         <div class="lyrics-input-row">
           <input type="text" id="introAnswerInput" placeholder="정답을 입력하세요" disabled>
           <button type="button" class="board-submit-btn" id="introSubmitBtn" disabled>제출</button>
@@ -7055,13 +7063,17 @@
 
       const input = document.getElementById('introAnswerInput');
       const submitBtn = document.getElementById('introSubmitBtn');
-      const replayBtn = document.getElementById('introReplayBtn');
+      const playBtn = document.getElementById('introPlayBtn');
       input.value = '';
       input.disabled = true;
       submitBtn.disabled = true;
-      replayBtn.style.display = 'none';
+      playBtn.style.display = 'none';
+      playBtn.disabled = false;
 
-      runCountdown(() => playClip(round));
+      runCountdown(() => {
+        document.getElementById('introCountdown').textContent = '';
+        playBtn.style.display = 'inline-flex';
+      });
     }
 
     function runCountdown(onDone){
@@ -7076,7 +7088,7 @@
         } else {
           clearInterval(countdownTimer);
           el.textContent = '시작합니다!';
-          setTimeout(onDone, 300);
+          setTimeout(onDone, 500);
         }
       }, 700);
     }
@@ -7096,40 +7108,26 @@
     function unlockAnswerUI(){
       const input = document.getElementById('introAnswerInput');
       const submitBtn = document.getElementById('introSubmitBtn');
-      const replayBtn = document.getElementById('introReplayBtn');
       input.disabled = false;
       submitBtn.disabled = false;
-      replayBtn.style.display = 'inline-block';
       input.focus();
     }
 
-    function playClip(round){
-      const countdownEl = document.getElementById('introCountdown');
+    // 사람이 직접 이 버튼을 눌러야만 1초 재생돼요(자동재생 없음). 여러 번 눌러서
+    // 다시 들을 수도 있어요 — 버튼이 하나뿐이라 "다시 듣기"도 이 버튼으로 해요.
+    function handlePlayClick(){
+      const round = order[currentIndex];
+      const playBtn = document.getElementById('introPlayBtn');
+      playBtn.disabled = true;
       ensureIntroPlayer(() => {
-        countdownEl.textContent = '🎵';
         ytPlayer.loadVideoById({ videoId: round.videoId, startSeconds: round.start });
         clearTimeout(stopTimer);
         stopTimer = setTimeout(() => {
           try { ytPlayer.pauseVideo(); } catch (e) {}
-          countdownEl.textContent = '';
+          playBtn.disabled = false;
           unlockAnswerUI();
         }, 1000);
       });
-    }
-
-    function replayClip(){
-      const round = order[currentIndex];
-      if (!ytPlayer) return;
-      document.getElementById('introAnswerInput').disabled = true;
-      document.getElementById('introSubmitBtn').disabled = true;
-      document.getElementById('introReplayBtn').style.display = 'none';
-      ytPlayer.seekTo(round.start, true);
-      ytPlayer.playVideo();
-      clearTimeout(stopTimer);
-      stopTimer = setTimeout(() => {
-        try { ytPlayer.pauseVideo(); } catch (e) {}
-        unlockAnswerUI();
-      }, 1000);
     }
 
     function submitAnswer(){
@@ -7182,7 +7180,7 @@
     document.getElementById('introAnswerInput')?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') submitAnswer();
     });
-    document.getElementById('introReplayBtn')?.addEventListener('click', replayClip);
+    document.getElementById('introPlayBtn')?.addEventListener('click', handlePlayClick);
     document.getElementById('introRetryBtn')?.addEventListener('click', () => {
       resultEl.style.display = 'none';
       introEl.style.display = 'block';
