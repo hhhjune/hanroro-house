@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>한로로 팬사이트 - HANRORO HOUSE</title>
-<meta name="description" content="싱어송라이터 한로로의 팬사이트. 공연 일정·캘린더·셋리스트, 디스코그래피, 게시판, 팬 게임(이상형 월드컵·성향테스트·퀴즈·카드 맞추기), 방명록까지 한자리에서 확인하세요.">
+<meta name="description" content="싱어송라이터 한로로의 팬사이트. 공연 일정·캘린더·셋리스트, 디스코그래피, 게시판, 팬 게임(한로로 최애곡 정하기·성향테스트·퀴즈·카드 맞추기), 방명록까지 한자리에서 확인하세요.">
 
 <!-- 소셜 미디어·카카오톡 등에 링크 공유했을 때 미리보기로 쓰이는 정보 (Open Graph) -->
 <meta property="og:type" content="website">
@@ -372,13 +372,13 @@
   .video-showcase-footer-link:hover{ color:var(--berry); }
 
   @media (min-width:900px){
-    .today-section{ max-width:1296px; }
-    .video-showcase-row{ gap:26px; }
-    .video-showcase-card{ padding:19px; }
-    .video-showcase-label{ font-size:17px; margin-bottom:14px; }
-    .video-showcase-play{ width:67px; height:67px; font-size:24px; }
-    .video-showcase-title{ font-size:17px; margin-top:14px; }
-    .video-showcase-footer-link{ font-size:15px; margin-top:14px; padding-top:12px; }
+    .today-section{ max-width:1037px; }
+    .video-showcase-row{ gap:21px; }
+    .video-showcase-card{ padding:15px; }
+    .video-showcase-label{ font-size:14px; margin-bottom:11px; }
+    .video-showcase-play{ width:54px; height:54px; font-size:19px; }
+    .video-showcase-title{ font-size:14px; margin-top:11px; }
+    .video-showcase-footer-link{ font-size:12px; margin-top:11px; padding-top:10px; }
   }
 
   .today-loading{
@@ -3725,8 +3725,8 @@
   </div>
   <nav class="site-gnb" id="siteGnb">
     <a href="#quiz">한로로 게임</a>
-    <a href="#today">오늘, 한로로는</a>
     <a href="#board">게시판</a>
+    <a href="#today">오늘, 한로로는</a>
     <a href="#videos">유튜브</a>
     <a href="#setlists">셋리스트</a>
     <a href="#calendar">캘린더</a>
@@ -4055,33 +4055,21 @@
   <!-- 게임 목록 화면 -->
   <div class="game-screen active" id="gameIndexScreen">
     <div class="game-index-list">
-      <button type="button" class="game-index-row" data-goto="gameTriviaScreen" data-tint="berry">
+      <button type="button" class="game-index-row" data-goto="gameIntroScreen" data-tint="teal">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/trivia.jpg" alt="한로로 퀴즈" loading="lazy">
-          <span class="game-index-icon">🧠</span>
+          <img src="images/game-thumbs/intro.jpeg" alt="노래 1초 듣고 맞추기" loading="lazy">
+          <span class="game-index-icon">🔊</span>
           <span class="game-index-views">▶ 1,000</span>
-          <span class="game-index-badge">20문항</span>
+          <span class="game-index-badge">🆕 NEW</span>
         </span>
         <span class="game-index-text">
-          <span class="game-index-title">한로로 퀴즈</span>
-          <span class="game-index-desc">20문항 · 얼마나 잘 아는지 테스트</span>
-        </span>
-      </button>
-      <button type="button" class="game-index-row" data-goto="gameRorosiScreen" data-tint="plum">
-        <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/rorosi.jpg" alt="로로시 게임" loading="lazy">
-          <span class="game-index-icon">🌸</span>
-          <span class="game-index-views">▶ 1,000</span>
-          <span class="game-index-badge">타이밍 게임</span>
-        </span>
-        <span class="game-index-text">
-          <span class="game-index-title">로로시 게임</span>
-          <span class="game-index-desc">가상 시계 11:11:00.000에 정확히 맞춰 누르기</span>
+          <span class="game-index-title">노래 1초 듣고 맞추기</span>
+          <span class="game-index-desc">29곡을 모두 맞춰 끝까지 살아남으세요</span>
         </span>
       </button>
       <button type="button" class="game-index-row" data-goto="gameLyricsScreen" data-tint="moss">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/lyrics.jpg" alt="한로로 가사 맞추기" loading="lazy">
+          <img src="images/game-thumbs/lyrics.jpeg" alt="한로로 가사 맞추기" loading="lazy">
           <span class="game-index-icon">📝</span>
           <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">🆕 NEW</span>
@@ -4091,33 +4079,45 @@
           <span class="game-index-desc">랜덤 20문제 · 빈칸에 들어갈 가사 맞히기</span>
         </span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gameWorldcupHubScreen" data-tint="gold">
+      <button type="button" class="game-index-row" data-goto="gameRorosiScreen" data-tint="plum">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/worldcup.jpg" alt="이상형 월드컵" loading="lazy">
+          <img src="images/game-thumbs/rorosi.jpeg" alt="로로시 게임" loading="lazy">
+          <span class="game-index-icon">🌸</span>
+          <span class="game-index-views">▶ 1,000</span>
+          <span class="game-index-badge">타이밍 게임</span>
+        </span>
+        <span class="game-index-text">
+          <span class="game-index-title">로로시 게임</span>
+          <span class="game-index-desc">가상 시계 11:11:00.000에 정확히 맞춰 누르기</span>
+        </span>
+      </button>
+      <button type="button" class="game-index-row" data-goto="gameWorldcupPlayScreen" data-worldcup="songs" data-tint="gold">
+        <span class="game-index-thumb-wrap">
+          <img src="images/game-thumbs/worldcup.jpeg" alt="한로로 최애곡 정하기" loading="lazy">
           <span class="game-index-icon">🏆</span>
           <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">32강 토너먼트</span>
         </span>
         <span class="game-index-text">
-          <span class="game-index-title">이상형 월드컵</span>
+          <span class="game-index-title">한로로 최애곡 정하기</span>
           <span class="game-index-desc">1:1로 골라서 최애 뽑기</span>
         </span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gameMemoryScreen" data-tint="blue">
+      <button type="button" class="game-index-row" data-goto="gameTriviaScreen" data-tint="berry">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/memory.jpg" alt="앨범 커버 짝 맞추기" loading="lazy">
-          <span class="game-index-icon">🃏</span>
+          <img src="images/game-thumbs/trivia.jpeg" alt="한로로 퀴즈" loading="lazy">
+          <span class="game-index-icon">🧠</span>
           <span class="game-index-views">▶ 1,000</span>
-          <span class="game-index-badge">카드 매칭</span>
+          <span class="game-index-badge">20문항</span>
         </span>
         <span class="game-index-text">
-          <span class="game-index-title">앨범 커버 짝 맞추기</span>
-          <span class="game-index-desc">카드 뒤집기 · 같은 앨범 커버 찾기</span>
+          <span class="game-index-title">한로로 퀴즈</span>
+          <span class="game-index-desc">20문항 · 얼마나 잘 아는지 테스트</span>
         </span>
       </button>
       <button type="button" class="game-index-row" data-goto="gamePersonalityScreen" data-tint="terracotta">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/personality.jpg" alt="당신은 어떤 한로로일까요?" loading="lazy">
+          <img src="images/game-thumbs/personality.jpeg" alt="당신은 어떤 한로로일까요?" loading="lazy">
           <span class="game-index-icon">🎧</span>
           <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">성향 테스트</span>
@@ -4127,16 +4127,16 @@
           <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
         </span>
       </button>
-      <button type="button" class="game-index-row" data-goto="gameIntroScreen" data-tint="teal">
+      <button type="button" class="game-index-row" data-goto="gameMemoryScreen" data-tint="blue">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/intro.jpg" alt="노래 1초 듣고 맞추기" loading="lazy">
-          <span class="game-index-icon">🔊</span>
+          <img src="images/game-thumbs/memory.jpeg" alt="앨범 커버 짝 맞추기" loading="lazy">
+          <span class="game-index-icon">🃏</span>
           <span class="game-index-views">▶ 1,000</span>
-          <span class="game-index-badge">🆕 NEW</span>
+          <span class="game-index-badge">카드 매칭</span>
         </span>
         <span class="game-index-text">
-          <span class="game-index-title">노래 1초 듣고 맞추기</span>
-          <span class="game-index-desc">29곡을 모두 맞춰 끝까지 살아남으세요</span>
+          <span class="game-index-title">앨범 커버 짝 맞추기</span>
+          <span class="game-index-desc">카드 뒤집기 · 같은 앨범 커버 찾기</span>
         </span>
       </button>
     </div>
@@ -4382,35 +4382,9 @@
     </div>
   </div>
 
-  <!-- 이상형 월드컵: 어떤 월드컵을 할지 고르는 화면 (앞으로 더 추가될 예정) -->
-  <div class="game-screen" id="gameWorldcupHubScreen">
-    <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
-    <div class="game-index-list">
-      <button type="button" class="game-index-row" data-goto="gameWorldcupPlayScreen" data-worldcup="songs" data-tint="gold">
-        <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/worldcup.jpeg" alt="한로로 노래 이상형 월드컵" loading="lazy">
-          <span class="game-index-icon">🎵</span>
-          <span class="game-index-views">▶ 1,000</span>
-          <span class="game-index-badge">32강</span>
-        </span>
-        <span class="game-index-text">
-          <span class="game-index-title">한로로 노래 이상형 월드컵</span>
-          <span class="game-index-desc">32강 · 최애곡 뽑기</span>
-        </span>
-      </button>
-    </div>
-
-    <button type="button" class="worldcup-preview-toggle-btn" id="worldcupPreviewToggleBtn">📊 지금까지 결과 미리보기</button>
-    <div class="worldcup-stats" id="worldcupHubStats" style="display:none;">
-      <h4 class="worldcup-stats-title">📊 실시간 최애곡 통계</h4>
-      <p class="worldcup-stats-total" id="worldcupHubStatsTotal"></p>
-      <div class="worldcup-stats-list" id="worldcupHubStatsList"></div>
-    </div>
-  </div>
-
-  <!-- 이상형 월드컵: 실제 토너먼트 진행 화면 -->
+  <!-- 한로로 최애곡 정하기 (구 이상형 월드컵): 실제 토너먼트 진행 화면 -->
   <div class="game-screen" id="gameWorldcupPlayScreen" data-game="worldcup">
-    <button type="button" class="game-back-btn" data-back data-worldcup-back>← 이상형 월드컵 목록으로</button>
+    <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
 
     <div class="game-subtabs">
       <button type="button" class="game-subtab active" data-subtab="play">게임</button>
@@ -5144,23 +5118,10 @@
   });
   document.querySelectorAll('.game-back-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      if (btn.hasAttribute('data-worldcup-back')) {
-        if (typeof resetAllWorldcupMedia === 'function') resetAllWorldcupMedia();
-        showGameScreen('gameWorldcupHubScreen');
-        return;
-      }
+      if (typeof resetAllWorldcupMedia === 'function') resetAllWorldcupMedia();
       showGameScreen('gameIndexScreen');
       resetMemoryToIntro();
     });
-  });
-
-  // 이상형 월드컵: 게임 시작 전에도 지금까지 결과(퍼센트)를 미리 볼 수 있어요.
-  document.getElementById('worldcupPreviewToggleBtn')?.addEventListener('click', () => {
-    const panel = document.getElementById('worldcupHubStats');
-    const btn = document.getElementById('worldcupPreviewToggleBtn');
-    const isOpen = panel.style.display !== 'none';
-    panel.style.display = isOpen ? 'none' : 'block';
-    btn.textContent = isOpen ? '📊 지금까지 결과 미리보기' : '📊 미리보기 접기';
   });
 
   // 게임 화면 안의 "게임 | 방명록" 서브탭
@@ -5646,7 +5607,7 @@
     if (!currentWorldcupWinner) return;
     shareToKakao(
       `🏆 당신의 최애곡은 '${currentWorldcupWinner.title}'였습니다!`,
-      '한로로 노래 이상형 월드컵 — 당신의 최애곡은 무엇일까요?',
+      '한로로 최애곡 정하기 — 당신의 최애곡은 무엇일까요?',
       '#quiz',
       new URL(currentWorldcupWinner.img, location.href).href,
       '나도 해보기'
@@ -8727,10 +8688,9 @@
       .sort((a, b) => b.count - a.count)
       .slice(0, 10); // 상위 10곡만 보여줘요
 
-    // 결과 화면 안의 통계 + 게임 시작 전(허브) 미리보기 통계, 둘 다 같은 데이터로 채워요.
+    // 결과 화면 안의 통계를 채워요.
     [
       { totalId: 'worldcupStatsTotal', listId: 'worldcupStatsList' },
-      { totalId: 'worldcupHubStatsTotal', listId: 'worldcupHubStatsList' },
     ].forEach(({ totalId, listId }) => {
       const totalEl = document.getElementById(totalId);
       const listEl = document.getElementById(listId);
