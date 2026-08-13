@@ -372,13 +372,13 @@
   .video-showcase-footer-link:hover{ color:var(--berry); }
 
   @media (min-width:900px){
-    .today-section{ max-width:1620px; }
-    .video-showcase-row{ gap:33px; }
-    .video-showcase-card{ padding:24px; }
-    .video-showcase-label{ font-size:21px; margin-bottom:18px; }
-    .video-showcase-play{ width:84px; height:84px; font-size:30px; }
-    .video-showcase-title{ font-size:21px; margin-top:18px; }
-    .video-showcase-footer-link{ font-size:18.75px; margin-top:18px; padding-top:15px; }
+    .today-section{ max-width:1296px; }
+    .video-showcase-row{ gap:26px; }
+    .video-showcase-card{ padding:19px; }
+    .video-showcase-label{ font-size:17px; margin-bottom:14px; }
+    .video-showcase-play{ width:67px; height:67px; font-size:24px; }
+    .video-showcase-title{ font-size:17px; margin-top:14px; }
+    .video-showcase-footer-link{ font-size:15px; margin-top:14px; padding-top:12px; }
   }
 
   .today-loading{
@@ -516,6 +516,21 @@
   .game-index-row:hover .game-index-icon{
     transform:scale(1.1) rotate(-5deg);
   }
+  .game-index-views{
+    position:absolute;
+    left:8px;
+    bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:3px;
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+    background:rgba(20,16,14,0.62);
+    padding:4px 9px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
   .game-index-badge{
     position:absolute;
     right:8px;
@@ -533,12 +548,17 @@
     flex-direction:column;
     gap:4px;
     padding:12px 14px 16px;
+    min-height:94px;
+    box-sizing:border-box;
   }
   .game-index-title{
     font-family:'Gowun Batang', serif;
     font-size:15.5px;
     font-weight:700;
     color:var(--ink);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .game-index-desc{
     font-size:12px;
@@ -2401,8 +2421,9 @@
 
     .game-index-list{ grid-template-columns:repeat(2, 1fr); gap:10px; }
     .game-index-icon{ width:26px; height:26px; font-size:13px; top:6px; left:6px; }
+    .game-index-views{ font-size:8.5px; padding:3px 6px; left:5px; bottom:5px; gap:2px; }
     .game-index-badge{ font-size:9px; padding:3px 7px; right:5px; bottom:5px; }
-    .game-index-text{ padding:8px 9px 11px; gap:2px; }
+    .game-index-text{ padding:8px 9px 11px; gap:2px; min-height:66px; }
     .game-index-title{ font-size:12.5px; line-height:1.3; }
     .game-index-desc{ font-size:10.5px; line-height:1.35; -webkit-line-clamp:2; }
 
@@ -4028,8 +4049,9 @@
     <div class="game-index-list">
       <button type="button" class="game-index-row" data-goto="gameTriviaScreen" data-tint="berry">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/trivia.jpg" alt="한로로 퀴즈" loading="lazy">
+          <img src="images/game-thumbs/trivia.jpeg" alt="한로로 퀴즈" loading="lazy">
           <span class="game-index-icon">🧠</span>
+          <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">20문항</span>
         </span>
         <span class="game-index-text">
@@ -4039,8 +4061,9 @@
       </button>
       <button type="button" class="game-index-row" data-goto="gameRorosiScreen" data-tint="plum">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/rorosi.jpg" alt="로로시 게임" loading="lazy">
+          <img src="images/game-thumbs/rorosi.jpeg" alt="로로시 게임" loading="lazy">
           <span class="game-index-icon">🌸</span>
+          <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">타이밍 게임</span>
         </span>
         <span class="game-index-text">
@@ -4050,8 +4073,9 @@
       </button>
       <button type="button" class="game-index-row" data-goto="gameLyricsScreen" data-tint="moss">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/lyrics.jpg" alt="한로로 가사 맞추기" loading="lazy">
+          <img src="images/game-thumbs/lyrics.jpeg" alt="한로로 가사 맞추기" loading="lazy">
           <span class="game-index-icon">📝</span>
+          <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">🆕 NEW</span>
         </span>
         <span class="game-index-text">
@@ -4061,8 +4085,9 @@
       </button>
       <button type="button" class="game-index-row" data-goto="gameWorldcupHubScreen" data-tint="gold">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/worldcup.jpg" alt="이상형 월드컵" loading="lazy">
+          <img src="images/game-thumbs/worldcup.jpeg" alt="이상형 월드컵" loading="lazy">
           <span class="game-index-icon">🏆</span>
+          <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">32강 토너먼트</span>
         </span>
         <span class="game-index-text">
@@ -4072,8 +4097,9 @@
       </button>
       <button type="button" class="game-index-row" data-goto="gameMemoryScreen" data-tint="blue">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/memory.jpg" alt="앨범 커버 짝 맞추기" loading="lazy">
+          <img src="images/game-thumbs/memory.jpeg" alt="앨범 커버 짝 맞추기" loading="lazy">
           <span class="game-index-icon">🃏</span>
+          <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">카드 매칭</span>
         </span>
         <span class="game-index-text">
@@ -4083,8 +4109,9 @@
       </button>
       <button type="button" class="game-index-row" data-goto="gamePersonalityScreen" data-tint="terracotta">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/personality.jpg" alt="당신은 어떤 한로로일까요?" loading="lazy">
+          <img src="images/game-thumbs/personality.jpeg" alt="당신은 어떤 한로로일까요?" loading="lazy">
           <span class="game-index-icon">🎧</span>
+          <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">성향 테스트</span>
         </span>
         <span class="game-index-text">
@@ -4094,8 +4121,9 @@
       </button>
       <button type="button" class="game-index-row" data-goto="gameIntroScreen" data-tint="teal">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/intro.jpg" alt="노래 1초 듣고 맞추기" loading="lazy">
+          <img src="images/game-thumbs/intro.jpeg" alt="노래 1초 듣고 맞추기" loading="lazy">
           <span class="game-index-icon">🔊</span>
+          <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">🆕 NEW</span>
         </span>
         <span class="game-index-text">
@@ -4352,8 +4380,9 @@
     <div class="game-index-list">
       <button type="button" class="game-index-row" data-goto="gameWorldcupPlayScreen" data-worldcup="songs" data-tint="gold">
         <span class="game-index-thumb-wrap">
-          <img src="images/game-thumbs/worldcup.jpg" alt="한로로 노래 이상형 월드컵" loading="lazy">
+          <img src="images/game-thumbs/worldcup.jpeg" alt="한로로 노래 이상형 월드컵" loading="lazy">
           <span class="game-index-icon">🎵</span>
+          <span class="game-index-views">▶ 1,000</span>
           <span class="game-index-badge">32강</span>
         </span>
         <span class="game-index-text">
