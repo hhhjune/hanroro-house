@@ -371,6 +371,16 @@
   }
   .video-showcase-footer-link:hover{ color:var(--berry); }
 
+  @media (min-width:900px){
+    .today-section{ max-width:1620px; }
+    .video-showcase-row{ gap:33px; }
+    .video-showcase-card{ padding:24px; }
+    .video-showcase-label{ font-size:21px; margin-bottom:18px; }
+    .video-showcase-play{ width:84px; height:84px; font-size:30px; }
+    .video-showcase-title{ font-size:21px; margin-top:18px; }
+    .video-showcase-footer-link{ font-size:18.75px; margin-top:18px; padding-top:15px; }
+  }
+
   .today-loading{
     font-size:13px;
     color:var(--ink-soft);
@@ -446,32 +456,22 @@
 
   .game-index-list{
     display:grid;
-    grid-template-columns:repeat(2, 1fr);
-    gap:14px;
+    grid-template-columns:repeat(4, 1fr);
+    gap:20px;
     margin-top:30px;
   }
   .game-index-row{
     position:relative;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    width:100%;
+    display:block;
     background:#fff;
     border:1px solid var(--rule);
-    border-radius:8px;
-    padding:20px 18px 20px 22px;
+    border-radius:10px;
+    overflow:hidden;
     cursor:pointer;
     text-align:left;
-    overflow:hidden;
+    padding:0;
     box-shadow:0 1px 3px rgba(42,39,36,0.06);
     transition:transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-  .game-index-row::before{
-    content:'';
-    position:absolute;
-    top:0; left:0;
-    width:5px; height:100%;
-    background:var(--tint-color, var(--berry));
   }
   .game-index-row[data-tint="berry"]{ --tint-color:#9C4A5C; --tint-bg:#F5E9EB; --tint-border:#DCB9C0; }
   .game-index-row[data-tint="moss"]{ --tint-color:#47543C; --tint-bg:#EBEEE6; --tint-border:#C3CDB6; }
@@ -479,64 +479,79 @@
   .game-index-row[data-tint="blue"]{ --tint-color:#3F5B74; --tint-bg:#E9EEF2; --tint-border:#B7C7D3; }
   .game-index-row[data-tint="terracotta"]{ --tint-color:#A2532E; --tint-bg:#F3E7DD; --tint-border:#DCB393; }
   .game-index-row[data-tint="plum"]{ --tint-color:#6E5075; --tint-bg:#EFE9F0; --tint-border:#CBB8CE; }
+  .game-index-row[data-tint="teal"]{ --tint-color:#2E7A6B; --tint-bg:#E4EFEC; --tint-border:#B7D6CC; }
   .game-index-row:hover{
     transform:translateY(-4px);
     box-shadow:0 14px 28px rgba(42,39,36,0.14);
     border-color:var(--tint-border, var(--rule-strong));
   }
+  .game-index-thumb-wrap{
+    position:relative;
+    width:100%;
+    aspect-ratio:1/1;
+    background:var(--tint-bg, var(--paper-fold));
+    overflow:hidden;
+  }
+  .game-index-thumb-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
   .game-index-icon{
-    flex-shrink:0;
-    font-size:26px;
-    width:52px;
-    height:52px;
+    position:absolute;
+    top:10px;
+    left:10px;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 1px 4px rgba(0,0,0,0.25);
     display:flex;
     align-items:center;
     justify-content:center;
-    background:var(--tint-bg, var(--paper-fold));
-    border-radius:14px;
+    font-size:17px;
     transition:transform 0.25s ease;
   }
   .game-index-row:hover .game-index-icon{
     transform:scale(1.1) rotate(-5deg);
   }
+  .game-index-badge{
+    position:absolute;
+    right:8px;
+    bottom:8px;
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+    background:var(--tint-color, var(--berry));
+    padding:4px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
   .game-index-text{
-    flex:1;
     display:flex;
     flex-direction:column;
     gap:4px;
-    min-width:0;
+    padding:12px 14px 16px;
   }
   .game-index-title{
     font-family:'Gowun Batang', serif;
-    font-size:16.5px;
+    font-size:15.5px;
     font-weight:700;
     color:var(--ink);
   }
   .game-index-desc{
     font-size:12px;
     color:var(--ink-soft);
-    line-height:1.4;
-  }
-  .game-index-badge{
-    flex-shrink:0;
-    align-self:flex-start;
-    font-size:10.5px;
-    font-weight:700;
-    color:var(--tint-color, var(--berry));
-    background:var(--tint-bg, var(--paper-fold));
-    border:1px solid var(--tint-border, var(--rule-strong));
-    padding:4px 9px;
-    border-radius:999px;
-    white-space:nowrap;
-    margin-top:2px;
+    line-height:1.45;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
   }
   .game-index-arrow{
-    flex-shrink:0;
-    font-size:20px;
-    color:var(--rule-strong);
-    transition:color 0.15s ease, transform 0.15s ease;
+    display:none;
   }
-  .game-index-row:hover .game-index-arrow{ color:var(--tint-color, var(--berry)); transform:translateX(4px); }
 
   .game-back-btn{
     background:none;
@@ -1226,6 +1241,33 @@
     background:var(--berry);
     color:#fff;
   }
+  .intro-player{
+    text-align:center;
+    margin:22px 0;
+  }
+  .intro-countdown{
+    font-family:'Gowun Batang', serif;
+    font-size:56px;
+    font-weight:700;
+    color:var(--berry);
+    line-height:1;
+    min-height:64px;
+  }
+  .intro-play-btn{
+    background:var(--berry);
+    color:#fff;
+    border:none;
+    font-family:'Noto Sans KR', sans-serif;
+    font-weight:700;
+    font-size:16px;
+    padding:16px 32px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:opacity 0.2s ease, transform 0.1s ease;
+  }
+  .intro-play-btn:hover{ opacity:0.88; }
+  .intro-play-btn:active{ transform:scale(0.97); }
+  .intro-play-btn:disabled{ opacity:0.5; cursor:default; }
   .lyrics-choices{
     display:flex;
     flex-direction:column;
@@ -2138,6 +2180,7 @@
         "side";
     }
     .past-grid{ grid-template-columns:repeat(2, 1fr); }
+    .game-index-list{ grid-template-columns:repeat(3, 1fr); }
   }
   @media (max-width:640px){
     .cal-grid-card{ padding:12px 10px; }
@@ -2356,12 +2399,12 @@
     .road-arrow-right{right:2px;}
     .hero h1{letter-spacing:3px;}
 
-    .game-index-list{ grid-template-columns:1fr; }
-    .game-index-row{ padding:16px 14px 16px 18px; gap:12px; }
-    .game-index-icon{ font-size:22px; width:44px; height:44px; }
-    .game-index-title{ font-size:14.5px; }
-    .game-index-desc{ font-size:11.5px; }
-    .game-index-badge{ font-size:9.5px; padding:3px 7px; }
+    .game-index-list{ grid-template-columns:repeat(2, 1fr); gap:10px; }
+    .game-index-icon{ width:26px; height:26px; font-size:13px; top:6px; left:6px; }
+    .game-index-badge{ font-size:9px; padding:3px 7px; right:5px; bottom:5px; }
+    .game-index-text{ padding:8px 9px 11px; gap:2px; }
+    .game-index-title{ font-size:12.5px; line-height:1.3; }
+    .game-index-desc{ font-size:10.5px; line-height:1.35; -webkit-line-clamp:2; }
 
     .quiz-box, .lyrics-box{ padding:20px 14px; margin-top:16px; }
     .lyrics-intro p{ font-size:12.5px; margin:10px 0 16px; line-height:1.55; }
@@ -3984,58 +4027,81 @@
   <div class="game-screen active" id="gameIndexScreen">
     <div class="game-index-list">
       <button type="button" class="game-index-row" data-goto="gameTriviaScreen" data-tint="berry">
-        <span class="game-index-icon">🧠</span>
+        <span class="game-index-thumb-wrap">
+          <img src="images/game-thumbs/trivia.jpg" alt="한로로 퀴즈" loading="lazy">
+          <span class="game-index-icon">🧠</span>
+          <span class="game-index-badge">20문항</span>
+        </span>
         <span class="game-index-text">
           <span class="game-index-title">한로로 퀴즈</span>
           <span class="game-index-desc">20문항 · 얼마나 잘 아는지 테스트</span>
         </span>
-        <span class="game-index-badge">20문항</span>
-        <span class="game-index-arrow">›</span>
       </button>
       <button type="button" class="game-index-row" data-goto="gameRorosiScreen" data-tint="plum">
-        <span class="game-index-icon">🌸</span>
+        <span class="game-index-thumb-wrap">
+          <img src="images/game-thumbs/rorosi.jpg" alt="로로시 게임" loading="lazy">
+          <span class="game-index-icon">🌸</span>
+          <span class="game-index-badge">타이밍 게임</span>
+        </span>
         <span class="game-index-text">
           <span class="game-index-title">로로시 게임</span>
           <span class="game-index-desc">가상 시계 11:11:00.000에 정확히 맞춰 누르기</span>
         </span>
-        <span class="game-index-badge">타이밍 게임</span>
-        <span class="game-index-arrow">›</span>
       </button>
       <button type="button" class="game-index-row" data-goto="gameLyricsScreen" data-tint="moss">
-        <span class="game-index-icon">📝</span>
+        <span class="game-index-thumb-wrap">
+          <img src="images/game-thumbs/lyrics.jpg" alt="한로로 가사 맞추기" loading="lazy">
+          <span class="game-index-icon">📝</span>
+          <span class="game-index-badge">🆕 NEW</span>
+        </span>
         <span class="game-index-text">
           <span class="game-index-title">한로로 가사 맞추기</span>
           <span class="game-index-desc">랜덤 20문제 · 빈칸에 들어갈 가사 맞히기</span>
         </span>
-        <span class="game-index-badge">🆕 NEW</span>
-        <span class="game-index-arrow">›</span>
       </button>
       <button type="button" class="game-index-row" data-goto="gameWorldcupHubScreen" data-tint="gold">
-        <span class="game-index-icon">🏆</span>
+        <span class="game-index-thumb-wrap">
+          <img src="images/game-thumbs/worldcup.jpg" alt="이상형 월드컵" loading="lazy">
+          <span class="game-index-icon">🏆</span>
+          <span class="game-index-badge">32강 토너먼트</span>
+        </span>
         <span class="game-index-text">
           <span class="game-index-title">이상형 월드컵</span>
           <span class="game-index-desc">1:1로 골라서 최애 뽑기</span>
         </span>
-        <span class="game-index-badge">32강 토너먼트</span>
-        <span class="game-index-arrow">›</span>
       </button>
       <button type="button" class="game-index-row" data-goto="gameMemoryScreen" data-tint="blue">
-        <span class="game-index-icon">🃏</span>
+        <span class="game-index-thumb-wrap">
+          <img src="images/game-thumbs/memory.jpg" alt="앨범 커버 짝 맞추기" loading="lazy">
+          <span class="game-index-icon">🃏</span>
+          <span class="game-index-badge">카드 매칭</span>
+        </span>
         <span class="game-index-text">
           <span class="game-index-title">앨범 커버 짝 맞추기</span>
           <span class="game-index-desc">카드 뒤집기 · 같은 앨범 커버 찾기</span>
         </span>
-        <span class="game-index-badge">카드 매칭</span>
-        <span class="game-index-arrow">›</span>
       </button>
       <button type="button" class="game-index-row" data-goto="gamePersonalityScreen" data-tint="terracotta">
-        <span class="game-index-icon">🎧</span>
+        <span class="game-index-thumb-wrap">
+          <img src="images/game-thumbs/personality.jpg" alt="당신은 어떤 한로로일까요?" loading="lazy">
+          <span class="game-index-icon">🎧</span>
+          <span class="game-index-badge">성향 테스트</span>
+        </span>
         <span class="game-index-text">
           <span class="game-index-title">당신은 어떤 한로로일까요?</span>
           <span class="game-index-desc">10문항 · 나와 닮은 노래 찾기</span>
         </span>
-        <span class="game-index-badge">성향 테스트</span>
-        <span class="game-index-arrow">›</span>
+      </button>
+      <button type="button" class="game-index-row" data-goto="gameIntroScreen" data-tint="teal">
+        <span class="game-index-thumb-wrap">
+          <img src="images/game-thumbs/intro.jpg" alt="노래 1초 듣고 맞추기" loading="lazy">
+          <span class="game-index-icon">🔊</span>
+          <span class="game-index-badge">🆕 NEW</span>
+        </span>
+        <span class="game-index-text">
+          <span class="game-index-title">노래 1초 듣고 맞추기</span>
+          <span class="game-index-desc">29곡을 모두 맞춰 끝까지 살아남으세요</span>
+        </span>
       </button>
     </div>
   </div>
@@ -4284,13 +4350,16 @@
   <div class="game-screen" id="gameWorldcupHubScreen">
     <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
     <div class="game-index-list">
-      <button type="button" class="game-index-row" data-goto="gameWorldcupPlayScreen" data-worldcup="songs">
-        <span class="game-index-icon">🎵</span>
+      <button type="button" class="game-index-row" data-goto="gameWorldcupPlayScreen" data-worldcup="songs" data-tint="gold">
+        <span class="game-index-thumb-wrap">
+          <img src="images/game-thumbs/worldcup.jpg" alt="한로로 노래 이상형 월드컵" loading="lazy">
+          <span class="game-index-icon">🎵</span>
+          <span class="game-index-badge">32강</span>
+        </span>
         <span class="game-index-text">
           <span class="game-index-title">한로로 노래 이상형 월드컵</span>
           <span class="game-index-desc">32강 · 최애곡 뽑기</span>
         </span>
-        <span class="game-index-arrow">›</span>
       </button>
     </div>
 
@@ -4553,6 +4622,77 @@
         <input type="text" class="guestbook-search-input" placeholder="🔍 닉네임·내용으로 검색">
       </div>
       <div class="guestbook-list" data-game="lyricsquiz"></div>
+    </div>
+  </div>
+
+  <!-- 게임: 인트로 맞히기 -->
+  <div class="game-screen" id="gameIntroScreen" data-game="introquiz">
+    <button type="button" class="game-back-btn" data-back>← 게임 목록으로</button>
+
+    <div class="game-subtabs">
+      <button type="button" class="game-subtab active" data-subtab="play">게임</button>
+      <button type="button" class="game-subtab" data-subtab="guestbook">방명록</button>
+    </div>
+
+    <div class="game-subpanel active" data-subpanel="play">
+    <div class="lyrics-box" id="introBox">
+
+      <div class="lyrics-intro" id="introIntro">
+        <span class="quiz-result-emoji">🔊</span>
+        <h3>노래 1초 듣고 맞추기</h3>
+        <p>29곡을 모두 맞춰 끝까지 살아남으세요!<br>노래는 1초만 들려드려요. 정답은 띄어쓰기까지 정확하게 입력해주세요.</p>
+        <button class="quiz-start-btn" id="introStartBtn">게임 시작하기 ▶</button>
+      </div>
+
+      <div class="lyrics-question" id="introQuestion" style="display:none;">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="introProgressFill"></div></div>
+          <span id="introProgressLabel">1 / 29</span>
+        </div>
+
+        <div id="introYtHost" style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; overflow:hidden;"></div>
+
+        <div class="intro-player">
+          <div class="intro-countdown" id="introCountdown">3</div>
+          <button type="button" class="intro-play-btn" id="introReplayBtn" style="display:none;">🔁 다시 듣기</button>
+        </div>
+
+        <div class="lyrics-instruction">방금 들은 노래, 무슨 곡일까요? (띄어쓰기까지 정확하게)</div>
+        <div class="lyrics-input-row">
+          <input type="text" id="introAnswerInput" placeholder="정답을 입력하세요" disabled>
+          <button type="button" class="board-submit-btn" id="introSubmitBtn" disabled>제출</button>
+        </div>
+      </div>
+
+      <div class="lyrics-result" id="introResult" style="display:none;">
+        <span class="quiz-result-emoji" id="introResultEmoji">🎉</span>
+        <h3 id="introResultHeading">결과</h3>
+        <div class="lyrics-score" id="introScoreText"></div>
+        <p class="quiz-result-desc" id="introResultTier"></p>
+
+        <div class="share-btn-row">
+          <button type="button" class="kakao-share-btn" id="introKakaoBtn">💬 공유</button>
+          <button type="button" class="guestbook-fill-btn" id="introGuestbookBtn">📖 방명록 작성</button>
+          <button type="button" class="quiz-retry-btn" id="introRetryBtn">다시 하기</button>
+        </div>
+      </div>
+
+    </div>
+    </div>
+
+    <div class="game-subpanel" data-subpanel="guestbook">
+      <div class="guestbook-write">
+        <div class="board-write-row">
+          <input type="text" class="guestbook-author-input" placeholder="닉네임">
+          <input type="text" class="guestbook-result-input" placeholder="게임 결과를 먼저 완료해주세요" readonly>
+        </div>
+        <textarea class="guestbook-message-input" rows="2" placeholder="한마디 남겨보세요"></textarea>
+        <button type="button" class="guestbook-submit-btn board-submit-btn">방명록에 남기기</button>
+      </div>
+      <div class="guestbook-search-row">
+        <input type="text" class="guestbook-search-input" placeholder="🔍 닉네임·내용으로 검색">
+      </div>
+      <div class="guestbook-list" data-game="introquiz"></div>
     </div>
   </div>
 
@@ -6804,8 +6944,236 @@
       );
     });
   })();
+  // ================= 노래 1초 듣고 맞추기 (서바이벌) =================
+  // 유튜브 영상에서 start(초) 지점부터 정확히 1초만 재생해요. 특정 곡이 그
+  // 지점에 인트로가 아니라 애매한 부분(무음/간주 등)이 걸려서 안 들리면,
+  // 아래 start 값만 개별로 원하는 초로 바꿔주시면 바로 반영돼요.
+  const INTRO_SONG_YOUTUBE = {
+    '입춘': { videoId: 'pNi9PjmbUrI', start: 1 },
+    '사랑하게 될 거야': { videoId: 'h0KIWaUEIgQ', start: 1 },
+    '생존법': { videoId: 'puw1hdSnSX0', start: 1 },
+    '재': { videoId: 'C77DJ8nySoo', start: 1 },
+    '0+0': { videoId: '_Ngk-DCHfD0', start: 1 },
+    '금붕어': { videoId: 'dAgY7zUqd8E', start: 1 },
+    '비틀비틀 짝짜꿍': { videoId: 'eERmo7trq4k', start: 1 },
+    '거울': { videoId: '_TnsZ71zaxU', start: 1 },
+    'ㅈㅣㅂ': { videoId: 'U4-cz9NHQv4', start: 1 },
+    '용의자': { videoId: 'EPMh3g5qh2Y', start: 1 },
+    '정류장': { videoId: '4SrrieLwsOI', start: 1 },
+    '시간을 달리네': { videoId: 'tKERw3_ked0', start: 1 },
+    '나침반': { videoId: '4JwkYsfKRKM', start: 1 },
+    '자처': { videoId: 'JyoltvsJ9Fw', start: 1 },
+    '도망': { videoId: 'nhntH2wn3m0', start: 1 },
+    '하루살이': { videoId: 'fdwB6U4u-vk', start: 1 },
+    '화해': { videoId: 'gC2zA8NRzXk', start: 1 },
+    '보수공사': { videoId: 'RWMIDk2e2U4', start: 1 },
+    '해초': { videoId: '29cTL5J_w-c', start: 1 },
+    '놀이터': { videoId: 'Sh2QhzNiD9Y', start: 1 },
+    '내일에서 온 티켓': { videoId: 'cp0eesd7h_w', start: 1 },
+    '먹이사슬': { videoId: '4HZ8wh2MMpQ', start: 1 },
+    '갈림길': { videoId: '9hjnGy4aVgo', start: 1 },
+    '__에게': { videoId: 'RuwWXZiR3AU', start: 1 },
+    '이상비행': { videoId: 'OmHl_zuoD1k', start: 1 },
+    '귀가': { videoId: 'VQPnYg1a3hk', start: 1 },
+    '1111': { videoId: 'Gofn_ULNd5Q', start: 1 },
+    '게임 오버 (Game Over)': { videoId: 'qrzKsS-4lZo', start: 1 },
+    '너와 나 (You and I)': { videoId: 'Tos8R9Tcem8', start: 1 }
+  };
+  const INTRO_SONGS = Object.keys(INTRO_SONG_YOUTUBE).map(title => ({ title, ...INTRO_SONG_YOUTUBE[title] }));
 
-  // 게시판: 전체 / 자유게시판 / 질문게시판 탭 전환
+  (function(){
+    const introEl = document.getElementById('introIntro');
+    const questionEl = document.getElementById('introQuestion');
+    const resultEl = document.getElementById('introResult');
+    if (!introEl) return;
+
+    let order = [];
+    let currentIndex = 0;
+    let score = 0;
+    let ytPlayer = null;
+    let countdownTimer = null;
+    let stopTimer = null;
+
+    function shuffleArray(arr){
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    // 앞뒤 공백만 정리하고, 띄어쓰기는 그대로 비교해요(정확히 맞아야 정답).
+    function normalizeAnswer(s){
+      return (s || '').trim();
+    }
+
+    function startIntroQuiz(){
+      order = shuffleArray(INTRO_SONGS);
+      currentIndex = 0;
+      score = 0;
+
+      introEl.style.display = 'none';
+      resultEl.style.display = 'none';
+      questionEl.style.display = 'block';
+      playRound();
+    }
+
+    function playRound(){
+      const round = order[currentIndex];
+      document.getElementById('introProgressLabel').textContent = `${currentIndex + 1} / ${order.length}`;
+      document.getElementById('introProgressFill').style.width = `${(currentIndex / order.length) * 100}%`;
+
+      const input = document.getElementById('introAnswerInput');
+      const submitBtn = document.getElementById('introSubmitBtn');
+      const replayBtn = document.getElementById('introReplayBtn');
+      input.value = '';
+      input.disabled = true;
+      submitBtn.disabled = true;
+      replayBtn.style.display = 'none';
+
+      runCountdown(() => playClip(round));
+    }
+
+    function runCountdown(onDone){
+      const el = document.getElementById('introCountdown');
+      let n = 3;
+      el.textContent = n;
+      clearInterval(countdownTimer);
+      countdownTimer = setInterval(() => {
+        n--;
+        if (n > 0) {
+          el.textContent = n;
+        } else {
+          clearInterval(countdownTimer);
+          el.textContent = '시작합니다!';
+          setTimeout(onDone, 300);
+        }
+      }, 700);
+    }
+
+    function ensureIntroPlayer(callback){
+      if (ytPlayer) { callback(); return; }
+      ensureYoutubeApi(() => {
+        ytPlayer = new YT.Player('introYtHost', {
+          height: '1',
+          width: '1',
+          playerVars: { autoplay: 0, controls: 0, disablekb: 1 },
+          events: { onReady: () => callback() }
+        });
+      });
+    }
+
+    function unlockAnswerUI(){
+      const input = document.getElementById('introAnswerInput');
+      const submitBtn = document.getElementById('introSubmitBtn');
+      const replayBtn = document.getElementById('introReplayBtn');
+      input.disabled = false;
+      submitBtn.disabled = false;
+      replayBtn.style.display = 'inline-block';
+      input.focus();
+    }
+
+    function playClip(round){
+      const countdownEl = document.getElementById('introCountdown');
+      ensureIntroPlayer(() => {
+        countdownEl.textContent = '🎵';
+        ytPlayer.loadVideoById({ videoId: round.videoId, startSeconds: round.start });
+        clearTimeout(stopTimer);
+        stopTimer = setTimeout(() => {
+          try { ytPlayer.pauseVideo(); } catch (e) {}
+          countdownEl.textContent = '';
+          unlockAnswerUI();
+        }, 1000);
+      });
+    }
+
+    function replayClip(){
+      const round = order[currentIndex];
+      if (!ytPlayer) return;
+      document.getElementById('introAnswerInput').disabled = true;
+      document.getElementById('introSubmitBtn').disabled = true;
+      document.getElementById('introReplayBtn').style.display = 'none';
+      ytPlayer.seekTo(round.start, true);
+      ytPlayer.playVideo();
+      clearTimeout(stopTimer);
+      stopTimer = setTimeout(() => {
+        try { ytPlayer.pauseVideo(); } catch (e) {}
+        unlockAnswerUI();
+      }, 1000);
+    }
+
+    function submitAnswer(){
+      const input = document.getElementById('introAnswerInput');
+      if (input.disabled) return;
+      const round = order[currentIndex];
+      const isCorrect = normalizeAnswer(input.value) === round.title;
+
+      clearTimeout(stopTimer);
+      if (ytPlayer) { try { ytPlayer.pauseVideo(); } catch (e) {} }
+
+      if (isCorrect) {
+        score++;
+        currentIndex++;
+        if (currentIndex >= order.length) {
+          finishIntroQuiz(true);
+        } else {
+          playRound();
+        }
+      } else {
+        finishIntroQuiz(false, round.title);
+      }
+    }
+
+    function finishIntroQuiz(cleared, correctAnswer){
+      questionEl.style.display = 'none';
+      resultEl.style.display = 'block';
+
+      if (cleared) {
+        document.getElementById('introResultEmoji').textContent = '🏆';
+        document.getElementById('introResultHeading').textContent = '완벽해요!';
+        document.getElementById('introScoreText').textContent = `${score} / ${order.length}곡 전부 맞췄어요!`;
+        document.getElementById('introResultTier').textContent = '29곡을 모두 맞췄어요! 완벽한 귀네요.';
+      } else {
+        document.getElementById('introResultEmoji').textContent = '😢';
+        document.getElementById('introResultHeading').textContent = '아쉽게 탈락했어요';
+        document.getElementById('introScoreText').textContent = `${score} / ${order.length}곡 맞췄어요!`;
+        document.getElementById('introResultTier').textContent = `정답은 '${correctAnswer}'였어요. 당신은 ${score}곡을 맞추셨습니다.`;
+      }
+
+      window.currentIntroResult = { score, total: order.length, cleared };
+      const resultInputEl = document.querySelector('#gameIntroScreen .guestbook-result-input');
+      if (resultInputEl) resultInputEl.value = `${score} / ${order.length}곡`;
+
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    document.getElementById('introStartBtn')?.addEventListener('click', startIntroQuiz);
+    document.getElementById('introSubmitBtn')?.addEventListener('click', submitAnswer);
+    document.getElementById('introAnswerInput')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitAnswer();
+    });
+    document.getElementById('introReplayBtn')?.addEventListener('click', replayClip);
+    document.getElementById('introRetryBtn')?.addEventListener('click', () => {
+      resultEl.style.display = 'none';
+      introEl.style.display = 'block';
+    });
+    document.getElementById('introKakaoBtn')?.addEventListener('click', () => {
+      if (!window.currentIntroResult) return;
+      shareToKakao(
+        window.currentIntroResult.cleared ? '🏆 29곡 1초 듣고 맞추기 완주!' : `🎧 노래 1초 듣고 맞추기 ${window.currentIntroResult.score}곡 성공!`,
+        `29곡 중 ${window.currentIntroResult.score}곡을 맞췄어요 — 당신도 도전해보세요!`,
+        '#quiz',
+        new URL('images/icons/icon-512.png', location.href).href,
+        '나도 해보기'
+      );
+    });
+    document.querySelector('#gameIntroScreen .game-back-btn')?.addEventListener('click', () => {
+      clearTimeout(stopTimer);
+      clearInterval(countdownTimer);
+      if (ytPlayer) { try { ytPlayer.pauseVideo(); } catch (e) {} }
+    });
+  })();
   const boardTabButtons = document.querySelectorAll('.board-tab');
   const boardPanels = document.querySelectorAll('.board-panel');
   function showBoardTab(key){
@@ -8225,6 +8593,7 @@
   setupGuestbook('worldcup');
   setupGuestbook('rorosi');
   setupGuestbook('lyricsquiz');
+  setupGuestbook('introquiz');
 
   // ================= 로로시 게임: 오늘의 TOP10 (닉네임 필수, 매일 초기화) =================
   // 날짜(KST)가 바뀌면 자동으로 새 하루치 랭킹만 보여요. 어제 기록은 안 지워지고
@@ -8574,6 +8943,9 @@
   });
   document.getElementById('lyricsGuestbookBtn')?.addEventListener('click', () => {
     if (window.currentLyricsResult) fillGuestbookWithResult('lyricsquiz', `${window.currentLyricsResult.correctCount} / ${window.currentLyricsResult.total}문제`);
+  });
+  document.getElementById('introGuestbookBtn')?.addEventListener('click', () => {
+    if (window.currentIntroResult) fillGuestbookWithResult('introquiz', `${window.currentIntroResult.score} / ${window.currentIntroResult.total}라운드`);
   });
 </script>
 
