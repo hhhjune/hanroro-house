@@ -3732,7 +3732,7 @@
   </nav>
 </header>
 
-<section id="today" class="page today-section active">
+<section id="today" class="page today-section">
 
   <div class="video-showcase-row">
     <div class="video-showcase-card">
@@ -4691,7 +4691,7 @@
 </section>
 
 
-<section id="calendar" class="page calendar-section">
+<section id="calendar" class="page calendar-section active">
 
   <div class="calendar-dashboard">
 
@@ -5060,9 +5060,9 @@
   // 새로고침 시 주소창의 해시를 보고 그 페이지를 열어줘요. 없으면 '오늘'이 기본.
   // "#board?post=아이디" 처럼 뒤에 쿼리스트링이 붙어있을 수도 있어서, ? 앞부분만
   // 페이지 이름으로 써요.
-  const initialHashRaw = (location.hash || '#today').slice(1);
+  const initialHashRaw = (location.hash || '#calendar').slice(1);
   const [initialPageId, initialQueryStr] = initialHashRaw.split('?');
-  if (!showPage(initialPageId)) showPage('today');
+  if (!showPage(initialPageId)) showPage('calendar');
 
   // 게시글 공유 링크(#board?post=아이디)로 들어온 경우, 그 게시글을 바로 열어줘요.
   // 목록이 아직 안 불러와진 상태일 수도 있어서, Firestore에서 그 글만 따로 가져와요.
