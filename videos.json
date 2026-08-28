@@ -1,10 +1,28 @@
 {
-  "updated_at": "2026-08-27T23:59:06.335578+00:00",
+  "updated_at": "2026-08-28T10:01:41.026263+00:00",
   "categories": [
     {
       "key": "survival",
       "label": "로로의 생존법",
       "videos": [
+        {
+          "videoId": "cHlpT9kS2sk",
+          "title": "[로로의 생존법] 에필로그",
+          "thumbnail": "https://i.ytimg.com/vi/cHlpT9kS2sk/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=cHlpT9kS2sk"
+        },
+        {
+          "videoId": "YytAUwpxRks",
+          "title": "[로로의 생존법] 제5조 노래",
+          "thumbnail": "https://i.ytimg.com/vi/YytAUwpxRks/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=YytAUwpxRks"
+        },
+        {
+          "videoId": "yWAJ9X8sUzM",
+          "title": "[로로의 생존법] 제4조 산책",
+          "thumbnail": "https://i.ytimg.com/vi/yWAJ9X8sUzM/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=yWAJ9X8sUzM"
+        },
         {
           "videoId": "w5rrdebwsQo",
           "title": "[로로의 생존법] 제3조 커피",

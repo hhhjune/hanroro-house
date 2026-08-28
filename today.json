@@ -1,7 +1,12 @@
 {
-  "updated_at": "2026-08-27T23:59:04.766497+00:00",
+  "updated_at": "2026-08-28T10:01:39.780016+00:00",
   "instagram": [],
   "youtube": [
+    {
+      "date": "2026.08.28",
+      "title": "[로로의 생존법] 에필로그",
+      "link": "https://www.youtube.com/watch?v=cHlpT9kS2sk"
+    },
     {
       "date": "2026.08.21",
       "title": "사운드베리 페스타 공연 직전 비하인드",
@@ -46,11 +51,6 @@
       "date": "2026.07.10",
       "title": "[LIVE] 한로로 (HANRORO) – 너와 나 [The 18th Seoul Jazz Festival 2026]",
       "link": "https://www.youtube.com/watch?v=2OEN88GsSAs"
-    },
-    {
-      "date": "2026.07.10",
-      "title": "[LIVE] 한로로 (HANRORO) - 너와 나 (The 18th Seoul Jazz Festival 2026)",
-      "link": "https://www.youtube.com/watch?v=MoxCleGRKDU"
     }
   ],
   "tiktok": [],
