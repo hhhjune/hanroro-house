@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-30T08:23:16.033014+00:00",
+  "updated_at": "2026-09-30T16:00:54.685859+00:00",
   "categories": [
     {
       "key": "survival",
@@ -395,6 +395,12 @@
       "key": "dangbamnabam",
       "label": "당밤나밤",
       "videos": [
+        {
+          "videoId": "JG0r3EF3UHs",
+          "title": "[당밤나밤3] EP.01 AKMU 수현 님과 밤새 수다 떨며 지새우는 밤",
+          "thumbnail": "https://i.ytimg.com/vi/JG0r3EF3UHs/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=JG0r3EF3UHs"
+        },
         {
           "videoId": "iEDlMQPr5e4",
           "title": "[당밤나밤2] EP.06 고선경 시인님과 타로카드로 사랑을 점치며 지새우는 밤",
