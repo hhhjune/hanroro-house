@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T07:22:46.017901+00:00",
+  "updated_at": "2026-10-13T15:35:43.239139+00:00",
   "categories": [
     {
       "key": "survival",
@@ -53,6 +53,12 @@
       "key": "liveclip",
       "label": "LIVE CLIP",
       "videos": [
+        {
+          "videoId": "-1OCc85R99U",
+          "title": "HANRORO - Live at SERIES.L with YouTube Music Nights (Full Performance)",
+          "thumbnail": "https://i.ytimg.com/vi/-1OCc85R99U/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=-1OCc85R99U"
+        },
         {
           "videoId": "MoxCleGRKDU",
           "title": "[LIVE] 한로로 (HANRORO) - 너와 나 (The 18th Seoul Jazz Festival 2026)",
@@ -166,12 +172,6 @@
           "title": "[LIVE CLIP] 한로로 (HANRORO) - 먹이사슬 (System Error)",
           "thumbnail": "https://i.ytimg.com/vi/V0fhnSMJR1A/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=V0fhnSMJR1A"
-        },
-        {
-          "videoId": "ao8K4Bgzafs",
-          "title": "[Live Session] 한로로 (HANRORO) - This Christmas, 눈사람, 옛사랑, Track 3",
-          "thumbnail": "https://i.ytimg.com/vi/ao8K4Bgzafs/mqdefault.jpg",
-          "link": "https://www.youtube.com/watch?v=ao8K4Bgzafs"
         }
       ]
     },
@@ -484,6 +484,12 @@
           "title": "[당밤나밤] EP.00 한로로의 밤에 여러분을 초대합니다🌙",
           "thumbnail": "https://i.ytimg.com/vi/dKuUEHmnwrs/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=dKuUEHmnwrs"
+        },
+        {
+          "videoId": "q992XWH15QM",
+          "title": "Private video",
+          "thumbnail": "",
+          "link": "https://www.youtube.com/watch?v=q992XWH15QM"
         }
       ]
     },
