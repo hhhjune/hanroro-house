@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T00:10:15.813373+00:00",
+  "updated_at": "2026-10-13T07:22:46.017901+00:00",
   "categories": [
     {
       "key": "survival",
@@ -395,6 +395,12 @@
       "key": "dangbamnabam",
       "label": "당밤나밤",
       "videos": [
+        {
+          "videoId": "1ly2a7JItXM",
+          "title": "[당밤나밤3] EP.02 릴 모쉬핏 님과 이상, 현실 그리고 눈물 셀카로 지새우는 밤",
+          "thumbnail": "https://i.ytimg.com/vi/1ly2a7JItXM/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=1ly2a7JItXM"
+        },
         {
           "videoId": "JG0r3EF3UHs",
           "title": "[당밤나밤3] EP.01 AKMU 수현 님과 밤새 수다 떨며 지새우는 밤",
