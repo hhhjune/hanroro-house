@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T05:49:54.970493+00:00",
+  "updated_at": "2026-10-14T11:14:29.126485+00:00",
   "categories": [
     {
       "key": "survival",
@@ -396,6 +396,12 @@
       "label": "당밤나밤",
       "videos": [
         {
+          "videoId": "q992XWH15QM",
+          "title": "[당밤나밤3] EP.03 pH-1 님과 사랑을 논하며 지새우는 밤",
+          "thumbnail": "https://i.ytimg.com/vi/q992XWH15QM/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=q992XWH15QM"
+        },
+        {
           "videoId": "1ly2a7JItXM",
           "title": "[당밤나밤3] EP.02 릴 모쉬핏 님과 이상, 현실 그리고 눈물 셀카로 지새우는 밤",
           "thumbnail": "https://i.ytimg.com/vi/1ly2a7JItXM/mqdefault.jpg",
@@ -484,12 +490,6 @@
           "title": "[당밤나밤] EP.00 한로로의 밤에 여러분을 초대합니다🌙",
           "thumbnail": "https://i.ytimg.com/vi/dKuUEHmnwrs/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=dKuUEHmnwrs"
-        },
-        {
-          "videoId": "q992XWH15QM",
-          "title": "Private video",
-          "thumbnail": "",
-          "link": "https://www.youtube.com/watch?v=q992XWH15QM"
         }
       ]
     },
