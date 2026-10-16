@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T05:28:04.800070+00:00",
+  "updated_at": "2026-10-16T10:44:55.802951+00:00",
   "categories": [
     {
       "key": "survival",
@@ -53,6 +53,18 @@
       "key": "liveclip",
       "label": "LIVE CLIP",
       "videos": [
+        {
+          "videoId": "9d_0bu-0PSM",
+          "title": "Private video",
+          "thumbnail": "",
+          "link": "https://www.youtube.com/watch?v=9d_0bu-0PSM"
+        },
+        {
+          "videoId": "aaXE6FtgcvI",
+          "title": "Private video",
+          "thumbnail": "",
+          "link": "https://www.youtube.com/watch?v=aaXE6FtgcvI"
+        },
         {
           "videoId": "-1OCc85R99U",
           "title": "HANRORO - Live at SERIES.L with YouTube Music Nights (Full Performance)",
@@ -160,18 +172,6 @@
           "title": "[Live Session] 한로로 (HANRORO) EP Album '집'",
           "thumbnail": "https://i.ytimg.com/vi/3RMJ4qnvMWc/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=3RMJ4qnvMWc"
-        },
-        {
-          "videoId": "oRioMxFTC78",
-          "title": "[LIVE CLIP] 한로로 (HANRORO) - 생존법 (How To Go On)",
-          "thumbnail": "https://i.ytimg.com/vi/oRioMxFTC78/mqdefault.jpg",
-          "link": "https://www.youtube.com/watch?v=oRioMxFTC78"
-        },
-        {
-          "videoId": "V0fhnSMJR1A",
-          "title": "[LIVE CLIP] 한로로 (HANRORO) - 먹이사슬 (System Error)",
-          "thumbnail": "https://i.ytimg.com/vi/V0fhnSMJR1A/mqdefault.jpg",
-          "link": "https://www.youtube.com/watch?v=V0fhnSMJR1A"
         }
       ]
     },
