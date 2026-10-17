@@ -1,7 +1,12 @@
 {
-  "updated_at": "2026-10-17T06:34:44.497276+00:00",
+  "updated_at": "2026-10-17T11:23:02.669486+00:00",
   "instagram": [],
   "youtube": [
+    {
+      "date": "2026.10.17",
+      "title": "한로로 (HANRORO) - 생존법 (Live at SERIES.L with YouTube Music Nights)",
+      "link": "https://www.youtube.com/watch?v=9d_0bu-0PSM"
+    },
     {
       "date": "2026.10.15",
       "title": "[BEHIND] 한로로 (HANRORO) - 시리즈엘 (SERIES.L)",
@@ -46,11 +51,6 @@
       "date": "2026.08.21",
       "title": "[로로의 생존법] 제5조 노래",
       "link": "https://www.youtube.com/watch?v=YytAUwpxRks"
-    },
-    {
-      "date": "2026.08.14",
-      "title": "[로로의 생존법] 제4조 산책",
-      "link": "https://www.youtube.com/watch?v=yWAJ9X8sUzM"
     }
   ],
   "tiktok": [],
