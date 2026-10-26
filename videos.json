@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-26T03:19:59.635815+00:00",
+  "updated_at": "2026-10-26T09:43:52.513884+00:00",
   "categories": [
     {
       "key": "survival",
@@ -180,6 +180,12 @@
       "label": "MV",
       "videos": [
         {
+          "videoId": "RpjZnoA7Qq8",
+          "title": "[Performance] 한로로 - 물음표 (Question Mark)",
+          "thumbnail": "https://i.ytimg.com/vi/RpjZnoA7Qq8/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=RpjZnoA7Qq8"
+        },
+        {
           "videoId": "Tos8R9Tcem8",
           "title": "[MV] 한로로 (HANRORO) - 너와 나(You and I)",
           "thumbnail": "https://i.ytimg.com/vi/Tos8R9Tcem8/mqdefault.jpg",
@@ -292,12 +298,6 @@
           "title": "[MV] 한로로 (HANRORO) - 자처 (Even if you leave,)",
           "thumbnail": "https://i.ytimg.com/vi/JyoltvsJ9Fw/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=JyoltvsJ9Fw"
-        },
-        {
-          "videoId": "4SrrieLwsOI",
-          "title": "[MV] 한로로 (HANRORO) - 정류장 (The last stop of our pain)",
-          "thumbnail": "https://i.ytimg.com/vi/4SrrieLwsOI/mqdefault.jpg",
-          "link": "https://www.youtube.com/watch?v=4SrrieLwsOI"
         }
       ]
     },
