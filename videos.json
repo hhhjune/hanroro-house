@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-28T04:05:59.856313+00:00",
+  "updated_at": "2026-10-28T10:58:32.581338+00:00",
   "categories": [
     {
       "key": "survival",
@@ -396,6 +396,12 @@
       "label": "당밤나밤",
       "videos": [
         {
+          "videoId": "1nw_aHYtBrc",
+          "title": "[당밤나밤3] EP.05 임창정을 따라하는 곽범을 따라하는 임창정을 따라하는 곽범 님과 휴식을 찾아 지새우는 밤",
+          "thumbnail": "https://i.ytimg.com/vi/1nw_aHYtBrc/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=1nw_aHYtBrc"
+        },
+        {
           "videoId": "gK37V2lOjUs",
           "title": "[당밤나밤3] EP.04 ITZY 류진, 채령 님과 감사함과 눈물(?)로 지새우는 밤",
           "thumbnail": "https://i.ytimg.com/vi/gK37V2lOjUs/mqdefault.jpg",
@@ -496,12 +502,6 @@
           "title": "[당밤나밤] EP.00 한로로의 밤에 여러분을 초대합니다🌙",
           "thumbnail": "https://i.ytimg.com/vi/dKuUEHmnwrs/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=dKuUEHmnwrs"
-        },
-        {
-          "videoId": "1nw_aHYtBrc",
-          "title": "Private video",
-          "thumbnail": "",
-          "link": "https://www.youtube.com/watch?v=1nw_aHYtBrc"
         }
       ]
     },
