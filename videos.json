@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-29T02:06:42.458768+00:00",
+  "updated_at": "2026-10-29T09:22:38.683405+00:00",
   "categories": [
     {
       "key": "survival",
@@ -53,6 +53,12 @@
       "key": "liveclip",
       "label": "LIVE CLIP",
       "videos": [
+        {
+          "videoId": "cUlvxn734Ms",
+          "title": "Private video",
+          "thumbnail": "",
+          "link": "https://www.youtube.com/watch?v=cUlvxn734Ms"
+        },
         {
           "videoId": "9d_0bu-0PSM",
           "title": "한로로 (HANRORO) - 생존법 (Live at SERIES.L with YouTube Music Nights)",
@@ -166,12 +172,6 @@
           "title": "[LIVE] HANRORO SUMMER ACOUSTIC LIVE",
           "thumbnail": "https://i.ytimg.com/vi/8LK0pVMQA7g/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=8LK0pVMQA7g"
-        },
-        {
-          "videoId": "3RMJ4qnvMWc",
-          "title": "[Live Session] 한로로 (HANRORO) EP Album '집'",
-          "thumbnail": "https://i.ytimg.com/vi/3RMJ4qnvMWc/mqdefault.jpg",
-          "link": "https://www.youtube.com/watch?v=3RMJ4qnvMWc"
         }
       ]
     },
