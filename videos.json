@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03T00:32:46.189332+00:00",
+  "updated_at": "2026-11-03T07:34:38.742413+00:00",
   "categories": [
     {
       "key": "survival",
@@ -502,6 +502,12 @@
           "title": "[당밤나밤] EP.00 한로로의 밤에 여러분을 초대합니다🌙",
           "thumbnail": "https://i.ytimg.com/vi/dKuUEHmnwrs/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=dKuUEHmnwrs"
+        },
+        {
+          "videoId": "f4b7b_DVFCM",
+          "title": "Private video",
+          "thumbnail": "",
+          "link": "https://www.youtube.com/watch?v=f4b7b_DVFCM"
         }
       ]
     },
