@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T01:54:20.395944+00:00",
+  "updated_at": "2026-11-04T08:38:42.555063+00:00",
   "categories": [
     {
       "key": "survival",
@@ -396,6 +396,12 @@
       "label": "당밤나밤",
       "videos": [
         {
+          "videoId": "f4b7b_DVFCM",
+          "title": "[당밤나밤3] EP.06 Stray Kids 한, 승민 님과 정신없는 대화들로 지새우는 밤",
+          "thumbnail": "https://i.ytimg.com/vi/f4b7b_DVFCM/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=f4b7b_DVFCM"
+        },
+        {
           "videoId": "1nw_aHYtBrc",
           "title": "[당밤나밤3] EP.05 임창정을 따라하는 곽범을 따라하는 임창정을 따라하는 곽범 님과 휴식을 찾아 지새우는 밤",
           "thumbnail": "https://i.ytimg.com/vi/1nw_aHYtBrc/mqdefault.jpg",
@@ -502,12 +508,6 @@
           "title": "[당밤나밤] EP.00 한로로의 밤에 여러분을 초대합니다🌙",
           "thumbnail": "https://i.ytimg.com/vi/dKuUEHmnwrs/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=dKuUEHmnwrs"
-        },
-        {
-          "videoId": "f4b7b_DVFCM",
-          "title": "Private video",
-          "thumbnail": "",
-          "link": "https://www.youtube.com/watch?v=f4b7b_DVFCM"
         }
       ]
     },
