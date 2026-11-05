@@ -1,7 +1,12 @@
 {
-  "updated_at": "2026-11-05T03:10:36.690391+00:00",
+  "updated_at": "2026-11-05T11:52:45.015881+00:00",
   "instagram": [],
   "youtube": [
+    {
+      "date": "2026.11.05",
+      "title": "[MV] 한로로 - 물음표 (Question Mark)",
+      "link": "https://www.youtube.com/watch?v=mBYtmOCOkiE"
+    },
     {
       "date": "2026.11.04",
       "title": "[당밤나밤3] EP.06 Stray Kids 한, 승민 님과 정신없는 대화들로 지새우는 밤",
@@ -41,19 +46,19 @@
       "date": "2026.10.17",
       "title": "한로로 (HANRORO) - 생존법 (Live at SERIES.L with YouTube Music Nights)",
       "link": "https://www.youtube.com/watch?v=9d_0bu-0PSM"
-    },
-    {
-      "date": "2026.10.15",
-      "title": "[BEHIND] 한로로 (HANRORO) - 시리즈엘 (SERIES.L)",
-      "link": "https://www.youtube.com/watch?v=tePBLUv7mXs"
     }
   ],
   "tiktok": [
     {
       "date": "",
+      "title": "@hanroro_official — 한로로 (HANRORO) New Single '물음표 (Question Mark)' 가 발매 되었습니다. 나는 오늘도 상대 ...",
+      "link": "https://www.tiktok.com/@hanroro_official/video/7704555370613689621",
+      "thumbnail": "https://p19-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/oAlIgEiAVMhIqAFfsRz7vBF03O0DCBFYpePBwS~tplv-tiktokx-origin.image?dr=9636&x-expires=1794049200&x-signature=r06yL5wekHdfd9CflQtsMO420dI%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
+    },
+    {
+      "date": "",
       "title": "@hanroro_official — 여섯 번째 밤을 함께해 준 특별한 손님은 Stray Kids 한, 승민 님입니다. Stray Kids 한, 승민 님과 정신없...",
-      "link": "https://www.tiktok.com/@hanroro_official/video/7703849434756566293",
-      "thumbnail": "https://p19-common-sign.tiktokcdn-us.com/tos-alisg-p-0037/ooQfZFIuAkrVqD0mQkkBLXeY3YEC6qnpgEBpQl~tplv-tiktokx-origin.image?dr=9636&x-expires=1794020400&x-signature=vHnOxQW8ygLxVPHetUnaKH9gyIU%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5"
+      "link": "https://www.tiktok.com/@hanroro_official/video/7703849434756566293"
     },
     {
       "date": "",
@@ -94,11 +99,6 @@
       "date": "",
       "title": "@hanroro_official — #한로로 의 매들리 메들리 2026 무대 비하인드 영상이 한로로 유튜브에 공개되었습니다. #HANRORO",
       "link": "https://www.tiktok.com/@hanroro_official/video/7698579695532543239"
-    },
-    {
-      "date": "",
-      "title": "@hanroro_official — 키 조금 크고(?) #한로로 살짝 닮고 #HANRORO",
-      "link": "https://www.tiktok.com/@hanroro_official/video/7697479849169997074"
     }
   ],
   "naverblog": [

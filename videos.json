@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T03:10:37.865697+00:00",
+  "updated_at": "2026-11-05T11:52:46.029760+00:00",
   "categories": [
     {
       "key": "survival",
@@ -180,6 +180,12 @@
       "label": "MV",
       "videos": [
         {
+          "videoId": "mBYtmOCOkiE",
+          "title": "[MV] 한로로 - 물음표 (Question Mark)",
+          "thumbnail": "https://i.ytimg.com/vi/mBYtmOCOkiE/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=mBYtmOCOkiE"
+        },
+        {
           "videoId": "RpjZnoA7Qq8",
           "title": "[Performance] 한로로 - 물음표 (Question Mark)",
           "thumbnail": "https://i.ytimg.com/vi/RpjZnoA7Qq8/mqdefault.jpg",
@@ -292,12 +298,6 @@
           "title": "[MV] 한로로 (HANRORO) - 화해 (I'm happy)",
           "thumbnail": "https://i.ytimg.com/vi/gC2zA8NRzXk/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=gC2zA8NRzXk"
-        },
-        {
-          "videoId": "JyoltvsJ9Fw",
-          "title": "[MV] 한로로 (HANRORO) - 자처 (Even if you leave,)",
-          "thumbnail": "https://i.ytimg.com/vi/JyoltvsJ9Fw/mqdefault.jpg",
-          "link": "https://www.youtube.com/watch?v=JyoltvsJ9Fw"
         }
       ]
     },
