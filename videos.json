@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-10T03:10:22.866433+00:00",
+  "updated_at": "2026-11-10T12:07:35.332928+00:00",
   "categories": [
     {
       "key": "survival",
@@ -53,6 +53,12 @@
       "key": "liveclip",
       "label": "LIVE CLIP",
       "videos": [
+        {
+          "videoId": "aANqg8mz-ak",
+          "title": "[LIVE] 한로로 (HANRORO) - 물음표 (Question Mark) Acoustic ver.",
+          "thumbnail": "https://i.ytimg.com/vi/aANqg8mz-ak/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=aANqg8mz-ak"
+        },
         {
           "videoId": "cUlvxn734Ms",
           "title": "Private video",
@@ -166,12 +172,6 @@
           "title": "[Live Session] HANRORO 2025 Spring Edition",
           "thumbnail": "https://i.ytimg.com/vi/E289e2grF5I/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=E289e2grF5I"
-        },
-        {
-          "videoId": "8LK0pVMQA7g",
-          "title": "[LIVE] HANRORO SUMMER ACOUSTIC LIVE",
-          "thumbnail": "https://i.ytimg.com/vi/8LK0pVMQA7g/mqdefault.jpg",
-          "link": "https://www.youtube.com/watch?v=8LK0pVMQA7g"
         }
       ]
     },
@@ -508,6 +508,12 @@
           "title": "[당밤나밤] EP.00 한로로의 밤에 여러분을 초대합니다🌙",
           "thumbnail": "https://i.ytimg.com/vi/dKuUEHmnwrs/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=dKuUEHmnwrs"
+        },
+        {
+          "videoId": "r_gNWlEP8UM",
+          "title": "Private video",
+          "thumbnail": "",
+          "link": "https://www.youtube.com/watch?v=r_gNWlEP8UM"
         }
       ]
     },
