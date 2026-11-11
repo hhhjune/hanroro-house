@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-11T07:41:26.606434+00:00",
+  "updated_at": "2026-11-11T15:52:25.101418+00:00",
   "categories": [
     {
       "key": "survival",
@@ -396,6 +396,12 @@
       "label": "당밤나밤",
       "videos": [
         {
+          "videoId": "r_gNWlEP8UM",
+          "title": "[당밤나밤3] EP.07 HANA 지수 님과 완벽하지 않아도 되는 세상에서 지새우는 밤",
+          "thumbnail": "https://i.ytimg.com/vi/r_gNWlEP8UM/mqdefault.jpg",
+          "link": "https://www.youtube.com/watch?v=r_gNWlEP8UM"
+        },
+        {
           "videoId": "f4b7b_DVFCM",
           "title": "[당밤나밤3] EP.06 Stray Kids 한, 승민 님과 정신없는 대화들로 지새우는 밤",
           "thumbnail": "https://i.ytimg.com/vi/f4b7b_DVFCM/mqdefault.jpg",
@@ -508,12 +514,6 @@
           "title": "[당밤나밤] EP.00 한로로의 밤에 여러분을 초대합니다🌙",
           "thumbnail": "https://i.ytimg.com/vi/dKuUEHmnwrs/mqdefault.jpg",
           "link": "https://www.youtube.com/watch?v=dKuUEHmnwrs"
-        },
-        {
-          "videoId": "r_gNWlEP8UM",
-          "title": "Private video",
-          "thumbnail": "",
-          "link": "https://www.youtube.com/watch?v=r_gNWlEP8UM"
         }
       ]
     },
